@@ -1670,6 +1670,12 @@ const CATEGORIES = [
   { key: "travel", label: "Podróże i transport", emoji: "🚕" },
   { key: "body_services", label: "Ciało i drobne usługi", emoji: "🧵" },
   { key: "family", label: "Rodzina i bliscy", emoji: "👨‍👩‍👧" },
+  { key: "health", label: "Zdrowie i samopoczucie", emoji: "🩺" },
+  { key: "weather", label: "Pogoda", emoji: "🌤️" },
+  { key: "smalltalk", label: "Small talk (rozmowy)", emoji: "💭" },
+  { key: "fillers", label: "Wygładzacze i reakcje", emoji: "🗯️" },
+  { key: "slang", label: "Slang (jak miejscowy)", emoji: "😎" },
+  { key: "life", label: "O sobie i życiu", emoji: "🙋" },
   { key: "expressions", label: "Wyrażenia codzienne", emoji: "💬" },
   { key: "conjunctions", label: "Spójniki i łączniki", emoji: "🔗" },
   { key: "religious", label: "Wyrażenia religijne", emoji: "🕌" },
@@ -3931,6 +3937,160 @@ const FAMILY_WORDS = [
   },
 ];
 
+// ---------- Zdrowie i samopoczucie ----------
+const HEALTH_WORDS = [
+  { cat: "health", pl: "lekarz", ar: "دكتور", ph: "doktoor" },
+  { cat: "health", pl: "apteka", ar: "صيدلية", ph: "Saydaleyya" },
+  { cat: "health", pl: "lekarstwo", ar: "دوا", ph: "dawa" },
+  { cat: "health", pl: "szpital", ar: "مستشفى", ph: "mustashfa" },
+  { cat: "health", pl: "chory (m.)", ar: "عيان", ph: "3ayyaan" },
+  { cat: "health", pl: "chora (ż.)", ar: "عيانة", ph: "3ayyaana" },
+  { cat: "health", pl: "boli mnie", ar: "بيوجعني", ph: "biyewga3ni" },
+  { cat: "health", pl: "głowa", ar: "راس", ph: "raas" },
+  { cat: "health", pl: "boli mnie głowa", ar: "راسي بتوجعني", ph: "raasi betewga3ni", ex: { ar: "راسي بتوجعني من الصبح.", ph: "raasi betewga3ni min iS-SobH.", pl: "Głowa boli mnie od rana." } },
+  { cat: "health", pl: "brzuch", ar: "بطن", ph: "baTn" },
+  { cat: "health", pl: "gardło", ar: "زور", ph: "zoor" },
+  { cat: "health", pl: "ząb", ar: "سنة", ph: "senna" },
+  { cat: "health", pl: "gorączka", ar: "سخونية", ph: "sokhoneyya" },
+  { cat: "health", pl: "przeziębienie", ar: "برد", ph: "bard" },
+  { cat: "health", pl: "kaszel", ar: "كحة", ph: "koHHa" },
+  { cat: "health", pl: "zmęczony (m.)", ar: "تعبان", ph: "ta3baan" },
+  { cat: "health", pl: "czuję się lepiej", ar: "أنا أحسن", ph: "ana aHsan" },
+  { cat: "health", pl: "potrzebuję lekarza", ar: "محتاج دكتور", ph: "meHtaag doktoor" },
+  { cat: "health", pl: "zdrowie", ar: "صحة", ph: "SeHHa" },
+  { cat: "health", pl: "wyzdrowiej! (życzenie)", ar: "سلامتك", ph: "salamtak", ex: { ar: "سلامتك، ألف سلامة.", ph: "salamtak, alf salaama.", pl: "Zdrowia, oby szybko wyzdrowieć." } },
+];
+
+// ---------- Pogoda ----------
+const WEATHER_WORDS = [
+  { cat: "weather", pl: "pogoda", ar: "الجو", ph: "il-gaww" },
+  { cat: "weather", pl: "gorąco", ar: "حر", ph: "Harr" },
+  { cat: "weather", pl: "zimno", ar: "برد", ph: "bard" },
+  { cat: "weather", pl: "słońce", ar: "شمس", ph: "shams" },
+  { cat: "weather", pl: "deszcz", ar: "مطر", ph: "maTar" },
+  { cat: "weather", pl: "wiatr", ar: "هوا", ph: "hawa" },
+  { cat: "weather", pl: "upał", ar: "حرارة", ph: "Haraara" },
+  { cat: "weather", pl: "chmury", ar: "غيوم", ph: "8oyuum" },
+  { cat: "weather", pl: "jest gorąco", ar: "الجو حر", ph: "il-gaww Harr", ex: { ar: "النهارده الجو حر أوي.", ph: "innaharda il-gaww Harr awi.", pl: "Dziś jest bardzo gorąco." } },
+  { cat: "weather", pl: "jest zimno", ar: "الجو برد", ph: "il-gaww bard" },
+  { cat: "weather", pl: "pada deszcz", ar: "بتمطر", ph: "betemTar" },
+  { cat: "weather", pl: "ładna pogoda", ar: "الجو حلو", ph: "il-gaww Helw" },
+  { cat: "weather", pl: "lato", ar: "صيف", ph: "Seef" },
+  { cat: "weather", pl: "zima", ar: "شتا", ph: "shita" },
+];
+
+// ---------- Small talk / rozmowy grzecznościowe ----------
+// Pytania i zwroty, które podtrzymują rozmowę — mało treści, dużo relacji.
+const SMALLTALK_WORDS = [
+  { cat: "smalltalk", pl: "jak się masz? (do m.)", ar: "عامل إيه؟", ph: "3aamel eeh?" },
+  { cat: "smalltalk", pl: "jak się masz? (do ż.)", ar: "عاملة إيه؟", ph: "3amla eeh?" },
+  { cat: "smalltalk", pl: "co słychać?", ar: "أخبارك إيه؟", ph: "akhbaarak eeh?" },
+  { cat: "smalltalk", pl: "jak leci? (dosł. jaki kolor)", ar: "إزيك؟", ph: "ezzayyak?" },
+  { cat: "smalltalk", pl: "jak twoja rodzina?", ar: "إزاي العيلة؟", ph: "ezzaay il-3eela?" },
+  { cat: "smalltalk", pl: "jak zdrowie? (dosł. jaki stan)", ar: "إزاي الصحة؟", ph: "ezzaay iS-SeHHa?" },
+  { cat: "smalltalk", pl: "co u ciebie nowego?", ar: "إيه الجديد؟", ph: "eeh ig-gediid?" },
+  { cat: "smalltalk", pl: "jak babcia? (dosł. jak ma się)", ar: "إزاي تيتا؟", ph: "ezzaay teeta?" },
+  { cat: "smalltalk", pl: "dawno się nie widzieliśmy", ar: "من زمان ما شفتكش", ph: "min zamaan ma shoftaksh" },
+  { cat: "smalltalk", pl: "tęskniłem za tobą (do m.)", ar: "وحشتني", ph: "waHashtini" },
+  { cat: "smalltalk", pl: "wszystko dobrze, dzięki Bogu", ar: "كله تمام، الحمد لله", ph: "kollo tamaam, il-Hamdulillah" },
+  { cat: "smalltalk", pl: "jakoś leci (tak sobie)", ar: "ماشي الحال", ph: "maashi il-Haal" },
+  { cat: "smalltalk", pl: "pozdrów rodzinę", ar: "سلّم على العيلة", ph: "sallem 3ala il-3eela" },
+  { cat: "smalltalk", pl: "co porabiałeś?", ar: "كنت بتعمل إيه؟", ph: "kont bete3mel eeh?" },
+  { cat: "smalltalk", pl: "miło było cię widzieć", ar: "فرصة سعيدة", ph: "forSa sa3iida" },
+  { cat: "smalltalk", pl: "trzymaj się (uważaj na siebie)", ar: "خلي بالك من نفسك", ph: "khalli baalak min nafsak" },
+];
+
+// ---------- Wygładzacze i reakcje (język mówiony) ----------
+// Wtrącenia, pauzy, potakiwania. Egipski to język mówiony — te słowa są jego rytmem.
+const FILLER_WORDS = [
+  { cat: "fillers", pl: "no wiesz / to znaczy (pauza)", ar: "يعني", ph: "ya3ni", ex: { ar: "الفيلم كان... يعني... مش بطال.", ph: "il-film kaan... ya3ni... mish baTTaal.", pl: "Film był... no wiesz... niezły." } },
+  { cat: "fillers", pl: "normalnie / nic takiego (wzruszenie ramion)", ar: "عادي", ph: "3aadi", ex: { ar: "معلش، عادي، بيحصل.", ph: "ma3lesh, 3aadi, biyiHSal.", pl: "Nie szkodzi, normalne, zdarza się." } },
+  { cat: "fillers", pl: "no dobra / że tak powiem (na końcu)", ar: "بقى", ph: "ba2a", ex: { ar: "يلا بينا بقى!", ph: "yalla biina ba2a!", pl: "No to chodźmy już!" } },
+  { cat: "fillers", pl: "tak jakby / w ten sposób", ar: "كده", ph: "keda" },
+  { cat: "fillers", pl: "a propos / przy okazji", ar: "على فكرة", ph: "3ala fekra" },
+  { cat: "fillers", pl: "oczywiście / jasne", ar: "طبعاً", ph: "Tab3an" },
+  { cat: "fillers", pl: "naprawdę? (zdziwienie)", ar: "بجد؟", ph: "begad?" },
+  { cat: "fillers", pl: "niemożliwe! (nie do wiary)", ar: "مش معقول!", ph: "mish ma32uul!" },
+  { cat: "fillers", pl: "wspaniale! / super", ar: "جميل!", ph: "gamiil!" },
+  { cat: "fillers", pl: "poważnie mówię", ar: "بجد بقولك", ph: "begad ba2ollak" },
+  { cat: "fillers", pl: "no właśnie / dokładnie", ar: "بالظبط", ph: "biZ-ZabT" },
+  { cat: "fillers", pl: "rozumiem / jasne (potakiwanie)", ar: "فاهم", ph: "faahem" },
+  { cat: "fillers", pl: "no i? / i co dalej?", ar: "وبعدين؟", ph: "we ba3deen?" },
+  { cat: "fillers", pl: "słuchaj... (zaczepienie)", ar: "بص...", ph: "boSS..." },
+  { cat: "fillers", pl: "krótko mówiąc", ar: "المهم", ph: "il-mohemm" },
+  { cat: "fillers", pl: "coś w tym stylu", ar: "حاجة زي كده", ph: "Haaga zayy keda" },
+  { cat: "fillers", pl: "to ciekawe, co mówisz", ar: "كلام جميل", ph: "kalaam gamiil" },
+  { cat: "fillers", pl: "dobra, dobra (zgoda/koniec tematu)", ar: "خلاص خلاص", ph: "khalaaS khalaaS" },
+];
+
+// ---------- Slang wyższego poziomu (brzmieć jak miejscowy) ----------
+// Wyrażenia, które sygnalizują dobrą znajomość języka. Uwaga na rejestr — potoczne.
+const SLANG_WORDS = [
+  { cat: "slang", pl: "z przyjemnością (dosł. z moich oczu)", ar: "من عنيا", ph: "men 3enaaya", ex: { ar: "أساعدك؟ من عنيا!", ph: "asaa3dak? men 3enaaya!", pl: "Pomóc ci? Z przyjemnością!" } },
+  { cat: "slang", pl: "świetny pomysł", ar: "فكرة جامدة", ph: "fekra gamda" },
+  { cat: "slang", pl: "spoko / w porządku (o czymś)", ar: "ده ماشي", ph: "da maashi" },
+  { cat: "slang", pl: "wyluzuj / odpuść", ar: "فكّك", ph: "fokkak" },
+  { cat: "slang", pl: "nie ma sprawy / bez problemu", ar: "مفيش مشكلة", ph: "mafiish moshkela" },
+  { cat: "slang", pl: "równy gość (dosł. lekka krew)", ar: "دمه خفيف", ph: "dammo khafiif" },
+  { cat: "slang", pl: "nudziarz (dosł. ciężka krew)", ar: "دمه تقيل", ph: "dammo te2iil" },
+  { cat: "slang", pl: "szefie / mistrzu (do m., z sympatią)", ar: "يا باشا", ph: "ya baasha" },
+  { cat: "slang", pl: "stary / ziomek (zaczepnie)", ar: "يا عم", ph: "ya 3amm" },
+  { cat: "slang", pl: "genialne / miód (dosł. miód)", ar: "عسل", ph: "3asal" },
+  { cat: "slang", pl: "idealnie / sto procent", ar: "مية مية", ph: "meyya meyya" },
+  { cat: "slang", pl: "nie martw się tym", ar: "ولا يهمك", ph: "wala yhemmak" },
+  { cat: "slang", pl: "gadanie / puste słowa", ar: "كلام فاضي", ph: "kalaam faaDi" },
+  { cat: "slang", pl: "on tylko gada bez sensu", ar: "بيقول أي كلام", ph: "biy2uul ayy kalaam" },
+  { cat: "slang", pl: "kiedy świnie zaczną latać (nigdy)", ar: "في المشمش", ph: "fil-meshmesh" },
+  { cat: "slang", pl: "daj spokój / no weź (namawianie)", ar: "خلاص بقى", ph: "khalaaS ba2a" },
+  { cat: "slang", pl: "co jest grane? / o co chodzi?", ar: "إيه الحكاية؟", ph: "eeh il-Hekaaya?" },
+  { cat: "slang", pl: "super sprawa / ekstra", ar: "تحفة", ph: "toHfa" },
+];
+
+// ---------- O sobie / życie codzienne ----------
+// Słownictwo do mówienia o pracy, nauce, mieszkaniu, zwierzętach — podstawa
+// osobistych rozmów i tekstów.
+const LIFE_WORDS = [
+  // praca i zawody
+  { cat: "life", pl: "praca", ar: "شغل", ph: "shughl" },
+  { cat: "life", pl: "pracuję", ar: "بشتغل", ph: "bashtaghal" },
+  { cat: "life", pl: "firma", ar: "شركة", ph: "sherka" },
+  { cat: "life", pl: "biuro", ar: "مكتب", ph: "maktab" },
+  { cat: "life", pl: "prawnik / adwokat", ar: "محامي", ph: "moHaami" },
+  { cat: "life", pl: "architekt(ka)", ar: "مهندس معماري", ph: "mohandes me3maari" },
+  { cat: "life", pl: "księgowość", ar: "محاسبة", ph: "moHasba" },
+  { cat: "life", pl: "pracownik", ar: "موظف", ph: "mowaZZaf" },
+  { cat: "life", pl: "właściciel", ar: "صاحب", ph: "SaaHeb" },
+  { cat: "life", pl: "klient", ar: "عميل", ph: "3amiil" },
+  { cat: "life", pl: "podatki", ar: "ضرايب", ph: "Daraayeb" },
+  // nauka i język
+  { cat: "life", pl: "uczę się", ar: "بتعلم", ph: "bat3allem" },
+  { cat: "life", pl: "nauczyciel(ka)", ar: "مدرس / مدرسة", ph: "modarres / modarresa" },
+  { cat: "life", pl: "język", ar: "لغة", ph: "lo8a" },
+  { cat: "life", pl: "arabski (język)", ar: "عربي", ph: "3arabi" },
+  { cat: "life", pl: "polski (język)", ar: "بولندي", ph: "bolandi" },
+  { cat: "life", pl: "lekcja", ar: "درس", ph: "dars" },
+  { cat: "life", pl: "trudny", ar: "صعب", ph: "Sa3b" },
+  { cat: "life", pl: "łatwy", ar: "سهل", ph: "sahl" },
+  { cat: "life", pl: "przez internet / online", ar: "أونلاين", ph: "onlaayn" },
+  { cat: "life", pl: "hobby", ar: "هواية", ph: "hewaaya" },
+  // dom i miejsca
+  { cat: "life", pl: "mieszkanie", ar: "شقة", ph: "sha22a" },
+  { cat: "life", pl: "miasto", ar: "مدينة", ph: "mediina" },
+  { cat: "life", pl: "kraj", ar: "بلد", ph: "balad" },
+  { cat: "life", pl: "Polska", ar: "بولندا", ph: "bolanda" },
+  { cat: "life", pl: "Egipt", ar: "مصر", ph: "maSr" },
+  { cat: "life", pl: "za granicą", ar: "برة", ph: "barra" },
+  // zwierzęta
+  { cat: "life", pl: "pies", ar: "كلب", ph: "kalb" },
+  { cat: "life", pl: "kot", ar: "قطة", ph: "2oTTa" },
+  // czasowniki uczuć/relacji przydatne o sobie
+  { cat: "life", pl: "lubię / kocham", ar: "بحب", ph: "baHebb" },
+  { cat: "life", pl: "mieszkam (m.)", ar: "ساكن", ph: "saaken" },
+  { cat: "life", pl: "od dwóch lat", ar: "من سنتين", ph: "min santeen" },
+  { cat: "life", pl: "rok", ar: "سنة", ph: "sana" },
+  { cat: "life", pl: "razem", ar: "مع بعض", ph: "ma3 ba3D" },
+];
+
 // ---------- Generator zdań ze słów z bazy ----------
 // Zamiast sztywnych zdań: szablony z „gniazdami”. Każde gniazdo ma pulę słów,
 // które GRAMATYCZNIE tam pasują. Rodzaj i forma są respektowane, więc każda
@@ -4234,6 +4394,221 @@ const SENTENCE_DRILLS = [
   },
 ];
 
+// ---------- Egipski a MSA (fuS7a) ----------
+// Porównanie dialektu egipskiego z arabskim literackim (Modern Standard Arabic).
+// Trzy grupy: identyczne / to samo słowo, inna wymowa / zupełnie inne słowo.
+// Reguły wymowy potwierdzone: ج j→g, ق q→hamza(2), ث th→t, ذ dh→d/z.
+const MSA_COMPARISON = {
+  // 1. IDENTYCZNE — pisownia i wymowa praktycznie takie same w obu.
+  same: [
+    { pl: "książka", eg: { ar: "كتاب", ph: "ketaab" }, msa: { ar: "كتاب", ph: "kitaab" }, note: "Ten sam rdzeń, tylko krótka samogłoska brzmi nieco inaczej." },
+    { pl: "dom", eg: { ar: "بيت", ph: "beet" }, msa: { ar: "بيت", ph: "bayt" }, note: "MSA „ay” → egipskie długie „ee”. Pisownia identyczna." },
+    { pl: "szkoła", eg: { ar: "مدرسة", ph: "madrasa" }, msa: { ar: "مدرسة", ph: "madrasa" }, note: "Praktycznie identyczne." },
+    { pl: "woda", eg: { ar: "ماء / مية", ph: "mayya" }, msa: { ar: "ماء", ph: "maa2" }, note: "MSA „maa2” pisane ماء; egipski upraszcza do مية „mayya”." },
+    { pl: "słońce", eg: { ar: "شمس", ph: "shams" }, msa: { ar: "شمس", ph: "shams" }, note: "Identyczne." },
+    { pl: "ręka", eg: { ar: "يد / إيد", ph: "iid" }, msa: { ar: "يد", ph: "yad" }, note: "Ten sam rdzeń; egipski dodaje na początku „i”." },
+    { pl: "nowy", eg: { ar: "جديد", ph: "gediid" }, msa: { ar: "جديد", ph: "jadiid" }, note: "Pisownia ta sama, ale ج: MSA „j” → egipskie „g” (patrz grupa „inna wymowa”)." },
+  ],
+  // 2. TO SAMO SŁOWO, INNA WYMOWA — pisownia identyczna, ale egipski czyta inaczej
+  //    (najczęściej przez ج/ق/ث/ذ).
+  pronunciation: [
+    { pl: "piękny", ar: "جميل", eg: "gamiil", msa: "jamiil", rule: "ج: MSA „j” → egipskie „g”" },
+    { pl: "mężczyzna", ar: "رجل / راجل", eg: "raagel", msa: "rajul", rule: "ج: „j” → „g” (egipski dodaje też „aa”)" },
+    { pl: "góra", ar: "جبل", eg: "gabal", msa: "jabal", rule: "ج: „j” → „g”" },
+    { pl: "serce", ar: "قلب", eg: "2alb", msa: "qalb", rule: "ق: MSA „q” → egipska hamza (2)" },
+    { pl: "powiedział", ar: "قال", eg: "2aal", msa: "qaala", rule: "ق: „q” → hamza (2)" },
+    { pl: "przed", ar: "قبل", eg: "2abl", msa: "qabl", rule: "ق: „q” → hamza (2)" },
+    { pl: "trzy", ar: "ثلاثة / تلاتة", eg: "talaata", msa: "thalaatha", rule: "ث: MSA „th” → egipskie „t”" },
+    { pl: "drugi / inny", ar: "ثاني / تاني", eg: "taani", msa: "thaani", rule: "ث: „th” → „t”" },
+    { pl: "lód", ar: "ثلج / تلج", eg: "talg", msa: "thalj", rule: "ث→t oraz ج→g (dwie zmiany naraz)" },
+    { pl: "to (rodzaj męski)", ar: "ذا / ده", eg: "da", msa: "dhaa", rule: "ذ: MSA „dh” → egipskie „d”" },
+    { pl: "złoto", ar: "ذهب / دهب", eg: "dahab", msa: "dhahab", rule: "ذ: „dh” → „d”" },
+    { pl: "bogaty", ar: "غني", eg: "8ani", msa: "ghaniyy", rule: "Ten sam wyraz; drobna różnica w końcówce" },
+  ],
+  // 3. ZUPEŁNIE INNE SŁOWO — egipski używa innego wyrazu niż MSA.
+  different: [
+    { pl: "jak? / w jaki sposób", eg: { ar: "إزاي", ph: "ezzaay" }, msa: { ar: "كيف", ph: "kayfa" } },
+    { pl: "dlaczego?", eg: { ar: "ليه", ph: "leeh" }, msa: { ar: "لماذا", ph: "limaadha" } },
+    { pl: "co?", eg: { ar: "إيه", ph: "eeh" }, msa: { ar: "ماذا", ph: "maadha" } },
+    { pl: "gdzie?", eg: { ar: "فين", ph: "feen" }, msa: { ar: "أين", ph: "ayna" } },
+    { pl: "teraz", eg: { ar: "دلوقتي", ph: "delwa2ti" }, msa: { ar: "الآن", ph: "al-2aan" } },
+    { pl: "chcę", eg: { ar: "عايز", ph: "3aayez" }, msa: { ar: "أريد", ph: "uriid" } },
+    { pl: "poszedł", eg: { ar: "راح", ph: "raaH" }, msa: { ar: "ذهب", ph: "dhahaba" } },
+    { pl: "zobaczył / patrzył", eg: { ar: "بص / شاف", ph: "baSS / shaaf" }, msa: { ar: "نظر", ph: "naZara" } },
+    { pl: "dobry / ładny", eg: { ar: "كويس", ph: "kwayyes" }, msa: { ar: "جيد", ph: "jayyid" } },
+    { pl: "bardzo", eg: { ar: "أوي / خالص", ph: "awi / khaaliS" }, msa: { ar: "جداً", ph: "jiddan" } },
+    { pl: "tylko", eg: { ar: "بس", ph: "bass" }, msa: { ar: "فقط", ph: "faqaT" } },
+    { pl: "trochę", eg: { ar: "شوية", ph: "shwayya" }, msa: { ar: "قليلاً", ph: "qaliilan" } },
+    { pl: "jak (podobny)", eg: { ar: "زي", ph: "zayy" }, msa: { ar: "مثل", ph: "mithl" } },
+    { pl: "znowu / jeszcze", eg: { ar: "كمان", ph: "kamaan" }, msa: { ar: "أيضاً", ph: "ayDan" } },
+  ],
+};
+
+// ---------- Czytanki ----------
+// Dłuższe teksty narracyjne (nie dialogi) z użyciem różnych czasów.
+// Każde zdanie: ar/ph/pl. tenseNote wyjaśnia użyte czasy. questions = pytania
+// na rozumienie (typu prawda/fałsz lub wybór), oparte wyłącznie na treści tekstu.
+const READINGS = [
+  {
+    title: "Mój dzień",
+    emoji: "📅",
+    level: "łatwy",
+    context: "Opis zwykłego dnia — czas teraźniejszy.",
+    tenseNote: "Tekst w czasie teraźniejszym (biyi-/ba-). Opisuje rutynę, która powtarza się codziennie.",
+    sentences: [
+      { ar: "أنا بصحى الساعة سبعة الصبح.", ph: "ana baSHa is-saa3a sab3a iS-SobH.", pl: "Wstaję o siódmej rano." },
+      { ar: "بفطر عيش وجبنة وبشرب شاي.", ph: "bafTar 3eesh we gebna we bashrab shaay.", pl: "Jem na śniadanie chleb z serem i piję herbatę." },
+      { ar: "بروح الشغل الساعة تسعة.", ph: "baruuH ish-shughl is-saa3a tes3a.", pl: "Idę do pracy o dziewiątej." },
+      { ar: "بشتغل لحد الساعة خمسة.", ph: "bashtaghal leHadd is-saa3a khamsa.", pl: "Pracuję do piątej." },
+      { ar: "بالليل بتفرج على التليفزيون وبنام بدري.", ph: "bil-leel batfarrag 3ala it-televizyon we banaam badri.", pl: "Wieczorem oglądam telewizję i kładę się wcześnie spać." },
+    ],
+    questions: [
+      { q: "O której wstaje autor?", options: ["O szóstej", "O siódmej", "O dziewiątej"], correct: 1 },
+      { q: "Co je na śniadanie?", options: ["Chleb z serem", "Koszari", "Tylko herbatę"], correct: 0 },
+      { q: "Do której pracuje?", options: ["Do trzeciej", "Do piątej", "Do dziewiątej"], correct: 1 },
+    ],
+  },
+  {
+    title: "Wycieczka do Aleksandrii",
+    emoji: "🏖️",
+    level: "średni",
+    context: "Opowieść o wczorajszym wyjeździe — czas przeszły.",
+    tenseNote: "Tekst w czasie przeszłym (formy typu ruHt, akalt, kaan). Opowiada o zdarzeniu, które już się wydarzyło.",
+    sentences: [
+      { ar: "إمبارح رحت إسكندرية مع العيلة.", ph: "embaareH ruHt eskendereyya ma3 il-3eela.", pl: "Wczoraj pojechałem do Aleksandrii z rodziną." },
+      { ar: "ركبنا العربية الساعة ستة الصبح.", ph: "rekebna il-3arabeyya is-saa3a setta iS-SobH.", pl: "Wsiedliśmy do samochodu o szóstej rano." },
+      { ar: "الجو كان حلو والبحر كان جميل.", ph: "il-gaww kaan Helw wil-baHr kaan gamiil.", pl: "Pogoda była ładna, a morze było piękne." },
+      { ar: "أكلنا سمك في مطعم على البحر.", ph: "akalna samak fi maT3am 3ala il-baHr.", pl: "Jedliśmy rybę w restauracji nad morzem." },
+      { ar: "رجعنا القاهرة بالليل تعبانين بس مبسوطين.", ph: "rege3na il-2aahira bil-leel ta3baniin bass mabsuTiin.", pl: "Wróciliśmy do Kairu wieczorem, zmęczeni, ale zadowoleni." },
+    ],
+    questions: [
+      { q: "Dokąd pojechał autor?", options: ["Do Kairu", "Do Aleksandrii", "Do Gizy"], correct: 1 },
+      { q: "Jaka była pogoda?", options: ["Ładna", "Deszczowa", "Zimna"], correct: 0 },
+      { q: "Co jedli?", options: ["Koszari", "Rybę", "Mięso"], correct: 1 },
+      { q: "Jak się czuli po powrocie?", options: ["Głodni", "Zmęczeni ale zadowoleni", "Smutni"], correct: 1 },
+    ],
+  },
+  {
+    title: "Plany na weekend",
+    emoji: "🗓️",
+    level: "średni",
+    context: "Zamiary na najbliższe dni — czas przyszły.",
+    tenseNote: "Tekst w czasie przyszłym (ha- + czasownik, np. haruuH, hazuur). Mówi o tym, co dopiero się wydarzy.",
+    sentences: [
+      { ar: "الأسبوع الجاي هزور خالتي في طنطا.", ph: "il-osbuu3 ig-gaay hazuur khalti fi TanTa.", pl: "W przyszłym tygodniu odwiedzę ciocię w Tancie." },
+      { ar: "هركب القطر الساعة تمنية.", ph: "harkab il-2aTr is-saa3a tamanya.", pl: "Wsiądę do pociągu o ósmej." },
+      { ar: "هقعد معاها يومين.", ph: "haq3od ma3aaha yomeen.", pl: "Zostanę u niej dwa dni." },
+      { ar: "هنطبخ ملوخية ونتفرج على أفلام.", ph: "hanTbokh molokheyya we netfarrag 3ala aflaam.", pl: "Ugotujemy molochiję i pooglądamy filmy." },
+      { ar: "هرجع القاهرة يوم الأحد.", ph: "harga3 il-2aahira yoom il-Hadd.", pl: "Wrócę do Kairu w niedzielę." },
+    ],
+    questions: [
+      { q: "Kogo odwiedzi autor?", options: ["Brata", "Ciocię", "Kolegę"], correct: 1 },
+      { q: "Ile dni zostanie?", options: ["Jeden", "Dwa", "Trzy"], correct: 1 },
+      { q: "Kiedy wróci do Kairu?", options: ["W sobotę", "W niedzielę", "W piątek"], correct: 1 },
+    ],
+  },
+  {
+    title: "Historia Ahmeda",
+    emoji: "📖",
+    level: "trudny",
+    context: "Dłuższa opowieść mieszająca czasy — przeszły, teraźniejszy, przyszły.",
+    tenseNote: "Tekst miesza czasy: przeszły (opis kim był), teraźniejszy (co robi teraz) i przyszły (plany). Zwróć uwagę, jak zmienia się forma czasownika.",
+    sentences: [
+      { ar: "أحمد كان طالب في الجامعة.", ph: "aHmad kaan Taalib fil-gam3a.", pl: "Ahmed był studentem na uniwersytecie." },
+      { ar: "درس هندسة أربع سنين.", ph: "daras handasa arba3 siniin.", pl: "Studiował inżynierię przez cztery lata." },
+      { ar: "دلوقتي هو بيشتغل في شركة كبيرة.", ph: "delwa2ti howwa biyishtaghal fi sherka kebiira.", pl: "Teraz pracuje w dużej firmie." },
+      { ar: "بيحب شغله بس بيتعب كتير.", ph: "biyHebb shughlo bass biyit3ab ketiir.", pl: "Lubi swoją pracę, ale bardzo się męczy." },
+      { ar: "السنة الجاية هيتجوز ويسافر برة مصر.", ph: "is-sana ig-gaaya hayitgawwez we yesaafer barra maSr.", pl: "W przyszłym roku ożeni się i wyjedzie za granicę." },
+      { ar: "بيقول إن المستقبل هيبقى أحسن.", ph: "biy2uul enn il-musta2bal haybqa aHsan.", pl: "Mówi, że przyszłość będzie lepsza." },
+    ],
+    questions: [
+      { q: "Co studiował Ahmed?", options: ["Medycynę", "Inżynierię", "Prawo"], correct: 1 },
+      { q: "Gdzie teraz pracuje?", options: ["Na uniwersytecie", "W dużej firmie", "W szpitalu"], correct: 1 },
+      { q: "Co planuje w przyszłym roku?", options: ["Zmienić pracę", "Ożenić się i wyjechać", "Wrócić na studia"], correct: 1 },
+      { q: "Jak myśli o przyszłości?", options: ["Że będzie lepsza", "Że będzie trudna", "Nie wie"], correct: 0 },
+    ],
+  },
+  {
+    title: "Kim jestem",
+    emoji: "🙋",
+    level: "łatwy",
+    context: "Grzegorz przedstawia siebie — czas teraźniejszy.",
+    tenseNote: "Prosty tekst w czasie teraźniejszym — podstawa przedstawiania się. Zauważ „ana” (ja) + zawód bez czasownika „być”, typowe dla arabskiego.",
+    sentences: [
+      { ar: "أنا اسمي جيجورج، أنا من بولندا.", ph: "ana esmi Grzegorz, ana min bolanda.", pl: "Nazywam się Grzegorz, jestem z Polski." },
+      { ar: "أنا ساكن في كراكوف.", ph: "ana saaken fi Krakow.", pl: "Mieszkam w Krakowie." },
+      { ar: "أنا محامي وعندي شركة.", ph: "ana moHaami we 3andi sherka.", pl: "Jestem prawnikiem i mam firmę." },
+      { ar: "الشركة بتقدم خدمات محاسبة.", ph: "ish-sherka bet2addem khadamaat moHasba.", pl: "Firma świadczy usługi księgowe." },
+      { ar: "أنا متجوز ومراتي مهندسة معمارية.", ph: "ana metgawwez we meraati mohandesa me3maareyya.", pl: "Jestem żonaty, a moja żona jest architektką." },
+    ],
+    questions: [
+      { q: "Skąd jest Grzegorz?", options: ["Z Egiptu", "Z Polski", "Z Austrii"], correct: 1 },
+      { q: "Jaki ma zawód?", options: ["Architekt", "Prawnik", "Nauczyciel"], correct: 1 },
+      { q: "Co robi jego firma?", options: ["Usługi księgowe", "Buduje domy", "Uczy języków"], correct: 0 },
+    ],
+  },
+  {
+    title: "Moja firma",
+    emoji: "💼",
+    level: "średni",
+    context: "Grzegorz opowiada o swojej pracy — teraźniejszy z liczbami.",
+    tenseNote: "Czas teraźniejszy do opisu stałej sytuacji. Zwróć uwagę na liczby (arba3iin = 40) i „3andi” (mam).",
+    sentences: [
+      { ar: "عندي شركة في كراكوف.", ph: "3andi sherka fi Krakow.", pl: "Mam firmę w Krakowie." },
+      { ar: "بشتغل محامي ومستشار ضرايب.", ph: "bashtaghal moHaami we mostashaar Daraayeb.", pl: "Pracuję jako prawnik i doradca podatkowy." },
+      { ar: "عندي أربعين موظف بيشتغلوا معايا.", ph: "3andi arba3iin mowaZZaf biyishtaghalu ma3aaya.", pl: "Mam czterdziestu pracowników, którzy pracują ze mną." },
+      { ar: "بنقدم خدمات محاسبة للعملاء.", ph: "beni2addem khadamaat moHasba lil-3omalaa2.", pl: "Świadczymy usługi księgowe dla klientów." },
+      { ar: "الشغل صعب شوية بس بحبه.", ph: "ish-shughl Sa3b shwayya bass baHebbo.", pl: "Praca jest trochę trudna, ale ją lubię." },
+    ],
+    questions: [
+      { q: "Ilu pracowników ma Grzegorz?", options: ["Czternastu", "Czterdziestu", "Czterech"], correct: 1 },
+      { q: "Czym się zajmuje oprócz prawa?", options: ["Doradztwem podatkowym", "Architekturą", "Nauczaniem"], correct: 0 },
+      { q: "Jak ocenia swoją pracę?", options: ["Łatwa i nudna", "Trudna, ale ją lubi", "Nie lubi jej"], correct: 1 },
+    ],
+  },
+  {
+    title: "Moja żona",
+    emoji: "👩‍💼",
+    level: "średni",
+    context: "Grzegorz opowiada o żonie i ich planach — teraźniejszy i przyszły.",
+    tenseNote: "Tekst miesza teraźniejszy (co żona robi) z przyszłym (ha- + czasownik, plany o psie). Dobre ćwiczenie przechodzenia między czasami.",
+    sentences: [
+      { ar: "مراتي مهندسة معمارية.", ph: "meraati mohandesa me3maareyya.", pl: "Moja żona jest architektką." },
+      { ar: "بتشتغل في شركة بتشتغل في النمسا.", ph: "betishtaghal fi sherka betishtaghal fin-nemsa.", pl: "Pracuje w firmie, która działa w Austrii." },
+      { ar: "إحنا عندنا شقة في كراكوف.", ph: "eHna 3andena sha22a fi Krakow.", pl: "Mamy mieszkanie w Krakowie." },
+      { ar: "قريب هنجيب كلب.", ph: "2orayyeb hangiib kalb.", pl: "Wkrótce sprowadzimy psa." },
+      { ar: "إحنا مبسوطين بحياتنا مع بعض.", ph: "eHna mabsuTiin be-Hayaatna ma3 ba3D.", pl: "Jesteśmy szczęśliwi z naszego wspólnego życia." },
+    ],
+    questions: [
+      { q: "Jaki zawód ma żona Grzegorza?", options: ["Prawniczka", "Architektka", "Księgowa"], correct: 1 },
+      { q: "Na jakim rynku działa jej firma?", options: ["Austriackim", "Polskim", "Egipskim"], correct: 0 },
+      { q: "Co planują wkrótce?", options: ["Kupić mieszkanie", "Sprowadzić psa", "Wyjechać za granicę"], correct: 1 },
+    ],
+  },
+  {
+    title: "Jak uczę się arabskiego",
+    emoji: "📚",
+    level: "trudny",
+    context: "Grzegorz o swojej nauce arabskiego — przeszły, teraźniejszy, przyszły.",
+    tenseNote: "Pełny miks czasów: zaczął uczyć się (przeszły), uczy się teraz (teraźniejszy), chce mówić lepiej (przyszły/pragnienie). To Twoja własna historia po egipsku.",
+    sentences: [
+      { ar: "بقالي سنتين بتعلم عربي.", ph: "ba2aali santeen bat3allem 3arabi.", pl: "Od dwóch lat uczę się arabskiego." },
+      { ar: "بتعلمه كهواية، مش للشغل.", ph: "bat3allemo ke-hewaaya, mish lish-shughl.", pl: "Uczę się go jako hobby, nie do pracy." },
+      { ar: "بآخد دروس أونلاين.", ph: "baakhod duruus onlaayn.", pl: "Biorę lekcje online." },
+      { ar: "مدرستي سورية بس ساكنة في القاهرة.", ph: "modarrasti soreyya bass sakna fil-2aahira.", pl: "Moja nauczycielka jest Syryjką, ale mieszka w Kairze." },
+      { ar: "رحت مصر كذا مرة وحبيت البلد.", ph: "roHt maSr kaza marra we Habbeet il-balad.", pl: "Byłem w Egipcie kilka razy i pokochałem ten kraj." },
+      { ar: "نفسي أتكلم عربي كويس أكتر.", ph: "nefsi atkallem 3arabi kwayyes aktar.", pl: "Chciałbym mówić po arabsku jeszcze lepiej." },
+    ],
+    questions: [
+      { q: "Jak długo Grzegorz uczy się arabskiego?", options: ["Rok", "Dwa lata", "Pięć lat"], correct: 1 },
+      { q: "Po co się uczy?", options: ["Do pracy", "Jako hobby", "Bo ma rodzinę w Egipcie"], correct: 1 },
+      { q: "Skąd jest jego nauczycielka?", options: ["Z Egiptu", "Z Syrii", "Z Polski"], correct: 1 },
+      { q: "Gdzie ona mieszka?", options: ["W Damaszku", "W Kairze", "W Krakowie"], correct: 1 },
+      { q: "Czego chce Grzegorz?", options: ["Mówić lepiej po arabsku", "Przestać się uczyć", "Zamieszkać w Egipcie"], correct: 0 },
+    ],
+  },
+];
+
 // ---------- Mini-dialogi ----------
 // Scenki osadzone w słownictwie aplikacji. speaker: "a"/"b" (dwie strony rozmowy).
 const DIALOGUES = [
@@ -4387,6 +4762,98 @@ const DIALOGUES = [
       { s: "a", ar: "الحساب لو سمحت", ph: "il-Hisaab law samaHt.", pl: "Poproszę rachunek." },
     ],
   },
+  {
+    title: "U lekarza",
+    emoji: "🩺",
+    context: "Nie czujesz się dobrze i idziesz do lekarza.",
+    lines: [
+      { s: "a", ar: "أنا تعبان، راسي بتوجعني", ph: "ana ta3baan, raasi betewga3ni.", pl: "Źle się czuję, boli mnie głowa." },
+      { s: "b", ar: "من إمتى؟", ph: "min emta?", pl: "Od kiedy?" },
+      { s: "a", ar: "من الصبح. وعندي سخونية", ph: "min iS-SobH. we 3andi sokhoneyya.", pl: "Od rana. I mam gorączkę." },
+      { s: "b", ar: "معلش، عندك برد بسيط", ph: "ma3lesh, 3andak bard basiiT.", pl: "Nic groźnego, masz lekkie przeziębienie." },
+      { s: "a", ar: "محتاج دوا؟", ph: "meHtaag dawa?", pl: "Potrzebuję lekarstwa?" },
+      { s: "b", ar: "أيوا، من الصيدلية. سلامتك", ph: "aywa, min iS-Saydaleyya. salamtak.", pl: "Tak, z apteki. Zdrowia!" },
+    ],
+  },
+  {
+    title: "Rozmowa o pogodzie",
+    emoji: "🌤️",
+    context: "Komentujecie pogodę.",
+    lines: [
+      { s: "a", ar: "الجو حر أوي النهارده", ph: "il-gaww Harr awi innaharda.", pl: "Dziś jest bardzo gorąco." },
+      { s: "b", ar: "أيوا، الصيف في مصر حر", ph: "aywa, iS-Seef fi maSr Harr.", pl: "Tak, lato w Egipcie jest upalne." },
+      { s: "a", ar: "بكرة هيبقى إيه؟", ph: "bukra haybqa eeh?", pl: "Jaka będzie jutro?" },
+      { s: "b", ar: "قالوا هيبقى في هوا", ph: "2aalu haybqa fi hawa.", pl: "Mówili, że będzie wietrznie." },
+      { s: "a", ar: "الحمد لله، أحسن من الحر", ph: "il-Hamdulillah, aHsan min il-Harr.", pl: "Dzięki Bogu, lepsze niż upał." },
+    ],
+  },
+  {
+    title: "Poranek w domu",
+    emoji: "☀️",
+    context: "Zwykły poranek, pytania o plany.",
+    lines: [
+      { s: "a", ar: "صباح الخير، نمت كويس؟", ph: "SabaaH il-kheer, nemt kwayyes?", pl: "Dzień dobry, dobrze spałeś?" },
+      { s: "b", ar: "صباح النور، أيوا الحمد لله", ph: "SabaaH in-nuur, aywa il-Hamdulillah.", pl: "Dzień dobry, tak, dzięki Bogu." },
+      { s: "a", ar: "عايز تفطر إيه؟", ph: "3aayez tefTar eeh?", pl: "Co chcesz na śniadanie?" },
+      { s: "b", ar: "عيش وجبنة وشاي", ph: "3eesh we gebna we shaay.", pl: "Chleb, ser i herbatę." },
+      { s: "a", ar: "وبعدين هتعمل إيه؟", ph: "we ba3deen hate3mel eeh?", pl: "A potem co robisz?" },
+      { s: "b", ar: "هروح الشغل الساعة تسعة", ph: "haruuH ish-shughl is-saa3a tes3a.", pl: "Idę do pracy o dziewiątej." },
+    ],
+  },
+  {
+    title: "Poznajmy się",
+    emoji: "🙋",
+    context: "Ktoś pyta Grzegorza, skąd jest i czym się zajmuje.",
+    lines: [
+      { s: "a", ar: "إنت منين؟", ph: "enta mneen?", pl: "Skąd jesteś?" },
+      { s: "b", ar: "أنا من بولندا، ساكن في كراكوف.", ph: "ana min bolanda, saaken fi Krakow.", pl: "Jestem z Polski, mieszkam w Krakowie." },
+      { s: "a", ar: "بتشتغل إيه؟", ph: "betishtaghal eeh?", pl: "Czym się zajmujesz?" },
+      { s: "b", ar: "أنا محامي وعندي شركة.", ph: "ana moHaami we 3andi sherka.", pl: "Jestem prawnikiem i mam firmę." },
+      { s: "a", ar: "جميل! والشركة بتعمل إيه؟", ph: "gamiil! wish-sherka bte3mel eeh?", pl: "Świetnie! A czym zajmuje się firma?" },
+      { s: "b", ar: "بنقدم خدمات محاسبة.", ph: "beni2addem khadamaat moHasba.", pl: "Świadczymy usługi księgowe." },
+    ],
+  },
+  {
+    title: "Pytania o pracę",
+    emoji: "💼",
+    context: "Rozmowa o firmie Grzegorza i pracownikach.",
+    lines: [
+      { s: "a", ar: "عندك موظفين كتير؟", ph: "3andak mowaZZafiin ketiir?", pl: "Masz dużo pracowników?" },
+      { s: "b", ar: "أيوا، عندي أربعين موظف.", ph: "aywa, 3andi arba3iin mowaZZaf.", pl: "Tak, mam czterdziestu pracowników." },
+      { s: "a", ar: "ده شغل كبير! صعب؟", ph: "da shughl kebiir! Sa3b?", pl: "To duża praca! Trudna?" },
+      { s: "b", ar: "صعب شوية بس بحبه.", ph: "Sa3b shwayya bass baHebbo.", pl: "Trochę trudna, ale ją lubię." },
+      { s: "a", ar: "إنت بتعمل إيه بالظبط؟", ph: "enta bte3mel eeh biZ-ZabT?", pl: "Co dokładnie robisz?" },
+      { s: "b", ar: "محامي ومستشار ضرايب.", ph: "moHaami we mostashaar Daraayeb.", pl: "Prawnik i doradca podatkowy." },
+    ],
+  },
+  {
+    title: "Rozmowa o żonie",
+    emoji: "👩‍💼",
+    context: "Ktoś pyta Grzegorza o żonę i plany.",
+    lines: [
+      { s: "a", ar: "مراتك بتشتغل إيه؟", ph: "meraatak betishtaghal eeh?", pl: "Czym zajmuje się twoja żona?" },
+      { s: "b", ar: "هي مهندسة معمارية.", ph: "heyya mohandesa me3maareyya.", pl: "Jest architektką." },
+      { s: "a", ar: "بتشتغل فين؟", ph: "betishtaghal feen?", pl: "Gdzie pracuje?" },
+      { s: "b", ar: "في شركة بتشتغل في النمسا.", ph: "fi sherka betishtaghal fin-nemsa.", pl: "W firmie, która działa w Austrii." },
+      { s: "a", ar: "عندكوا أولاد؟", ph: "3andoku awlaad?", pl: "Macie dzieci?" },
+      { s: "b", ar: "لسه، بس قريب هنجيب كلب!", ph: "lessa, bass 2orayyeb hangiib kalb!", pl: "Jeszcze nie, ale wkrótce sprowadzimy psa!" },
+    ],
+  },
+  {
+    title: "O nauce arabskiego",
+    emoji: "📚",
+    context: "Egipcjanin dziwi się, że Grzegorz mówi po arabsku.",
+    lines: [
+      { s: "a", ar: "إنت بتتكلم عربي كويس! بقالك قد إيه؟", ph: "enta betetkallem 3arabi kwayyes! ba2aalak 2add eeh?", pl: "Dobrze mówisz po arabsku! Od jak dawna?" },
+      { s: "b", ar: "بقالي سنتين بتعلم.", ph: "ba2aali santeen bat3allem.", pl: "Uczę się od dwóch lat." },
+      { s: "a", ar: "بتتعلم ليه؟ للشغل؟", ph: "betet3allem leeh? lish-shughl?", pl: "Dlaczego się uczysz? Do pracy?" },
+      { s: "b", ar: "لأ، كهواية بس. بحب اللغة.", ph: "la2, ke-hewaaya bass. baHebb il-lo8a.", pl: "Nie, tylko jako hobby. Lubię ten język." },
+      { s: "a", ar: "وبتتعلم إزاي؟", ph: "we betet3allem ezzaay?", pl: "A jak się uczysz?" },
+      { s: "b", ar: "بآخد دروس أونلاين مع مدرسة سورية.", ph: "baakhod duruus onlaayn ma3 modarrsa soreyya.", pl: "Biorę lekcje online z syryjską nauczycielką." },
+      { s: "a", ar: "تحفة! نفسك تزور مصر تاني؟", ph: "toHfa! nefsak tezuur maSr taani?", pl: "Świetnie! Chciałbyś znów odwiedzić Egipt?" },
+      { s: "b", ar: "أكيد! رحت كذا مرة وحبيت البلد.", ph: "akiid! roHt kaza marra we Habbeet il-balad.", pl: "Jasne! Byłem kilka razy i pokochałem ten kraj." },
+    ],
+  },
 ];
 
 // ---------- Lekcje: dopasowanie słówek z bazy do dialogu ----------
@@ -4527,7 +4994,7 @@ function freshDeck() {
   return [
     ...SEED_WORDS, ...VERB_WORDS, ...NOUN_WORDS, ...QW_WORDS,
     ...GRAMMAR_WORDS, ...EXPRESSION_WORDS, ...RELIGIOUS_WORDS,
-    ...FOOD_WORDS, ...KITCHEN_WORDS, ...PHRASE_WORDS, ...CONJUNCTION_WORDS, ...FAMILY_WORDS,
+    ...FOOD_WORDS, ...KITCHEN_WORDS, ...PHRASE_WORDS, ...CONJUNCTION_WORDS, ...FAMILY_WORDS, ...HEALTH_WORDS, ...WEATHER_WORDS, ...SMALLTALK_WORDS, ...FILLER_WORDS, ...SLANG_WORDS, ...LIFE_WORDS,
   ];
 }
 
@@ -7207,11 +7674,18 @@ function buildBackup(words, stats) {
       };
     }
   }
+  // Własne i edytowane fiszki = te, których nie ma w świeżej bazie (po wordId).
+  // Zapisujemy ich pełną treść, żeby przeniosły się między urządzeniami.
+  const deckIds = new Set(freshDeck().map(wordId));
+  const customWords = words
+    .filter((w) => !deckIds.has(wordId(w)))
+    .map((w) => ({ cat: w.cat, pl: w.pl, ar: w.ar, ph: w.ph, ex: w.ex || undefined }));
   return {
     app: "arabic-egyptian-trainer",
-    version: 1,
+    version: 2,
     exportedAt: new Date().toISOString(),
     progress,
+    customWords,
     stats: stats || { days: {} },
   };
 }
@@ -7241,12 +7715,24 @@ function tryDownloadFile(text, filename) {
 function applyBackup(backup, currentWords) {
   if (!backup || typeof backup !== "object" || !backup.progress) return null;
   const prog = backup.progress;
-  const mergedWords = currentWords.map((w) => {
+
+  // Dołącz własne/edytowane fiszki z kopii (wersja 2+), których nie ma w bieżącej
+  // liście — żeby przeniosły się między urządzeniami. Zgodne wstecz: starsze kopie
+  // (bez customWords) po prostu pomijają ten krok.
+  let words = currentWords;
+  if (Array.isArray(backup.customWords) && backup.customWords.length) {
+    const haveIds = new Set(currentWords.map(wordId));
+    const toAdd = backup.customWords.filter((w) => w && w.pl && w.ar && !haveIds.has(wordId(w)));
+    if (toAdd.length) words = [...currentWords, ...toAdd];
+  }
+
+  const mergedWords = words.map((w) => {
     const p = prog[wordId(w)];
     return p ? { ...w, ...p } : w;
   });
-  // Zapisz też od razu do localStorage (żeby przetrwało kolejne odświeżenie).
+  // Zapisz od razu do localStorage (żeby przetrwało kolejne odświeżenie).
   try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedWords));
     localStorage.setItem(PROGRESS_KEY, JSON.stringify(prog));
     if (backup.stats) localStorage.setItem(STATS_KEY, JSON.stringify(backup.stats));
   } catch (e) {}
@@ -7505,9 +7991,10 @@ function StatsView({ words, stats, categories, onExport, onImport, onPasteImport
         </p>
       )}
       <p className="stats-backup-note">
-        Postęp jest zapisywany w pamięci przeglądarki. Wgranie nowej wersji aplikacji
-        (a w niektórych przeglądarkach nawet odświeżenie) może ją wyczyścić. „Zapisz
-        kopię" zabezpiecza postęp do pliku/schowka — po zmianie użyj „wklej kopię".
+        Postęp i Twoje własne/edytowane fiszki są zapisywane w pamięci przeglądarki
+        (osobno na każdym urządzeniu — komputer i telefon się nie synchronizują).
+        „Zapisz kopię" zabezpiecza wszystko do pliku/schowka — na drugim urządzeniu
+        użyj „wklej kopię", żeby przenieść postęp i fiszki.
       </p>
       <div className="stats-backup-row">
         <button className="nav-btn nav-btn-primary stats-backup-btn" onClick={onExport}>
@@ -8146,6 +8633,251 @@ function LessonSentences({ sentences }) {
   );
 }
 
+// ---------- Widok: Czytanki (dłuższe teksty + rozumienie) ----------
+function ReadingsView() {
+  const [idx, setIdx] = useState(null);
+  const [hidePl, setHidePl] = useState(false);
+  const [hidePh, setHidePh] = useState(false);
+  const [answers, setAnswers] = useState({}); // {questionIndex: chosenOption}
+  const [showResults, setShowResults] = useState(false);
+
+  // Lista czytanek
+  if (idx === null) {
+    return (
+      <div className="view-readings">
+        <p className="verbs-intro">
+          Dłuższe teksty do czytania ze zrozumieniem. Każdy używa innego czasu
+          (teraźniejszy, przeszły, przyszły albo mieszany) — po tekście czekają
+          pytania, żeby sprawdzić, ile rozumiesz.
+        </p>
+        <div className="reading-list">
+          {READINGS.map((r, i) => (
+            <button key={i} className="reading-card" onClick={() => setIdx(i)}>
+              <span className="reading-emoji">{r.emoji}</span>
+              <span className="reading-info">
+                <span className="reading-title">{r.title}</span>
+                <span className="reading-meta">
+                  {r.sentences.length} zdań · {r.level}
+                </span>
+              </span>
+              <span className="reading-arrow">→</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  const r = READINGS[idx];
+  const allAnswered = r.questions.every((_, qi) => answers[qi] !== undefined);
+  const score = r.questions.filter((q, qi) => answers[qi] === q.correct).length;
+
+  function choose(qi, oi) {
+    if (showResults) return;
+    setAnswers((a) => ({ ...a, [qi]: oi }));
+  }
+  function back() {
+    setIdx(null);
+    setAnswers({});
+    setShowResults(false);
+    setHidePl(false);
+    setHidePh(false);
+  }
+
+  return (
+    <div className="view-readings">
+      <button className="lesson-back" onClick={back}>
+        ← wszystkie czytanki
+      </button>
+
+      <div className="reading-head">
+        <span className="reading-head-emoji">{r.emoji}</span>
+        <h2 className="reading-head-title">{r.title}</h2>
+        <p className="reading-head-context">{r.context}</p>
+      </div>
+
+      <div className="reading-tense-note">🕐 {r.tenseNote}</div>
+
+      <div className="reading-toggles">
+        <button
+          className={`status-filter-btn ${hidePh ? "status-filter-active" : ""}`}
+          onClick={() => setHidePh((v) => !v)}
+        >
+          {hidePh ? "pokaż transkrypcję" : "ukryj transkrypcję"}
+        </button>
+        <button
+          className={`status-filter-btn ${hidePl ? "status-filter-active" : ""}`}
+          onClick={() => setHidePl((v) => !v)}
+        >
+          {hidePl ? "pokaż tłumaczenie" : "ukryj tłumaczenie"}
+        </button>
+      </div>
+
+      <div className="reading-text">
+        {r.sentences.map((s, i) => (
+          <div key={i} className="reading-sentence">
+            <span className="reading-ar">{s.ar}</span>
+            {!hidePh && <span className="reading-ph">{s.ph}</span>}
+            {!hidePl && <span className="reading-pl">{s.pl}</span>}
+          </div>
+        ))}
+      </div>
+
+      <h3 className="reading-q-title">Pytania na rozumienie</h3>
+      <div className="reading-questions">
+        {r.questions.map((q, qi) => (
+          <div key={qi} className="reading-question">
+            <p className="reading-q-text">{q.q}</p>
+            <div className="reading-options">
+              {q.options.map((opt, oi) => {
+                const chosen = answers[qi] === oi;
+                let cls = "reading-option";
+                if (showResults) {
+                  if (oi === q.correct) cls += " reading-option-correct";
+                  else if (chosen) cls += " reading-option-wrong";
+                } else if (chosen) {
+                  cls += " reading-option-chosen";
+                }
+                return (
+                  <button key={oi} className={cls} onClick={() => choose(qi, oi)}>
+                    {opt}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {!showResults ? (
+        <button
+          className="nav-btn nav-btn-primary reading-check"
+          onClick={() => setShowResults(true)}
+          disabled={!allAnswered}
+        >
+          {allAnswered ? "sprawdź odpowiedzi" : "odpowiedz na wszystkie pytania"}
+        </button>
+      ) : (
+        <div className="reading-score">
+          Wynik: {score} / {r.questions.length}
+          {score === r.questions.length ? " — świetnie! 🎉" : ""}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------- Widok: Egipski a MSA (fuS7a) ----------
+function MsaView() {
+  const [group, setGroup] = useState("same"); // same | pronunciation | different
+
+  const groups = [
+    { key: "same", label: "Identyczne", emoji: "🟢" },
+    { key: "pronunciation", label: "Inna wymowa", emoji: "🟡" },
+    { key: "different", label: "Inne słowo", emoji: "🔴" },
+  ];
+
+  return (
+    <div className="view-msa">
+      <p className="verbs-intro">
+        Egipski (3aamiya) i arabski literacki (fuS7a / MSA) to dwie odmiany tego samego
+        języka. Część słów jest identyczna, część pisze się tak samo, ale czyta inaczej,
+        a część to zupełnie inne wyrazy. Poznanie różnic pomaga czytać i rozumieć oba.
+      </p>
+
+      <div className="msa-rules">
+        <strong>Główne reguły wymowy:</strong> ج to w MSA „j”, a po egipsku „g”
+        (jamiil → gamiil). ق to w MSA „q”, a po egipsku hamza (qalb → 2alb). ث „th” → „t”
+        (thalatha → talaata). ذ „dh” → „d” (dhahab → dahab).
+      </div>
+
+      <div className="msa-tabs">
+        {groups.map((g) => (
+          <button
+            key={g.key}
+            className={`msa-tab ${group === g.key ? "msa-tab-active" : ""}`}
+            onClick={() => setGroup(g.key)}
+          >
+            <span className="msa-tab-emoji">{g.emoji}</span>
+            {g.label}
+          </button>
+        ))}
+      </div>
+
+      {group === "same" && (
+        <div className="msa-list">
+          <p className="msa-group-hint">Te same słowa w obu odmianach — bezpieczne wszędzie.</p>
+          {MSA_COMPARISON.same.map((w, i) => (
+            <div key={i} className="msa-row">
+              <div className="msa-row-pl">{w.pl}</div>
+              <div className="msa-pair">
+                <div className="msa-variant">
+                  <span className="msa-badge msa-badge-eg">egipski</span>
+                  <span className="msa-ar">{w.eg.ar}</span>
+                  <span className="msa-ph">{w.eg.ph}</span>
+                </div>
+                <div className="msa-variant">
+                  <span className="msa-badge msa-badge-msa">MSA</span>
+                  <span className="msa-ar">{w.msa.ar}</span>
+                  <span className="msa-ph">{w.msa.ph}</span>
+                </div>
+              </div>
+              {w.note && <p className="msa-note">{w.note}</p>}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {group === "pronunciation" && (
+        <div className="msa-list">
+          <p className="msa-group-hint">
+            Pisownia arabska ta sama — różni się tylko wymowa. Świetne do nauki reguł ج/ق/ث/ذ.
+          </p>
+          {MSA_COMPARISON.pronunciation.map((w, i) => (
+            <div key={i} className="msa-row">
+              <div className="msa-row-head">
+                <span className="msa-row-pl">{w.pl}</span>
+                <span className="msa-ar msa-ar-shared">{w.ar}</span>
+              </div>
+              <div className="msa-pron-pair">
+                <span className="msa-pron msa-pron-eg">🟢 {w.eg}</span>
+                <span className="msa-pron msa-pron-msa">📖 {w.msa}</span>
+              </div>
+              <p className="msa-rule">{w.rule}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {group === "different" && (
+        <div className="msa-list">
+          <p className="msa-group-hint">
+            Zupełnie różne wyrazy — jeśli powiesz wersję MSA, Egipcjanin zrozumie, ale
+            zabrzmi to książkowo.
+          </p>
+          {MSA_COMPARISON.different.map((w, i) => (
+            <div key={i} className="msa-row">
+              <div className="msa-row-pl">{w.pl}</div>
+              <div className="msa-pair">
+                <div className="msa-variant">
+                  <span className="msa-badge msa-badge-eg">egipski</span>
+                  <span className="msa-ar">{w.eg.ar}</span>
+                  <span className="msa-ph">{w.eg.ph}</span>
+                </div>
+                <div className="msa-variant">
+                  <span className="msa-badge msa-badge-msa">MSA</span>
+                  <span className="msa-ar">{w.msa.ar}</span>
+                  <span className="msa-ph">{w.msa.ph}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ---------- Motywy i czcionki (ustawienia wyglądu) ----------
 // Motyw = zestaw zmiennych CSS nakładanych na :root. Domyślny = "morski".
 const THEMES = {
@@ -8515,6 +9247,8 @@ export default function App() {
           { key: "match", label: "pary", Icon: Shuffle },
           { key: "write", label: "pisanie", Icon: Pencil },
           { key: "dialogues", label: "dialogi", Icon: MessagesSquare },
+          { key: "readings", label: "czytanki", Icon: BookOpen },
+          { key: "msa", label: "egipski/MSA", Icon: BookOpen },
           { key: "stats", label: "statystyki", Icon: TrendingUp },
           { key: "list", label: "lista", Icon: List },
         ].map(({ key, label, Icon }) => (
@@ -8621,6 +9355,8 @@ export default function App() {
         {tab === "match" && <MatchView words={words} />}
         {tab === "write" && <WriteView words={words} />}
         {tab === "dialogues" && <DialoguesView />}
+        {tab === "readings" && <ReadingsView />}
+        {tab === "msa" && <MsaView />}
         {tab === "stats" && (
           <StatsView
             words={words}
@@ -11744,6 +12480,102 @@ const CSS = `
 
 /* ---- Przełączniki ukrywania w dialogu ---- */
 .dlg-toggles { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+
+/* ---- Czytanki ---- */
+.reading-list { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.reading-card {
+  display: flex; align-items: center; gap: 14px; padding: 16px;
+  border: 1.5px solid var(--sand-deep); background: var(--paper);
+  border-radius: 16px; cursor: pointer; text-align: left; transition: all 0.15s ease;
+}
+.reading-card:hover { border-color: var(--teal); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(26,36,32,0.07); }
+.reading-emoji { font-size: 28px; flex-shrink: 0; }
+.reading-info { display: flex; flex-direction: column; flex: 1; }
+.reading-title { font-family: Georgia, serif; font-size: 16px; font-weight: 700; color: var(--teal-deep); }
+.reading-meta { font-size: 12px; color: #6c766e; margin-top: 2px; }
+.reading-arrow { color: var(--teal); font-size: 18px; }
+.reading-head { text-align: center; margin-bottom: 14px; }
+.reading-head-emoji { font-size: 36px; }
+.reading-head-title { font-family: Georgia, serif; font-size: 22px; color: var(--teal-deep); margin: 6px 0 4px; }
+.reading-head-context { font-size: 13px; color: #6c766e; margin: 0; }
+.reading-tense-note {
+  background: rgba(166,106,36,0.1); border: 1px solid rgba(166,106,36,0.25);
+  border-radius: 10px; padding: 10px 14px; font-size: 12.5px; color: #8a5a1e;
+  line-height: 1.5; margin-bottom: 16px;
+}
+.reading-toggles { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; margin-bottom: 12px; }
+.reading-text {
+  border: 1.5px solid var(--sand-deep); border-radius: 16px;
+  padding: 18px; background: var(--paper); margin-bottom: 24px;
+}
+.reading-sentence { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.reading-sentence:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.reading-ar {
+  display: block; font-family: var(--ar-font); font-size: 24px;
+  direction: rtl; color: var(--ink); line-height: 1.6; margin-bottom: 4px;
+}
+.reading-ph { display: block; font-size: 13.5px; color: var(--terracotta); font-weight: 600; margin-bottom: 2px; }
+.reading-pl { display: block; font-size: 13.5px; color: #6c766e; }
+.reading-q-title { font-family: Georgia, serif; font-size: 17px; color: var(--teal-deep); margin: 0 0 14px; }
+.reading-questions { display: flex; flex-direction: column; gap: 18px; margin-bottom: 20px; }
+.reading-q-text { font-size: 14.5px; font-weight: 600; color: var(--ink); margin: 0 0 10px; }
+.reading-options { display: flex; flex-direction: column; gap: 8px; }
+.reading-option {
+  text-align: left; padding: 11px 14px; border: 1.5px solid var(--sand-deep);
+  background: var(--paper); border-radius: 10px; cursor: pointer; font-size: 14px;
+  color: var(--ink); transition: all 0.15s ease;
+}
+.reading-option:hover { border-color: var(--teal); }
+.reading-option-chosen { border-color: var(--teal); border-width: 2px; background: rgba(29,92,82,0.06); }
+.reading-option-correct { border-color: #2e7d52; background: rgba(46,125,82,0.12); color: #2e7d52; font-weight: 600; }
+.reading-option-wrong { border-color: #c0392b; background: rgba(192,57,43,0.1); color: #c0392b; }
+.reading-check { width: 100%; }
+.reading-score {
+  text-align: center; font-family: Georgia, serif; font-size: 20px;
+  font-weight: 700; color: var(--teal-deep); padding: 16px;
+  background: rgba(29,92,82,0.08); border-radius: 12px;
+}
+
+/* ---- Egipski a MSA ---- */
+.msa-rules {
+  background: rgba(166,106,36,0.1); border: 1px solid rgba(166,106,36,0.25);
+  border-radius: 10px; padding: 12px 14px; font-size: 12.5px; color: #8a5a1e;
+  line-height: 1.6; margin-bottom: 16px;
+}
+.msa-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+.msa-tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 10px 4px; border: 1.5px solid var(--sand-deep); background: var(--paper);
+  border-radius: 12px; cursor: pointer; font-size: 12px; font-weight: 600; color: #6c766e;
+}
+.msa-tab-active { border-color: var(--teal); border-width: 2px; color: var(--teal-deep); background: rgba(29,92,82,0.05); }
+.msa-tab-emoji { font-size: 15px; }
+.msa-group-hint { font-size: 12.5px; color: #6c766e; font-style: italic; margin: 0 0 14px; }
+.msa-list { display: flex; flex-direction: column; gap: 12px; }
+.msa-row {
+  border: 1.5px solid var(--sand-deep); background: var(--paper);
+  border-radius: 14px; padding: 14px;
+}
+.msa-row-pl { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+.msa-row-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.msa-row-head .msa-row-pl { margin-bottom: 0; }
+.msa-ar-shared { font-family: var(--ar-font); font-size: 26px; direction: rtl; color: var(--teal-deep); }
+.msa-pair { display: flex; gap: 10px; }
+.msa-variant {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 10px; border-radius: 10px; background: rgba(0,0,0,0.02);
+}
+.msa-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 999px; }
+.msa-badge-eg { background: rgba(29,92,82,0.15); color: var(--teal-deep); }
+.msa-badge-msa { background: rgba(166,106,36,0.15); color: #8a5a1e; }
+.msa-ar { font-family: var(--ar-font); font-size: 24px; direction: rtl; color: var(--ink); }
+.msa-ph { font-size: 13px; color: var(--terracotta); font-weight: 600; }
+.msa-note { font-size: 12px; color: #6c766e; margin: 10px 0 0; line-height: 1.5; }
+.msa-pron-pair { display: flex; gap: 10px; margin-bottom: 8px; }
+.msa-pron { flex: 1; text-align: center; font-size: 15px; font-weight: 600; padding: 8px; border-radius: 8px; }
+.msa-pron-eg { background: rgba(29,92,82,0.08); color: var(--teal-deep); }
+.msa-pron-msa { background: rgba(166,106,36,0.08); color: #8a5a1e; }
+.msa-rule { font-size: 12px; color: #6c766e; margin: 0; text-align: center; }
 
 /* ---- Statystyki: przerobione fiszki ---- */
 .stats-empty-note {
