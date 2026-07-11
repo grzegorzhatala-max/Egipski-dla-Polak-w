@@ -1676,6 +1676,20 @@ const CATEGORIES = [
   { key: "fillers", label: "Wygładzacze i reakcje", emoji: "🗯️" },
   { key: "slang", label: "Slang (jak miejscowy)", emoji: "😎" },
   { key: "life", label: "O sobie i życiu", emoji: "🙋" },
+  { key: "colors", label: "Kolory", emoji: "🎨" },
+  { key: "adjectives", label: "Przymiotniki opisowe", emoji: "📏" },
+  { key: "daily_verbs", label: "Czasowniki codzienne", emoji: "⚡" },
+  { key: "motion", label: "Czasowniki ruchu", emoji: "🚶" },
+  { key: "time_adverbs", label: "Przysłówki czasu", emoji: "⏰" },
+  { key: "body", label: "Ciało", emoji: "🧍" },
+  { key: "clothes", label: "Ubrania", emoji: "👕" },
+  { key: "home_furniture", label: "Dom i meble", emoji: "🛋️" },
+  { key: "nature", label: "Natura i miejsca", emoji: "🏞️" },
+  { key: "transport", label: "Transport", emoji: "🚗" },
+  { key: "jobs", label: "Zawody", emoji: "💼" },
+  { key: "emotions", label: "Emocje i stany", emoji: "😊" },
+  { key: "animals", label: "Zwierzęta", emoji: "🐾" },
+  { key: "ordinals", label: "Liczby porządkowe", emoji: "🔢" },
   { key: "expressions", label: "Wyrażenia codzienne", emoji: "💬" },
   { key: "conjunctions", label: "Spójniki i łączniki", emoji: "🔗" },
   { key: "religious", label: "Wyrażenia religijne", emoji: "🕌" },
@@ -3063,20 +3077,51 @@ const TENSE_LABELS = {
   future: "czas przyszły",
 };
 
+// Naturalne dopełnienie do przykładu czasownika (żeby przykład był pełnym zdaniem,
+// nie tylko „zaimek + czasownik”). Klucz = bezokolicznik polski.
+const VERB_OBJECTS = {
+  "chcieć": { ar: "شاي", ph: "shaay", pl: "herbaty" },
+  "robić": { ar: "حاجة", ph: "Haaga", pl: "coś" },
+  "pić": { ar: "قهوة", ph: "2ahwa", pl: "kawę" },
+  "rozumieć": { ar: "الدرس", ph: "id-dars", pl: "lekcję" },
+  "pracować": { ar: "هنا", ph: "hena", pl: "tutaj" },
+  "widzieć": { ar: "البحر", ph: "il-baHr", pl: "morze" },
+  "wiedzieć": { ar: "كل حاجة", ph: "koll Haaga", pl: "wszystko" },
+  "musieć": { ar: "أروح", ph: "aruuH", pl: "iść" },
+  "spać": { ar: "بدري", ph: "badri", pl: "wcześnie" },
+  "pisać": { ar: "رسالة", ph: "resaala", pl: "list" },
+};
+
 function verbsToWords(verbs) {
   const out = [];
   for (const v of verbs) {
+    const obj = VERB_OBJECTS[v.pl]; // dopełnienie dla naturalnego przykładu
     for (const [tenseKey, forms] of Object.entries(v.tenses)) {
       for (const f of forms) {
         const pronoun = PRONOUNS.find((p) => p.key === f.pronoun);
+        // Przykład: zaimek + forma (+ dopełnienie). W polskim tłumaczeniu usuwamy
+        // dopisek w nawiasie z formy (np. „chce (ona)” → „chce”), żeby nie dublować zaimka.
+        const plClean = f.pl.replace(/\s*\([^)]*\)\s*$/, "").trim();
+        let ex;
+        if (pronoun) {
+          ex = obj
+            ? {
+                ar: `${pronoun.ar} ${f.ar} ${obj.ar}`,
+                ph: `${pronoun.ph} ${f.ph} ${obj.ph}`,
+                pl: `${pronoun.pl} ${plClean} ${obj.pl}`,
+              }
+            : {
+                ar: `${pronoun.ar} ${f.ar}`,
+                ph: `${pronoun.ph} ${f.ph}`,
+                pl: `${pronoun.pl} ${plClean}`,
+              };
+        }
         out.push({
           cat: "verbs",
           pl: `${f.pl} (${v.pl}, ${TENSE_LABELS[tenseKey]})`,
           ar: f.ar,
           ph: f.ph,
-          ex: pronoun
-            ? { ar: `${pronoun.ar} ${f.ar}`, ph: `${pronoun.ph} ${f.ph}`, pl: `${pronoun.pl} ${f.pl}` }
-            : undefined,
+          ex,
         });
       }
     }
@@ -4091,6 +4136,413 @@ const LIFE_WORDS = [
   { cat: "life", pl: "razem", ar: "مع بعض", ph: "ma3 ba3D" },
 ];
 
+// ---------- Kolory ----------
+const COLOR_WORDS = [
+  { cat: "colors", pl: "kolor", ar: "لون", ph: "loon" },
+  { cat: "colors", pl: "czerwony", ar: "أحمر", ph: "aHmar", ex: { ar: "العربية حمرا.", ph: "il-3arabeyya Hamra.", pl: "Samochód jest czerwony." } },
+  { cat: "colors", pl: "niebieski", ar: "أزرق", ph: "azra2", ex: { ar: "السما زرقا النهارده.", ph: "is-sama zar2a innaharda.", pl: "Niebo jest dziś niebieskie." } },
+  { cat: "colors", pl: "zielony", ar: "أخضر", ph: "akhDar" },
+  { cat: "colors", pl: "żółty", ar: "أصفر", ph: "aSfar" },
+  { cat: "colors", pl: "czarny", ar: "أسود", ph: "eswed" },
+  { cat: "colors", pl: "biały", ar: "أبيض", ph: "abyaD" },
+  { cat: "colors", pl: "brązowy", ar: "بني", ph: "bonni" },
+  { cat: "colors", pl: "pomarańczowy", ar: "برتقاني", ph: "borto2aani" },
+  { cat: "colors", pl: "różowy", ar: "بمبي", ph: "bambi" },
+  { cat: "colors", pl: "szary", ar: "رمادي", ph: "romaadi" },
+  { cat: "colors", pl: "fioletowy", ar: "بنفسجي", ph: "banafsegi" },
+  { cat: "colors", pl: "jasny", ar: "فاتح", ph: "faateH", ex: { ar: "أزرق فاتح.", ph: "azra2 faateH.", pl: "Jasnoniebieski." } },
+  { cat: "colors", pl: "ciemny", ar: "غامق", ph: "8aame2", ex: { ar: "أخضر غامق.", ph: "akhDar 8aame2.", pl: "Ciemnozielony." } },
+];
+
+// ---------- Przymiotniki opisowe ----------
+const ADJECTIVE_WORDS = [
+  { cat: "adjectives", pl: "duży", ar: "كبير", ph: "kebiir", ex: { ar: "البيت ده كبير.", ph: "il-beet da kebiir.", pl: "Ten dom jest duży." } },
+  { cat: "adjectives", pl: "mały", ar: "صغير", ph: "So8ayyar", ex: { ar: "العيال صغيرين.", ph: "il-3eyaal So8ayyariin.", pl: "Dzieci są małe." } },
+  { cat: "adjectives", pl: "ładny / piękny", ar: "جميل", ph: "gamiil" },
+  { cat: "adjectives", pl: "brzydki", ar: "وحش", ph: "weHesh" },
+  { cat: "adjectives", pl: "długi", ar: "طويل", ph: "Tawiil" },
+  { cat: "adjectives", pl: "krótki", ar: "قصير", ph: "2oSayyar" },
+  { cat: "adjectives", pl: "wysoki", ar: "عالي", ph: "3aali" },
+  { cat: "adjectives", pl: "niski", ar: "واطي", ph: "waaTi" },
+  { cat: "adjectives", pl: "gruby", ar: "تخين", ph: "tekhiin" },
+  { cat: "adjectives", pl: "szczupły / chudy", ar: "رفيع", ph: "rofayya3" },
+  { cat: "adjectives", pl: "stary (o rzeczy)", ar: "قديم", ph: "2adiim" },
+  { cat: "adjectives", pl: "nowy", ar: "جديد", ph: "gediid" },
+  { cat: "adjectives", pl: "szybki", ar: "سريع", ph: "sarii3" },
+  { cat: "adjectives", pl: "wolny (powolny)", ar: "بطيء", ph: "baTii2" },
+  { cat: "adjectives", pl: "silny / mocny", ar: "قوي", ph: "2awi" },
+  { cat: "adjectives", pl: "słaby", ar: "ضعيف", ph: "Da3iif" },
+  { cat: "adjectives", pl: "bogaty", ar: "غني", ph: "8ani" },
+  { cat: "adjectives", pl: "biedny", ar: "فقير", ph: "fa2iir" },
+  { cat: "adjectives", pl: "łatwy", ar: "سهل", ph: "sahl" },
+  { cat: "adjectives", pl: "trudny", ar: "صعب", ph: "Sa3b" },
+  { cat: "adjectives", pl: "pełny", ar: "مليان", ph: "malyaan" },
+  { cat: "adjectives", pl: "pusty", ar: "فاضي", ph: "faaDi" },
+  { cat: "adjectives", pl: "czysty", ar: "نضيف", ph: "neDiif" },
+  { cat: "adjectives", pl: "brudny", ar: "وسخ", ph: "wesekh" },
+  { cat: "adjectives", pl: "drogi", ar: "غالي", ph: "8aali" },
+  { cat: "adjectives", pl: "tani", ar: "رخيص", ph: "rekhiiS" },
+  { cat: "adjectives", pl: "ważny", ar: "مهم", ph: "mohemm" },
+  { cat: "adjectives", pl: "prawdziwy", ar: "حقيقي", ph: "Ha2ii2i" },
+];
+
+// ---------- Czasowniki codzienne (forma podstawowa, on/ona) ----------
+const DAILY_VERB_WORDS = [
+  { cat: "daily_verbs", pl: "dawać", ar: "يدي", ph: "yeddi", ex: { ar: "ممكن تديني المية؟", ph: "momken teddiini il-mayya?", pl: "Możesz mi dać wodę?" } },
+  { cat: "daily_verbs", pl: "brać", ar: "ياخد", ph: "yaakhod", ex: { ar: "خد الكتاب ده.", ph: "khod il-ketaab da.", pl: "Weź tę książkę." } },
+  { cat: "daily_verbs", pl: "kupować", ar: "يشتري", ph: "yeshteri", ex: { ar: "بشتري خضار من السوق.", ph: "bashteri khoDaar min is-suu2.", pl: "Kupuję warzywa na targu." } },
+  { cat: "daily_verbs", pl: "sprzedawać", ar: "يبيع", ph: "yebii3" },
+  { cat: "daily_verbs", pl: "otwierać", ar: "يفتح", ph: "yeftaH", ex: { ar: "افتح الشباك.", ph: "eftaH ish-shebbaak.", pl: "Otwórz okno." } },
+  { cat: "daily_verbs", pl: "zamykać", ar: "يقفل", ph: "ye2fel" },
+  { cat: "daily_verbs", pl: "zaczynać", ar: "يبدأ", ph: "yebda2" },
+  { cat: "daily_verbs", pl: "kończyć", ar: "يخلص", ph: "yekhallaS" },
+  { cat: "daily_verbs", pl: "szukać", ar: "يدور", ph: "yedawwar", ex: { ar: "بدور على المفتاح.", ph: "badawwar 3ala il-muftaaH.", pl: "Szukam klucza." } },
+  { cat: "daily_verbs", pl: "znajdować", ar: "يلاقي", ph: "yelaa2i" },
+  { cat: "daily_verbs", pl: "pomagać", ar: "يساعد", ph: "yesaa3ed", ex: { ar: "ممكن تساعدني؟", ph: "momken tesa3edni?", pl: "Możesz mi pomóc?" } },
+  { cat: "daily_verbs", pl: "pytać", ar: "يسأل", ph: "yes2al" },
+  { cat: "daily_verbs", pl: "odpowiadać", ar: "يرد", ph: "yeredd" },
+  { cat: "daily_verbs", pl: "mówić / powiedzieć", ar: "يقول", ph: "ye2uul" },
+  { cat: "daily_verbs", pl: "słuchać", ar: "يسمع", ph: "yesma3" },
+  { cat: "daily_verbs", pl: "czytać", ar: "يقرأ", ph: "ye2ra" },
+  { cat: "daily_verbs", pl: "myśleć", ar: "يفكر", ph: "yefakkar" },
+  { cat: "daily_verbs", pl: "wiedzieć / znać", ar: "يعرف", ph: "ye3raf" },
+  { cat: "daily_verbs", pl: "lubić / kochać", ar: "يحب", ph: "yeHebb" },
+  { cat: "daily_verbs", pl: "grać", ar: "يلعب", ph: "yel3ab" },
+  { cat: "daily_verbs", pl: "pracować", ar: "يشتغل", ph: "yeshtaghal" },
+  { cat: "daily_verbs", pl: "płacić", ar: "يدفع", ph: "yedfa3" },
+  { cat: "daily_verbs", pl: "czekać", ar: "يستنى", ph: "yestanna", ex: { ar: "استنى شوية.", ph: "estanna shwayya.", pl: "Poczekaj chwilę." } },
+  { cat: "daily_verbs", pl: "używać", ar: "يستعمل", ph: "yesta3mel" },
+];
+
+// ---------- Czasowniki ruchu ----------
+const MOTION_VERB_WORDS = [
+  { cat: "motion", pl: "iść / chodzić", ar: "يمشي", ph: "yemshi", ex: { ar: "بمشي كل يوم.", ph: "bamshi koll yoom.", pl: "Chodzę codziennie." } },
+  { cat: "motion", pl: "iść (dokądś)", ar: "يروح", ph: "yeruuH", ex: { ar: "بروح الشغل بدري.", ph: "baruuH ish-shughl badri.", pl: "Idę do pracy wcześnie." } },
+  { cat: "motion", pl: "przychodzić", ar: "ييجي", ph: "yiigi", ex: { ar: "تعالى هنا!", ph: "ta3aala hena!", pl: "Chodź tutaj!" } },
+  { cat: "motion", pl: "wracać", ar: "يرجع", ph: "yerga3" },
+  { cat: "motion", pl: "wchodzić", ar: "يدخل", ph: "yedkhol" },
+  { cat: "motion", pl: "wychodzić", ar: "يخرج", ph: "yokhrog" },
+  { cat: "motion", pl: "jechać (pojazdem)", ar: "يركب", ph: "yerkab", ex: { ar: "بركب تاكسي.", ph: "barkab taksi.", pl: "Jadę taksówką." } },
+  { cat: "motion", pl: "wstawać", ar: "يقوم", ph: "ye2uum" },
+  { cat: "motion", pl: "siadać", ar: "يقعد", ph: "yo23od", ex: { ar: "اقعد هنا.", ph: "o23od hena.", pl: "Usiądź tutaj." } },
+  { cat: "motion", pl: "stać / zatrzymać się", ar: "يقف", ph: "ye2af" },
+  { cat: "motion", pl: "biegać", ar: "يجري", ph: "yegri" },
+  { cat: "motion", pl: "podróżować", ar: "يسافر", ph: "yesaafer", ex: { ar: "بسافر مصر كل سنة.", ph: "basaafer maSr koll sana.", pl: "Podróżuję do Egiptu co roku." } },
+];
+
+// ---------- Przysłówki czasu i częstotliwości ----------
+const TIME_ADVERB_WORDS = [
+  { cat: "time_adverbs", pl: "teraz", ar: "دلوقتي", ph: "delwa2ti" },
+  { cat: "time_adverbs", pl: "potem / później", ar: "بعدين", ph: "ba3deen" },
+  { cat: "time_adverbs", pl: "wcześniej / przedtem", ar: "قبل كده", ph: "2abl keda" },
+  { cat: "time_adverbs", pl: "zawsze", ar: "دايماً", ph: "daayman", ex: { ar: "بشرب قهوة دايماً.", ph: "bashrab 2ahwa daayman.", pl: "Zawsze piję kawę." } },
+  { cat: "time_adverbs", pl: "nigdy", ar: "أبداً", ph: "abadan" },
+  { cat: "time_adverbs", pl: "czasami", ar: "أحياناً", ph: "aHyaanan" },
+  { cat: "time_adverbs", pl: "często", ar: "كتير", ph: "ketiir" },
+  { cat: "time_adverbs", pl: "rzadko", ar: "نادراً", ph: "naadran" },
+  { cat: "time_adverbs", pl: "wczoraj", ar: "إمبارح", ph: "embaareH" },
+  { cat: "time_adverbs", pl: "dzisiaj", ar: "النهارده", ph: "innaharda" },
+  { cat: "time_adverbs", pl: "jutro", ar: "بكرة", ph: "bukra" },
+  { cat: "time_adverbs", pl: "wcześnie", ar: "بدري", ph: "badri" },
+  { cat: "time_adverbs", pl: "późno", ar: "متأخر", ph: "met2akhkhar" },
+  { cat: "time_adverbs", pl: "szybko", ar: "بسرعة", ph: "besor3a" },
+  { cat: "time_adverbs", pl: "powoli", ar: "بالراحة", ph: "bir-raaHa" },
+  { cat: "time_adverbs", pl: "jeszcze / wciąż", ar: "لسه", ph: "lessa" },
+  { cat: "time_adverbs", pl: "już", ar: "خلاص", ph: "khalaaS" },
+];
+
+// ---------- Ciało ----------
+const BODY_WORDS = [
+  { cat: "body", pl: "głowa", ar: "راس", ph: "raas" },
+  { cat: "body", pl: "twarz", ar: "وش", ph: "wesh" },
+  { cat: "body", pl: "oko", ar: "عين", ph: "3een" },
+  { cat: "body", pl: "ucho", ar: "ودن", ph: "wedn" },
+  { cat: "body", pl: "nos", ar: "مناخير", ph: "manakhiir" },
+  { cat: "body", pl: "usta", ar: "بق", ph: "bo22" },
+  { cat: "body", pl: "ząb", ar: "سنة", ph: "senna" },
+  { cat: "body", pl: "język (w ustach)", ar: "لسان", ph: "lesaan" },
+  { cat: "body", pl: "włosy", ar: "شعر", ph: "sha3r" },
+  { cat: "body", pl: "szyja", ar: "رقبة", ph: "ra2aba" },
+  { cat: "body", pl: "ręka / dłoń", ar: "إيد", ph: "iid" },
+  { cat: "body", pl: "palec", ar: "صباع", ph: "Sobaa3" },
+  { cat: "body", pl: "noga", ar: "رجل", ph: "regl" },
+  { cat: "body", pl: "stopa", ar: "قدم", ph: "2adam" },
+  { cat: "body", pl: "serce", ar: "قلب", ph: "2alb" },
+  { cat: "body", pl: "brzuch", ar: "بطن", ph: "baTn" },
+  { cat: "body", pl: "plecy", ar: "ضهر", ph: "Dahr" },
+  { cat: "body", pl: "ramię / bark", ar: "كتف", ph: "ketf" },
+];
+
+// ---------- Ubrania ----------
+const CLOTHES_WORDS = [
+  { cat: "clothes", pl: "ubrania", ar: "هدوم", ph: "hoduum" },
+  { cat: "clothes", pl: "koszula", ar: "قميص", ph: "2amiiS" },
+  { cat: "clothes", pl: "spodnie", ar: "بنطلون", ph: "banTaloon" },
+  { cat: "clothes", pl: "buty", ar: "جزمة", ph: "gazma" },
+  { cat: "clothes", pl: "sukienka", ar: "فستان", ph: "fostaan" },
+  { cat: "clothes", pl: "kurtka / płaszcz", ar: "جاكيت", ph: "zhakeet" },
+  { cat: "clothes", pl: "czapka / kapelusz", ar: "قبعة", ph: "2obba3a" },
+  { cat: "clothes", pl: "skarpetki", ar: "شراب", ph: "sharaab" },
+  { cat: "clothes", pl: "sweter", ar: "بلوفر", ph: "belofar" },
+  { cat: "clothes", pl: "koszulka (t-shirt)", ar: "تي شيرت", ph: "ti-shirt" },
+  { cat: "clothes", pl: "okulary", ar: "نضارة", ph: "naDDaara" },
+  { cat: "clothes", pl: "zegarek", ar: "ساعة", ph: "saa3a" },
+  { cat: "clothes", pl: "torba", ar: "شنطة", ph: "shanTa" },
+  { cat: "clothes", pl: "nosić / zakładać", ar: "يلبس", ph: "yelbes", ex: { ar: "بلبس جاكيت في الشتا.", ph: "balbes zhakeet fish-shita.", pl: "Noszę kurtkę zimą." } },
+];
+
+// ---------- Dom i meble ----------
+const HOME_FURNITURE_WORDS = [
+  { cat: "home_furniture", pl: "dom", ar: "بيت", ph: "beet" },
+  { cat: "home_furniture", pl: "pokój", ar: "أوضة", ph: "ooDa" },
+  { cat: "home_furniture", pl: "kuchnia (pomieszczenie)", ar: "مطبخ", ph: "maTbakh" },
+  { cat: "home_furniture", pl: "łazienka", ar: "حمام", ph: "Hammaam" },
+  { cat: "home_furniture", pl: "salon", ar: "صالة", ph: "Saala" },
+  { cat: "home_furniture", pl: "sypialnia", ar: "أوضة نوم", ph: "ooDet noom" },
+  { cat: "home_furniture", pl: "stół", ar: "ترابيزة", ph: "tarabeeza" },
+  { cat: "home_furniture", pl: "krzesło", ar: "كرسي", ph: "korsi" },
+  { cat: "home_furniture", pl: "łóżko", ar: "سرير", ph: "seriir" },
+  { cat: "home_furniture", pl: "drzwi", ar: "باب", ph: "baab" },
+  { cat: "home_furniture", pl: "okno", ar: "شباك", ph: "shebbaak" },
+  { cat: "home_furniture", pl: "ściana", ar: "حيطة", ph: "HeeTa" },
+  { cat: "home_furniture", pl: "podłoga", ar: "أرض", ph: "arD" },
+  { cat: "home_furniture", pl: "lampa", ar: "لمبة", ph: "lamba" },
+  { cat: "home_furniture", pl: "szafa", ar: "دولاب", ph: "dolaab" },
+  { cat: "home_furniture", pl: "kanapa", ar: "كنبة", ph: "kanaba" },
+  { cat: "home_furniture", pl: "lodówka", ar: "تلاجة", ph: "tallaaga" },
+  { cat: "home_furniture", pl: "klucz", ar: "مفتاح", ph: "moftaaH" },
+  { cat: "home_furniture", pl: "winda", ar: "أسانسير", ph: "asanseer" },
+  { cat: "home_furniture", pl: "schody", ar: "سلم", ph: "sellem" },
+];
+
+// ---------- Natura i miejsca ----------
+const NATURE_WORDS = [
+  { cat: "nature", pl: "morze", ar: "بحر", ph: "baHr" },
+  { cat: "nature", pl: "góra", ar: "جبل", ph: "gabal" },
+  { cat: "nature", pl: "rzeka", ar: "نهر", ph: "nahr" },
+  { cat: "nature", pl: "Nil", ar: "النيل", ph: "in-niil" },
+  { cat: "nature", pl: "plaża", ar: "شاطئ", ph: "shaaTe2" },
+  { cat: "nature", pl: "pustynia", ar: "صحرا", ph: "SaHra" },
+  { cat: "nature", pl: "niebo", ar: "سما", ph: "sama" },
+  { cat: "nature", pl: "słońce", ar: "شمس", ph: "shams" },
+  { cat: "nature", pl: "księżyc", ar: "قمر", ph: "2amar" },
+  { cat: "nature", pl: "gwiazda", ar: "نجمة", ph: "negma" },
+  { cat: "nature", pl: "drzewo", ar: "شجرة", ph: "shagara" },
+  { cat: "nature", pl: "kwiat", ar: "وردة", ph: "warda" },
+  { cat: "nature", pl: "ogród / park", ar: "جنينة", ph: "geneena" },
+  { cat: "nature", pl: "ulica", ar: "شارع", ph: "shaare3" },
+  { cat: "nature", pl: "wieś", ar: "قرية", ph: "2arya" },
+  { cat: "nature", pl: "kamień", ar: "حجر", ph: "Hagar" },
+  { cat: "nature", pl: "piasek", ar: "رمل", ph: "raml" },
+];
+
+// ---------- Transport ----------
+const TRANSPORT_WORDS = [
+  { cat: "transport", pl: "samochód", ar: "عربية", ph: "3arabeyya" },
+  { cat: "transport", pl: "autobus", ar: "أتوبيس", ph: "otobiis" },
+  { cat: "transport", pl: "pociąg", ar: "قطر", ph: "2aTr" },
+  { cat: "transport", pl: "samolot", ar: "طيارة", ph: "Tayyaara" },
+  { cat: "transport", pl: "taksówka", ar: "تاكسي", ph: "taksi" },
+  { cat: "transport", pl: "metro", ar: "مترو", ph: "metro" },
+  { cat: "transport", pl: "rower", ar: "عجلة", ph: "3agala" },
+  { cat: "transport", pl: "statek / łódź", ar: "مركب", ph: "markeb" },
+  { cat: "transport", pl: "lotnisko", ar: "مطار", ph: "maTaar" },
+  { cat: "transport", pl: "stacja / przystanek", ar: "محطة", ph: "maHaTTa" },
+  { cat: "transport", pl: "bilet", ar: "تذكرة", ph: "tazkara" },
+  { cat: "transport", pl: "droga", ar: "طريق", ph: "Tarii2" },
+  { cat: "transport", pl: "benzyna", ar: "بنزين", ph: "banziin" },
+];
+
+// ---------- Zawody ----------
+const JOB_WORDS = [
+  { cat: "jobs", pl: "nauczyciel", ar: "مدرس", ph: "modarres" },
+  { cat: "jobs", pl: "lekarz", ar: "دكتور", ph: "doktoor" },
+  { cat: "jobs", pl: "inżynier", ar: "مهندس", ph: "mohandes" },
+  { cat: "jobs", pl: "kierowca", ar: "سواق", ph: "sawwaa2" },
+  { cat: "jobs", pl: "sprzedawca", ar: "بياع", ph: "bayyaa3" },
+  { cat: "jobs", pl: "policjant", ar: "ظابط", ph: "ZaabeT" },
+  { cat: "jobs", pl: "kucharz", ar: "طباخ", ph: "Tabbaakh" },
+  { cat: "jobs", pl: "prawnik", ar: "محامي", ph: "moHaami" },
+  { cat: "jobs", pl: "student", ar: "طالب", ph: "Taaleb" },
+  { cat: "jobs", pl: "urzędnik / pracownik", ar: "موظف", ph: "mowaZZaf" },
+  { cat: "jobs", pl: "rolnik", ar: "فلاح", ph: "fallaaH" },
+  { cat: "jobs", pl: "artysta", ar: "فنان", ph: "fannaan" },
+];
+
+// ---------- Emocje i stany ----------
+const EMOTION_WORDS = [
+  { cat: "emotions", pl: "szczęśliwy / zadowolony", ar: "مبسوط", ph: "mabsuuT", ex: { ar: "أنا مبسوط النهارده.", ph: "ana mabsuuT innaharda.", pl: "Jestem dziś szczęśliwy." } },
+  { cat: "emotions", pl: "smutny", ar: "زعلان", ph: "za3laan" },
+  { cat: "emotions", pl: "zły / wkurzony", ar: "متعصب", ph: "met3aSSeb" },
+  { cat: "emotions", pl: "zmęczony", ar: "تعبان", ph: "ta3baan" },
+  { cat: "emotions", pl: "zdenerwowany / zmartwiony", ar: "قلقان", ph: "2al2aan" },
+  { cat: "emotions", pl: "spokojny", ar: "هادي", ph: "haadi" },
+  { cat: "emotions", pl: "przestraszony", ar: "خايف", ph: "khaayef" },
+  { cat: "emotions", pl: "znudzony", ar: "زهقان", ph: "zah2aan" },
+  { cat: "emotions", pl: "głodny", ar: "جعان", ph: "ga3aan" },
+  { cat: "emotions", pl: "spragniony", ar: "عطشان", ph: "3aTshaan" },
+  { cat: "emotions", pl: "dumny", ar: "فخور", ph: "fakhuur" },
+  { cat: "emotions", pl: "zaskoczony", ar: "متفاجئ", ph: "metfaage2" },
+];
+
+// ---------- Zwierzęta ----------
+const ANIMAL_WORDS = [
+  { cat: "animals", pl: "pies", ar: "كلب", ph: "kalb" },
+  { cat: "animals", pl: "kot", ar: "قطة", ph: "2oTTa" },
+  { cat: "animals", pl: "koń", ar: "حصان", ph: "HoSaan" },
+  { cat: "animals", pl: "krowa", ar: "بقرة", ph: "ba2ara" },
+  { cat: "animals", pl: "ptak", ar: "عصفور", ph: "3aSfuur" },
+  { cat: "animals", pl: "ryba", ar: "سمكة", ph: "samaka" },
+  { cat: "animals", pl: "osioł", ar: "حمار", ph: "Homaar" },
+  { cat: "animals", pl: "wielbłąd", ar: "جمل", ph: "gamal" },
+  { cat: "animals", pl: "owca", ar: "خروف", ph: "kharuuf" },
+  { cat: "animals", pl: "mysz", ar: "فار", ph: "faar" },
+  { cat: "animals", pl: "lew", ar: "أسد", ph: "asad" },
+];
+
+// ---------- Liczby porządkowe ----------
+const ORDINAL_WORDS = [
+  { cat: "ordinals", pl: "pierwszy", ar: "أول", ph: "awwel", ex: { ar: "ده أول يوم.", ph: "da awwel yoom.", pl: "To pierwszy dzień." } },
+  { cat: "ordinals", pl: "drugi", ar: "تاني", ph: "taani" },
+  { cat: "ordinals", pl: "trzeci", ar: "تالت", ph: "taalet" },
+  { cat: "ordinals", pl: "czwarty", ar: "رابع", ph: "raabe3" },
+  { cat: "ordinals", pl: "piąty", ar: "خامس", ph: "khaames" },
+  { cat: "ordinals", pl: "szósty", ar: "سادس", ph: "saades" },
+  { cat: "ordinals", pl: "siódmy", ar: "سابع", ph: "saabe3" },
+  { cat: "ordinals", pl: "ósmy", ar: "تامن", ph: "taamen" },
+  { cat: "ordinals", pl: "dziewiąty", ar: "تاسع", ph: "taase3" },
+  { cat: "ordinals", pl: "dziesiąty", ar: "عاشر", ph: "3aasher" },
+  { cat: "ordinals", pl: "ostatni", ar: "آخر", ph: "aakher" },
+];
+
+// Przykłady dla słów, które nie mają własnego pola ex i nie występują w dialogach.
+// Klucz = wordId (cat|pl|ar). Doklejane w loadWords, nie zmieniają definicji słowa
+// (więc wordId się nie zmienia i postęp jest zachowany).
+const EXAMPLES_EXTRA = {
+  // --- jedzenie i zakupy ---
+  "food_shopping|owoce|فاكهة": { ar: "بحب الفاكهة الطازة.", ph: "baHebb il-faakha iT-Taaza.", pl: "Lubię świeże owoce." },
+  "food_shopping|jabłko|تفاحة": { ar: "كلت تفاحة الصبح.", ph: "kalt toffaaHa iS-SobH.", pl: "Zjadłem jabłko rano." },
+  "food_shopping|banan|موزة": { ar: "الموزة دي مستوية.", ph: "il-mooza di mestewya.", pl: "Ten banan jest dojrzały." },
+  "food_shopping|pomarańcza|برتقانة": { ar: "عصير البرتقان لذيذ.", ph: "3aSiir il-borto2aan laziiz.", pl: "Sok pomarańczowy jest pyszny." },
+  "food_shopping|winogrona|عنب": { ar: "العنب حلو أوي.", ph: "il-3enab Helw awi.", pl: "Winogrona są bardzo słodkie." },
+  "food_shopping|arbuz|بطيخ": { ar: "البطيخ حلو في الصيف.", ph: "il-baTTiikh Helw fiS-Seef.", pl: "Arbuz jest dobry latem." },
+  "food_shopping|mango|مانجة": { ar: "المانجة فاكهة مصرية.", ph: "il-manga faakha maSreyya.", pl: "Mango to egipski owoc." },
+  "food_shopping|cytryna|لمونة": { ar: "عايز لمونة على السلطة.", ph: "3aayez lamuuna 3ala is-salaTa.", pl: "Chcę cytrynę do sałatki." },
+  "food_shopping|daktyle|بلح": { ar: "البلح حلو ومفيد.", ph: "il-balaH Helw we mefiid.", pl: "Daktyle są słodkie i zdrowe." },
+  "food_shopping|warzywa|خضار": { ar: "بشتري الخضار من السوق.", ph: "bashteri il-khoDaar min is-suu2.", pl: "Kupuję warzywa na targu." },
+  "food_shopping|pomidor|طماطم": { ar: "كيلو طماطم لو سمحت.", ph: "kiilo TamaaTem law samaHt.", pl: "Kilo pomidorów poproszę." },
+  "food_shopping|ziemniak|بطاطس": { ar: "بحب البطاطس المقلية.", ph: "baHebb il-baTaaTes il-ma2leyya.", pl: "Lubię smażone ziemniaki." },
+  "food_shopping|cebula|بصل": { ar: "من غير بصل من فضلك.", ph: "min 8eer baSal min faDlak.", pl: "Bez cebuli proszę." },
+  "food_shopping|czosnek|توم": { ar: "التوم بيدي طعم حلو.", ph: "it-toom biyeddi Ta3m Helw.", pl: "Czosnek nadaje dobry smak." },
+  "food_shopping|ogórek|خيار": { ar: "الخيار في السلطة.", ph: "il-khiyaar fis-salaTa.", pl: "Ogórek jest w sałatce." },
+  "food_shopping|marchew|جزر": { ar: "الجزر لونه برتقاني.", ph: "il-gazar loono borto2aani.", pl: "Marchew jest pomarańczowa." },
+  "food_shopping|bakłażan|بتنجان": { ar: "بحب البتنجان المطبوخ.", ph: "baHebb il-betengaan il-maTbuukh.", pl: "Lubię duszony bakłażan." },
+  "food_shopping|papryka|فلفل": { ar: "الفلفل ده حار.", ph: "il-felfel da Haar.", pl: "Ta papryka jest ostra." },
+  "food_shopping|mięso|لحمة": { ar: "اللحمة غالية النهارده.", ph: "il-laHma 8alya innaharda.", pl: "Mięso jest dziś drogie." },
+  "food_shopping|kurczak|فراخ": { ar: "بنطبخ فراخ يوم الجمعة.", ph: "beniTbokh feraakh yoom ig-gom3a.", pl: "Gotujemy kurczaka w piątek." },
+  "food_shopping|jajko|بيضة": { ar: "بفطر بيضة كل يوم.", ph: "bafTar beeDa koll yoom.", pl: "Jem jajko na śniadanie codziennie." },
+  "food_shopping|fasola bób (ful)|فول": { ar: "الفول أكلة مصرية شعبية.", ph: "il-fuul akla maSreyya sha3beyya.", pl: "Ful to popularna egipska potrawa." },
+  "food_shopping|sól|ملح": { ar: "الأكل عايز شوية ملح.", ph: "il-akl 3aayez shwayyet malH.", pl: "Jedzenie potrzebuje trochę soli." },
+  "food_shopping|olej|زيت": { ar: "بستعمل زيت الزيتون.", ph: "basta3mel zeet iz-zatuun.", pl: "Używam oliwy z oliwek." },
+  "food_shopping|masło|زبدة": { ar: "بحط زبدة على العيش.", ph: "baHoTT zebda 3ala il-3eesh.", pl: "Kładę masło na chleb." },
+  "food_shopping|miód|عسل": { ar: "العسل أحلى من السكر.", ph: "il-3asal aHla min is-sokkar.", pl: "Miód jest słodszy niż cukier." },
+  "food_shopping|sok|عصير": { ar: "عايز عصير مانجة.", ph: "3aayez 3aSiir manga.", pl: "Chcę sok z mango." },
+  "food_shopping|sklep|محل": { ar: "المحل ده قريب من البيت.", ph: "il-maHall da 2orayyeb min il-beet.", pl: "Ten sklep jest blisko domu." },
+  "food_shopping|targ / bazar|سوق": { ar: "السوق زحمة يوم الجمعة.", ph: "is-suu2 zaHma yoom ig-gom3a.", pl: "Targ jest zatłoczony w piątek." },
+  "food_shopping|piekarnia|مخبز": { ar: "العيش سخن من المخبز.", ph: "il-3eesh sokhn min il-makhbaz.", pl: "Chleb jest ciepły z piekarni." },
+  "food_shopping|rzeźnik|جزار": { ar: "بشتري اللحمة من الجزار.", ph: "bashteri il-laHma min il-gazzaar.", pl: "Kupuję mięso u rzeźnika." },
+  "food_shopping|reszta (pieniądze)|الباقي": { ar: "خد الباقي من فضلك.", ph: "khod il-baa2i min faDlak.", pl: "Weź resztę proszę." },
+  "food_shopping|świeży|طازة": { ar: "العيش ده طازة.", ph: "il-3eesh da Taaza.", pl: "Ten chleb jest świeży." },
+  "food_shopping|dojrzały|مستوي": { ar: "المانجة مستوية وحلوة.", ph: "il-manga mestewya we Helwa.", pl: "Mango jest dojrzałe i słodkie." },
+  "food_shopping|Gotówką|كاش": { ar: "هدفع كاش.", ph: "hadfa3 kaash.", pl: "Zapłacę gotówką." },
+  "food_shopping|Wezmę to|هاخده": { ar: "تمام، هاخده.", ph: "tamaam, haakhdo.", pl: "Dobrze, wezmę to." },
+  "food_shopping|Torba / reklamówka|كيس": { ar: "ممكن كيس من فضلك؟", ph: "momken kiis min faDlak?", pl: "Można torbę proszę?" },
+  // --- kuchnia ---
+  "kitchen|duszony / w sosie|مطبوخ": { ar: "الأكل ده مطبوخ كويس.", ph: "il-akl da maTbuukh kwayyes.", pl: "To jedzenie jest dobrze ugotowane." },
+  "kitchen|ostry / pikantny|حار": { ar: "الأكل ده حار أوي.", ph: "il-akl da Haar awi.", pl: "To jedzenie jest bardzo ostre." },
+  "kitchen|słony|مالح": { ar: "الشوربة مالحة شوية.", ph: "ish-shorba maalHa shwayya.", pl: "Zupa jest trochę słona." },
+  "kitchen|kwaśny|حامض": { ar: "اللمون حامض.", ph: "il-lamuun HaameD.", pl: "Cytryna jest kwaśna." },
+  "kitchen|pyszny|لذيذ": { ar: "الأكل لذيذ جداً!", ph: "il-akl laziiz gedan!", pl: "Jedzenie jest bardzo pyszne!" },
+  "kitchen|zimny|بارد": { ar: "المية باردة.", ph: "il-mayya baarda.", pl: "Woda jest zimna." },
+  "kitchen|gorący / ciepły|سخن": { ar: "الشاي سخن.", ph: "ish-shaay sokhn.", pl: "Herbata jest gorąca." },
+  "kitchen|falafel (ta3meya)|طعمية": { ar: "الطعمية أكلة الفطار.", ph: "iT-Ta3meyya aklet il-faTaar.", pl: "Falafel to danie śniadaniowe." },
+  "kitchen|shawarma|شاورما": { ar: "عايز ساندويتش شاورما.", ph: "3aayez sandawitsh shawerma.", pl: "Chcę kanapkę z shawarmą." },
+  "kitchen|kofta (mielone na grillu)|كفتة": { ar: "الكفتة مشوية على الفحم.", ph: "il-kofta mashweyya 3ala il-faHm.", pl: "Kofta jest grillowana na węglu." },
+  "kitchen|sałatka|سلطة": { ar: "السلطة فيها خضار كتير.", ph: "is-salaTa fiiha khoDaar ketiir.", pl: "W sałatce jest dużo warzyw." },
+  "kitchen|zupa|شوربة": { ar: "الشوربة سخنة وحلوة.", ph: "ish-shorba sokhna we Helwa.", pl: "Zupa jest ciepła i dobra." },
+  "kitchen|makaron|مكرونة": { ar: "بحب المكرونة بالصلصة.", ph: "baHebb il-makaroona biS-SalSa.", pl: "Lubię makaron z sosem." },
+  "kitchen|talerz|طبق": { ar: "حط الأكل في الطبق.", ph: "HoTT il-akl fiT-Taba2.", pl: "Połóż jedzenie na talerzu." },
+  "kitchen|szklanka|كباية": { ar: "عايز كباية مية.", ph: "3aayez kobaayet mayya.", pl: "Chcę szklankę wody." },
+  "kitchen|widelec|شوكة": { ar: "الشوكة على الطبق.", ph: "ish-shooka 3ala iT-Taba2.", pl: "Widelec jest na talerzu." },
+  "kitchen|łyżka|معلقة": { ar: "معلقة سكر في الشاي.", ph: "ma3la2et sokkar fish-shaay.", pl: "Łyżka cukru do herbaty." },
+  "kitchen|nóż|سكينة": { ar: "السكينة قاطعة.", ph: "is-sekkiina 2aT3a.", pl: "Nóż jest ostry." },
+  "kitchen|gotować|يطبخ": { ar: "مراتي بتطبخ كويس.", ph: "meraati betoTbokh kwayyes.", pl: "Moja żona dobrze gotuje." },
+  "kitchen|jeść|ياكل": { ar: "بياكل كتير.", ph: "biyaakol ketiir.", pl: "Dużo je." },
+  "kitchen|pić|يشرب": { ar: "بيشرب قهوة كل يوم.", ph: "biyeshrab 2ahwa koll yoom.", pl: "Pije kawę codziennie." },
+  // --- rodzina ---
+  "family|dzieci|عيال": { ar: "عندي عيال كتير.", ph: "3andi 3eyaal ketiir.", pl: "Mam dużo dzieci." },
+  "family|dziecko / chłopiec|ولد": { ar: "الولد ده شاطر.", ph: "il-walad da shaaTer.", pl: "Ten chłopiec jest zdolny." },
+  "family|rodzice|الوالدين": { ar: "بحب والديّ أوي.", ph: "baHebb waldeyya awi.", pl: "Bardzo kocham rodziców." },
+  "family|dziadek|جد": { ar: "جدي عنده تمانين سنة.", ph: "geddi 3ando tamaniin sana.", pl: "Mój dziadek ma osiemdziesiąt lat." },
+  "family|babcia|جدة": { ar: "جدتي بتطبخ حلو.", ph: "geddeti betoTbokh Helw.", pl: "Moja babcia dobrze gotuje." },
+  "family|ciotka (siostra ojca)|عمة": { ar: "عمتي أخت أبويا.", ph: "3ammeti okht abuuya.", pl: "Ciotka to siostra mojego ojca." },
+  "family|ciotka (siostra matki)|خالة": { ar: "خالتي ساكنة في طنطا.", ph: "khalti sakna fi TanTa.", pl: "Ciotka mieszka w Tancie." },
+  "family|zaręczony (m.)|مخطوب": { ar: "أخويا مخطوب.", ph: "akhuuya makhTuub.", pl: "Mój brat jest zaręczony." },
+  "family|rozwiedziony (m.)|مطلق": { ar: "هو مطلق من سنة.", ph: "howwa meTalla2 min sana.", pl: "Jest rozwiedziony od roku." },
+  "family|sąsiad|جار": { ar: "جاري راجل كويس.", ph: "gaari raagel kwayyes.", pl: "Mój sąsiad to dobry człowiek." },
+  // --- zdrowie ---
+  "health|lekarz|دكتور": { ar: "لازم أروح للدكتور.", ph: "laazem aruuH lid-doktoor.", pl: "Muszę iść do lekarza." },
+  "health|szpital|مستشفى": { ar: "المستشفى قريبة من هنا.", ph: "il-mustashfa 2orayyiba min hena.", pl: "Szpital jest blisko stąd." },
+  "health|chory (m.)|عيان": { ar: "أنا عيان النهارده.", ph: "ana 3ayyaan innaharda.", pl: "Jestem dziś chory." },
+  "health|chora (ż.)|عيانة": { ar: "هي عيانة وتعبانة.", ph: "heyya 3ayyaana we ta3baana.", pl: "Ona jest chora i zmęczona." },
+  "health|boli mnie|بيوجعني": { ar: "ضهري بيوجعني.", ph: "Dahri biyewga3ni.", pl: "Boli mnie plecy." },
+  "health|brzuch|بطن": { ar: "بطني بتوجعني.", ph: "baTni betewga3ni.", pl: "Boli mnie brzuch." },
+  "health|kaszel|كحة": { ar: "عندي كحة من إمبارح.", ph: "3andi koHHa min embaareH.", pl: "Mam kaszel od wczoraj." },
+  // --- pogoda ---
+  "weather|słońce|شمس": { ar: "الشمس قوية النهارده.", ph: "ish-shams 2aweyya innaharda.", pl: "Słońce jest dziś mocne." },
+  "weather|deszcz|مطر": { ar: "المطر بينزل في الشتا.", ph: "il-maTar biyinzel fish-shita.", pl: "Deszcz pada zimą." },
+  "weather|upał|حرارة": { ar: "الحرارة عالية في الصيف.", ph: "il-Haraara 3alya fiS-Seef.", pl: "Temperatura jest wysoka latem." },
+  "weather|pada deszcz|بتمطر": { ar: "الدنيا بتمطر بره.", ph: "id-donya betemTar barra.", pl: "Na dworze pada deszcz." },
+  "weather|zima|شتا": { ar: "الشتا في مصر مش برد أوي.", ph: "ish-shita fi maSr mish bard awi.", pl: "Zima w Egipcie nie jest bardzo zimna." },
+  // --- pozostałe ---
+  "life|Polska|بولندا": { ar: "أنا من بولندا.", ph: "ana min bolanda.", pl: "Jestem z Polski." },
+  "life|Egipt|مصر": { ar: "مصر بلد جميل.", ph: "maSr balad gamiil.", pl: "Egipt to piękny kraj." },
+  "life|za granicą|برة": { ar: "مراتي بتشتغل مع شركة برة.", ph: "meraati betishtaghal ma3 sherka barra.", pl: "Moja żona pracuje z firmą za granicą." },
+  "life|kot|قطة": { ar: "عندي قطة في البيت.", ph: "3andi 2oTTa fil-beet.", pl: "Mam kota w domu." },
+  "life|rok|سنة": { ar: "بقالي سنة في كراكوف.", ph: "ba2aali sana fi Krakow.", pl: "Jestem rok w Krakowie." },
+  "life|hobby|هواية": { ar: "العربي هوايتي.", ph: "il-3arabi hewayti.", pl: "Arabski to moje hobby." },
+  // --- pozostałe pojedyncze słowa ---
+  "kitchen|surowy|ني": { ar: "الأكل ده لسه ني.", ph: "il-akl da lessa nayy.", pl: "To jedzenie jest jeszcze surowe." },
+  "kitchen|gorzki|مر": { ar: "القهوة مرة من غير سكر.", ph: "il-2ahwa morra min 8eer sokkar.", pl: "Kawa jest gorzka bez cukru." },
+  "family|syn|ابن": { ar: "ابني في المدرسة.", ph: "ebni fil-madrasa.", pl: "Mój syn jest w szkole." },
+  "family|ojciec|أب": { ar: "أبويا راجل طيب.", ph: "abuuya raagel Tayyeb.", pl: "Mój ojciec to dobry człowiek." },
+  "family|matka|أم": { ar: "أمي بتحبني أوي.", ph: "ommi betHebbni awi.", pl: "Moja matka bardzo mnie kocha." },
+  "family|siostra|أخت": { ar: "أختي أصغر مني.", ph: "okhti aS8ar menni.", pl: "Moja siostra jest młodsza ode mnie." },
+  "family|wujek (brat ojca)|عم": { ar: "عمي أخو أبويا.", ph: "3ammi akhu abuuya.", pl: "Mój wujek to brat ojca." },
+  "family|wujek (brat matki)|خال": { ar: "خالي ساكن في إسكندرية.", ph: "khaali saaken fi eskendereyya.", pl: "Mój wujek mieszka w Aleksandrii." },
+  "family|przyjaciel / kolega|صاحب": { ar: "صاحبي من زمان.", ph: "SaaHbi min zamaan.", pl: "To mój stary przyjaciel." },
+  "health|apteka|صيدلية": { ar: "الصيدلية فين؟", ph: "iS-Saydaleyya feen?", pl: "Gdzie jest apteka?" },
+  "health|gardło|زور": { ar: "زوري بيوجعني.", ph: "zoori biyewga3ni.", pl: "Boli mnie gardło." },
+  "health|ząb|سنة": { ar: "سنتي بتوجعني.", ph: "senneti betewga3ni.", pl: "Boli mnie ząb." },
+  "weather|lato|صيف": { ar: "الصيف حر في مصر.", ph: "iS-Seef Harr fi maSr.", pl: "Lato w Egipcie jest upalne." },
+  "fillers|naprawdę? (zdziwienie)|بجد؟": { ar: "بجد؟ مش مصدق!", ph: "begad? mish meSadda2!", pl: "Naprawdę? Nie wierzę!" },
+  "fillers|rozumiem / jasne (potakiwanie)|فاهم": { ar: "أيوا، أنا فاهم.", ph: "aywa, ana faahem.", pl: "Tak, rozumiem." },
+  "fillers|krótko mówiąc|المهم": { ar: "المهم، خلصنا الشغل.", ph: "il-mohemm, khallaSna ish-shughl.", pl: "Krótko mówiąc, skończyliśmy pracę." },
+  "slang|wyluzuj / odpuść|فكّك": { ar: "فكّك من الموضوع ده.", ph: "fokkak min il-mawDuu3 da.", pl: "Odpuść sobie ten temat." },
+  "slang|genialne / miód (dosł. miód)|عسل": { ar: "الفكرة دي عسل!", ph: "il-fekra di 3asal!", pl: "Ten pomysł jest genialny!" },
+  "life|biuro|مكتب": { ar: "مكتبي في وسط البلد.", ph: "maktabi fi wist il-balad.", pl: "Moje biuro jest w centrum." },
+  "life|właściciel|صاحب": { ar: "أنا صاحب الشركة.", ph: "ana SaaHeb ish-sherka.", pl: "Jestem właścicielem firmy." },
+  "life|klient|عميل": { ar: "العميل مبسوط من الخدمة.", ph: "il-3amiil mabsuuT min il-khedma.", pl: "Klient jest zadowolony z usługi." },
+  "life|język|لغة": { ar: "العربي لغة صعبة شوية.", ph: "il-3arabi lo8a Sa3ba shwayya.", pl: "Arabski to trochę trudny język." },
+  "life|polski (język)|بولندي": { ar: "أنا بتكلم بولندي.", ph: "ana batkallem bolandi.", pl: "Mówię po polsku." },
+  "life|łatwy|سهل": { ar: "الدرس ده سهل.", ph: "id-dars da sahl.", pl: "Ta lekcja jest łatwa." },
+  "life|miasto|مدينة": { ar: "كراكوف مدينة جميلة.", ph: "Krakow mediina gamiila.", pl: "Kraków to piękne miasto." },
+  "life|kraj|بلد": { ar: "مصر بلد كبير.", ph: "maSr balad kebiir.", pl: "Egipt to duży kraj." },
+  "travel|Taksówka|تاكسي": { ar: "هركب تاكسي للمطار.", ph: "harkab taksi lil-maTaar.", pl: "Wezmę taksówkę na lotnisko." },
+  "travel|Lotnisko|المطار": { ar: "المطار بعيد عن هنا.", ph: "il-maTaar be3iid 3an hena.", pl: "Lotnisko jest daleko stąd." },
+  "travel|W prawo|يمين": { ar: "لف يمين بعد الإشارة.", ph: "leff yemiin ba3d il-eshaara.", pl: "Skręć w prawo za światłami." },
+};
+
 // ---------- Generator zdań ze słów z bazy ----------
 // Zamiast sztywnych zdań: szablony z „gniazdami”. Każde gniazdo ma pulę słów,
 // które GRAMATYCZNIE tam pasują. Rodzaj i forma są respektowane, więc każda
@@ -4995,6 +5447,9 @@ function freshDeck() {
     ...SEED_WORDS, ...VERB_WORDS, ...NOUN_WORDS, ...QW_WORDS,
     ...GRAMMAR_WORDS, ...EXPRESSION_WORDS, ...RELIGIOUS_WORDS,
     ...FOOD_WORDS, ...KITCHEN_WORDS, ...PHRASE_WORDS, ...CONJUNCTION_WORDS, ...FAMILY_WORDS, ...HEALTH_WORDS, ...WEATHER_WORDS, ...SMALLTALK_WORDS, ...FILLER_WORDS, ...SLANG_WORDS, ...LIFE_WORDS,
+    ...COLOR_WORDS, ...ADJECTIVE_WORDS, ...DAILY_VERB_WORDS, ...MOTION_VERB_WORDS, ...TIME_ADVERB_WORDS,
+    ...BODY_WORDS, ...CLOTHES_WORDS, ...HOME_FURNITURE_WORDS, ...NATURE_WORDS, ...TRANSPORT_WORDS,
+    ...JOB_WORDS, ...EMOTION_WORDS, ...ANIMAL_WORDS, ...ORDINAL_WORDS,
   ];
 }
 
@@ -5052,8 +5507,10 @@ function loadWords() {
   // 3) Nałóż zapisany postęp na dopasowane słówka (po stabilnym id).
   const prog = loadProgress();
   return all.map((w) => {
-    const p = prog[wordId(w)];
-    return p ? { ...w, ...p } : w;
+    // Dolej dodatkowy przykład, jeśli słowo go nie ma (nie zmienia wordId).
+    const base = !w.ex && EXAMPLES_EXTRA[wordId(w)] ? { ...w, ex: EXAMPLES_EXTRA[wordId(w)] } : w;
+    const p = prog[wordId(base)];
+    return p ? { ...base, ...p } : base;
   });
 }
 
@@ -5327,13 +5784,18 @@ function Flashcard({ word, flipped, onFlip, onToggleFlag, onToggleVerified, onSe
           <span className="card-eyebrow">مصري</span>
           <span className="card-arabic">{word.ar}</span>
           <span className="card-phonetic">{word.ph}</span>
-          {word.ex && (
-            <div className="card-example">
-              <span className="example-arabic">{word.ex.ar}</span>
-              <span className="example-phonetic">{word.ex.ph}</span>
-              <span className="example-pl">„{word.ex.pl}”</span>
-            </div>
-          )}
+          {(() => {
+            const ex = word.ex || findUsageExample(word);
+            if (!ex) return null;
+            return (
+              <div className="card-example">
+                {!word.ex && <span className="card-example-src">przykład z dialogu</span>}
+                <span className="example-arabic">{ex.ar}</span>
+                <span className="example-phonetic">{ex.ph}</span>
+                <span className="example-pl">„{ex.pl}”</span>
+              </div>
+            );
+          })()}
           <EditExampleButton word={word} onSaveExample={onSaveExample} className="new-example-card" />
           <KnownTags value={word.known} onSetKnown={onSetKnown} />
           <ReviewPanel word={word} onToggleFlag={onToggleFlag} onToggleVerified={onToggleVerified} />
@@ -5503,6 +5965,29 @@ function FlashcardsView({ words, onToggleFlag, onToggleVerified, onSetKnown, onS
 }
 
 // ---------- Widok: Quiz ----------
+// Znajduje w dialogach lub czytankach zdanie zawierające dane słowo — użyte jako
+// przykład w quizie, gdy słowo nie ma własnego pola ex.
+function findUsageExample(word) {
+  if (!word || !word.ar) return null;
+  const target = normalizeArabic(word.ar);
+  if (!target || target.length < 2) return null;
+  const inText = (arText) => {
+    const norm = normalizeArabic(arText);
+    return norm.split(" ").some((tok) => tok === target || (tok.length > 3 && tok.includes(target)));
+  };
+  for (const d of DIALOGUES) {
+    for (const line of d.lines) {
+      if (inText(line.ar)) return { ar: line.ar, ph: line.ph, pl: line.pl };
+    }
+  }
+  for (const r of READINGS) {
+    for (const s of r.sentences) {
+      if (inText(s.ar)) return { ar: s.ar, ph: s.ph, pl: s.pl };
+    }
+  }
+  return null;
+}
+
 function QuizView({ words, onAnswer, preserveOrder }) {
   const [pool, setPool] = useState(() =>
     preserveOrder ? words.map((_, i) => i) : shuffle(words.map((_, i) => i))
@@ -5775,19 +6260,40 @@ function QuizView({ words, onAnswer, preserveOrder }) {
               {direction === "ar2pl" ? (
                 <span className="opt-pl">{opt.pl}</span>
               ) : (
-                <>
-                  <span className="opt-arabic">{opt.ar}</span>
+                <span className="opt-ar-wrap">
+                  <bdi className="opt-arabic">{opt.ar}</bdi>
                   {(difficulty !== "expert" || selected) && (
                     <span className="opt-phonetic">{opt.ph}</span>
                   )}
-                </>
+                </span>
               )}
-              {selected && opt.ar === correctWord.ar && <Check size={18} />}
-              {selected && opt === selected && opt.ar !== correctWord.ar && <X size={18} />}
+              {selected && opt.ar === correctWord.ar && <Check size={18} className="opt-icon" />}
+              {selected && opt === selected && opt.ar !== correctWord.ar && <X size={18} className="opt-icon" />}
             </button>
           );
         })}
       </div>
+
+      {selected && (() => {
+        const usage = correctWord.ex || findUsageExample(correctWord);
+        return (
+          <div className="quiz-reveal">
+            <div className="quiz-reveal-word">
+              <span className="quiz-reveal-ar">{correctWord.ar}</span>
+              <span className="quiz-reveal-ph">{correctWord.ph}</span>
+              <span className="quiz-reveal-pl">{correctWord.pl}</span>
+            </div>
+            {usage ? (
+              <div className="quiz-reveal-ex">
+                <span className="quiz-reveal-ex-label">przykład użycia</span>
+                <span className="quiz-reveal-ex-ar">{usage.ar}</span>
+                <span className="quiz-reveal-ex-ph">{usage.ph}</span>
+                <span className="quiz-reveal-ex-pl">„{usage.pl}”</span>
+              </div>
+            ) : null}
+          </div>
+        );
+      })()}
 
       {selected && (
         <button className="nav-btn nav-btn-primary nav-btn-full" onClick={nextQuestion}>
@@ -8888,6 +9394,7 @@ const THEMES = {
       "--sand": "#eceee7", "--sand-deep": "#d8dcd0", "--ink": "#1a2420",
       "--teal": "#1d5c52", "--teal-deep": "#123f38",
       "--terracotta": "#a66a24", "--terracotta-soft": "#e0c088", "--paper": "#ffffff",
+      "--muted": "#6c766e", "--muted-soft": "#909a92", "--hairline": "rgba(0,0,0,0.06)",
     },
   },
   szalwia: {
@@ -8897,6 +9404,7 @@ const THEMES = {
       "--sand": "#eef0ea", "--sand-deep": "#dbe0d5", "--ink": "#1c241e",
       "--teal": "#5b7159", "--teal-deep": "#38473a",
       "--terracotta": "#a5542f", "--terracotta-soft": "#e0a878", "--paper": "#fcfdfb",
+      "--muted": "#6c766e", "--muted-soft": "#909a92", "--hairline": "rgba(0,0,0,0.06)",
     },
   },
   zmierzch: {
@@ -8906,6 +9414,7 @@ const THEMES = {
       "--sand": "#f3ede4", "--sand-deep": "#e2d5c4", "--ink": "#2a1c18",
       "--teal": "#7c3a2d", "--teal-deep": "#4a1f1a",
       "--terracotta": "#b3742a", "--terracotta-soft": "#e8b878", "--paper": "#fffaf3",
+      "--muted": "#7a6a60", "--muted-soft": "#a2928a", "--hairline": "rgba(0,0,0,0.06)",
     },
   },
   lazur: {
@@ -8915,6 +9424,18 @@ const THEMES = {
       "--sand": "#eaeef2", "--sand-deep": "#d3dce3", "--ink": "#16232c",
       "--teal": "#1a5a7a", "--teal-deep": "#0f3a52",
       "--terracotta": "#b57829", "--terracotta-soft": "#f0c078", "--paper": "#fdfdfd",
+      "--muted": "#5e6e78", "--muted-soft": "#8a99a2", "--hairline": "rgba(0,0,0,0.06)",
+    },
+  },
+  nocny: {
+    label: "Nocny (ciemny)",
+    emoji: "🌙",
+    dark: true,
+    vars: {
+      "--sand": "#141a18", "--sand-deep": "#242e2a", "--ink": "#e8ede9",
+      "--teal": "#4a9d8e", "--teal-deep": "#7fc9ba",
+      "--terracotta": "#d9a24e", "--terracotta-soft": "#8a6a3a", "--paper": "#1c2320",
+      "--muted": "#9aa8a0", "--muted-soft": "#78857e", "--hairline": "rgba(255,255,255,0.08)",
     },
   },
 };
@@ -8968,7 +9489,12 @@ function appearanceCSS(appearance) {
   const theme = THEMES[appearance.theme] || THEMES.morski;
   const font = ARABIC_FONTS[appearance.font] || ARABIC_FONTS.amiri;
   const vars = Object.entries(theme.vars).map(([k, v]) => `  ${k}: ${v};`).join("\n");
-  return `:root {\n${vars}\n  --ar-font: ${font.stack};\n}`;
+  // W motywie ciemnym przyciski na kolorze --teal potrzebują ciemnego tekstu
+  // (bo --teal jest jasny), a domyślne cienie/obramowania są subtelniejsze.
+  const darkExtra = theme.dark
+    ? `\n.nav-btn-primary, .tab-active, .primary-btn { color: #0f1512 !important; }\n.settings-btn, .app-header { border-color: var(--hairline); }`
+    : "";
+  return `:root {\n${vars}\n  --ar-font: ${font.stack};\n}${darkExtra}`;
 }
 
 // ---------- App ----------
@@ -9647,7 +10173,7 @@ const CSS = `
   border-radius: 10px;
   font-size: 10.5px;
   font-weight: 600;
-  color: #6a756c;
+  color: var(--muted);
   cursor: pointer;
   transition: background 0.18s, color 0.18s;
   white-space: nowrap;
@@ -9683,7 +10209,7 @@ const CSS = `
 .progress-text {
   font-size: 12.5px;
   letter-spacing: 0.5px;
-  color: #6a756c;
+  color: var(--muted);
   font-weight: 600;
 }
 
@@ -9767,7 +10293,7 @@ const CSS = `
 
 .card-hint {
   font-size: 12px;
-  color: #6c766e;
+  color: var(--muted);
   margin-top: 6px;
 }
 
@@ -9792,6 +10318,15 @@ const CSS = `
   flex-direction: column;
   gap: 5px;
   width: 100%;
+}
+.card-example-src {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+  color: var(--terracotta-soft);
+  opacity: 0.8;
+  margin-bottom: 2px;
 }
 
 .example-arabic {
@@ -9894,6 +10429,41 @@ const CSS = `
   gap: 10px;
 }
 
+/* ---- Ujawnienie po odpowiedzi (słowo + przykład) ---- */
+.quiz-reveal {
+  margin-top: 16px;
+  border: 1.5px solid var(--sand-deep);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.quiz-reveal-word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 14px;
+  background: rgba(29,92,82,0.06);
+}
+.quiz-reveal-ar { font-family: var(--ar-font); font-size: 28px; direction: rtl; color: var(--teal-deep); }
+.quiz-reveal-ph { font-size: 14px; color: var(--terracotta); font-weight: 600; }
+.quiz-reveal-pl { font-size: 13px; color: var(--muted); }
+.quiz-reveal-ex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 14px;
+  border-top: 1px solid var(--sand-deep);
+}
+.quiz-reveal-ex-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+  font-weight: 700; color: var(--muted-soft); margin-bottom: 4px;
+}
+.quiz-reveal-ex-ar { font-family: var(--ar-font); font-size: 22px; direction: rtl; color: var(--ink); line-height: 1.5; text-align: center; }
+.quiz-reveal-ex-ph { font-size: 13px; color: var(--terracotta); font-weight: 600; text-align: center; }
+.quiz-reveal-ex-pl { font-size: 13px; color: var(--muted); text-align: center; }
+.quiz-reveal-noex { font-size: 12.5px; color: var(--muted-soft); font-style: italic; text-align: center; padding: 12px; margin: 0; }
+
 .quiz-option {
   display: flex;
   align-items: center;
@@ -9909,18 +10479,27 @@ const CSS = `
 
 .quiz-option:disabled { cursor: default; }
 
+.opt-ar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
 .opt-arabic {
   font-family: var(--ar-font);
   font-size: 20px;
   direction: rtl;
+  unicode-bidi: isolate;
 }
 
 .opt-phonetic {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12.5px;
-  color: #6a756c;
-  margin-left: 10px;
+  color: var(--muted);
 }
+.opt-icon { flex-shrink: 0; margin-left: 10px; }
 
 .opt-correct {
   background: rgba(15,92,92,0.12);
@@ -9950,7 +10529,7 @@ const CSS = `
 
 .result-label {
   font-size: 14px;
-  color: #4a5650;
+  color: var(--ink);
   margin-bottom: 22px;
 }
 
@@ -9972,7 +10551,7 @@ const CSS = `
   border-radius: 9px;
   padding: 10px 11px;
   font-size: 14px;
-  background: #fff;
+  background: var(--paper);
   color: var(--ink);
   outline: none;
 }
@@ -9990,7 +10569,7 @@ const CSS = `
   font-size: 11px;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #6c766e;
+  color: var(--muted);
   font-weight: 700;
   margin: 4px 0 -2px;
   border-top: 1px dashed var(--sand-deep);
@@ -10035,7 +10614,7 @@ const CSS = `
 
 .csv-hint {
   font-size: 11.5px;
-  color: #6c766e;
+  color: var(--muted);
   margin: -6px 0 0;
 }
 
@@ -10071,7 +10650,7 @@ const CSS = `
   font-family: var(--ar-font);
   font-size: 13px;
   direction: rtl;
-  color: #6a756c;
+  color: var(--muted);
   margin-top: 2px;
 }
 .word-ex-pl {
@@ -10084,7 +10663,7 @@ const CSS = `
 .empty-state {
   text-align: center;
   padding: 40px 20px;
-  color: #6c766e;
+  color: var(--muted);
   font-size: 13.5px;
   border: 1.5px dashed var(--sand-deep);
   border-radius: 14px;
@@ -10095,7 +10674,7 @@ const CSS = `
 
 .verbs-intro {
   font-size: 12.5px;
-  color: #4a5650;
+  color: var(--ink);
   line-height: 1.5;
   margin: 0;
 }
@@ -10182,7 +10761,7 @@ const CSS = `
   flex: 1;
   border: 1.5px solid var(--sand-deep);
   background: var(--paper);
-  color: #6a756c;
+  color: var(--muted);
   font-size: 12px;
   font-weight: 600;
   padding: 7px 4px;
@@ -10198,7 +10777,7 @@ const CSS = `
 
 .verb-note {
   font-size: 11.5px;
-  color: #6a756c;
+  color: var(--muted);
   font-style: italic;
   line-height: 1.5;
   margin: 2px 0 10px;
@@ -10233,12 +10812,12 @@ const CSS = `
 .verb-pronoun-ph {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  color: #6c766e;
+  color: var(--muted);
 }
 
 .verb-pronoun-pl {
   font-size: 11px;
-  color: #6a756c;
+  color: var(--muted);
 }
 
 .verb-form-stack {
@@ -10371,7 +10950,7 @@ const CSS = `
   gap: 5px;
   border: 1.5px dashed var(--sand-deep);
   background: transparent;
-  color: #6c766e;
+  color: var(--muted);
   font-size: 11px;
   font-weight: 600;
   padding: 6px 11px;
@@ -10635,7 +11214,7 @@ const CSS = `
 .modal-close {
   border: none;
   background: none;
-  color: #6c766e;
+  color: var(--muted);
   cursor: pointer;
   display: flex;
   padding: 4px;
@@ -10649,7 +11228,7 @@ const CSS = `
 
 .modal-hint {
   font-size: 12.5px;
-  color: #4a5650;
+  color: var(--ink);
   line-height: 1.5;
   margin: 0;
 }
@@ -10673,7 +11252,7 @@ const CSS = `
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: #6c766e;
+  color: var(--muted);
 }
 
 .modal-preview {
@@ -10723,7 +11302,7 @@ const CSS = `
 }
 .new-example-row .new-example-btn {
   border: 1px dashed var(--sand-deep);
-  color: #6c766e;
+  color: var(--muted);
 }
 
 .new-example-card {
@@ -10762,10 +11341,10 @@ const CSS = `
 }
 .new-example-row .example-edit-input {
   border-color: var(--sand-deep);
-  background: #fff;
+  background: var(--paper);
   color: var(--ink);
 }
-.new-example-row .example-edit-input::placeholder { color: #b3a690; }
+.new-example-row .example-edit-input::placeholder { color: var(--muted-soft); }
 
 .example-edit-actions {
   display: flex;
@@ -10886,7 +11465,7 @@ const CSS = `
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: #6c766e;
+  color: var(--muted);
   margin: 12px 0 6px;
 }
 
@@ -10927,7 +11506,7 @@ const CSS = `
 
 .modal-chip-pl {
   font-size: 11px;
-  color: #4a5650;
+  color: var(--ink);
 }
 
 .modal-result-card {
@@ -10960,7 +11539,7 @@ const CSS = `
   padding: 6px 16px;
   font-size: 13px;
   font-weight: 600;
-  color: #556058;
+  color: var(--muted);
   cursor: pointer;
 }
 
@@ -10971,7 +11550,7 @@ const CSS = `
 
 .quiz-diff-hint {
   font-size: 11px;
-  color: #6c766e;
+  color: var(--muted);
   font-style: italic;
 }
 
@@ -10989,7 +11568,7 @@ const CSS = `
   font-weight: 700;
   letter-spacing: 0.4px;
   text-transform: uppercase;
-  color: #6c766e;
+  color: var(--muted);
 }
 
 .quiz-len-toggle {
@@ -11008,7 +11587,7 @@ const CSS = `
   padding: 5px 13px;
   font-size: 12.5px;
   font-weight: 600;
-  color: #556058;
+  color: var(--muted);
   cursor: pointer;
 }
 
@@ -11038,7 +11617,7 @@ const CSS = `
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: #6c766e;
+  color: var(--muted);
 }
 
 .progress-panel-count {
@@ -11084,7 +11663,7 @@ const CSS = `
   align-items: center;
   gap: 5px;
   font-size: 11px;
-  color: #556058;
+  color: var(--muted);
 }
 
 .legend-dot {
@@ -11174,7 +11753,7 @@ const CSS = `
 
 .qw-ex-pl {
   font-size: 13px;
-  color: #4a5650;
+  color: var(--ink);
   font-style: italic;
 }
 
@@ -11322,7 +11901,7 @@ const CSS = `
   outline: none;
 }
 .search-input:focus { border-color: var(--teal); }
-.search-input::placeholder { color: #909a92; }
+.search-input::placeholder { color: var(--muted-soft); }
 
 .search-clear {
   position: absolute;
@@ -11337,7 +11916,7 @@ const CSS = `
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #556058;
+  color: var(--muted);
   cursor: pointer;
 }
 
@@ -11356,7 +11935,7 @@ const CSS = `
   padding: 5px 12px;
   font-size: 12px;
   font-weight: 600;
-  color: #556058;
+  color: var(--muted);
   cursor: pointer;
 }
 .status-filter-btn:hover { border-color: var(--teal); }
@@ -11370,7 +11949,7 @@ const CSS = `
 .status-filter-count {
   margin-left: auto;
   font-size: 11.5px;
-  color: #6c766e;
+  color: var(--muted);
   font-style: italic;
 }
 
@@ -11415,7 +11994,7 @@ const CSS = `
 
 .sentence-strip-hint {
   font-size: 12.5px;
-  color: #909a92;
+  color: var(--muted-soft);
   font-style: italic;
   padding-left: 4px;
 }
@@ -11532,7 +12111,7 @@ const CSS = `
 
 .neg-pl {
   font-size: 13px;
-  color: #4a5650;
+  color: var(--ink);
 }
 
 .neg-pair {
@@ -11554,7 +12133,7 @@ const CSS = `
 }
 
 .neg-arrow {
-  color: #909a92;
+  color: var(--muted-soft);
   font-size: 13px;
   padding-left: 2px;
 }
@@ -11565,7 +12144,7 @@ const CSS = `
   border-radius: 10px;
   padding: 10px;
   font-size: 12px;
-  color: #556058;
+  color: var(--muted);
   cursor: pointer;
   width: 100%;
 }
@@ -11589,7 +12168,7 @@ const CSS = `
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
-  color: #556058;
+  color: var(--muted);
   cursor: pointer;
 }
 .dlg-tab:hover { border-color: var(--teal); }
@@ -11625,7 +12204,7 @@ const CSS = `
 
 .dlg-context {
   font-size: 12.5px;
-  color: #6c766e;
+  color: var(--muted);
   font-style: italic;
   margin: 0 0 14px;
 }
@@ -11674,7 +12253,7 @@ const CSS = `
 
 .dlg-pl {
   font-size: 12.5px;
-  color: #4a5650;
+  color: var(--ink);
 }
 
 /* ---- Stopniowanie ---- */
@@ -11696,7 +12275,7 @@ const CSS = `
   font-weight: 700;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: #909a92;
+  color: var(--muted-soft);
 }
 .compar-ar {
   font-family: var(--ar-font);
@@ -11711,11 +12290,11 @@ const CSS = `
 }
 .compar-pl {
   font-size: 11px;
-  color: #4a5650;
+  color: var(--ink);
 }
 .compar-arrow {
   align-self: center;
-  color: #c0b49c;
+  color: var(--muted-soft);
   font-size: 13px;
 }
 
@@ -11755,7 +12334,7 @@ const CSS = `
   font-weight: 700;
   letter-spacing: 0.2px;
   text-transform: uppercase;
-  color: #909a92;
+  color: var(--muted-soft);
 }
 .imper-cell-neg .imper-label {
   color: #c0392b;
@@ -11842,7 +12421,7 @@ const CSS = `
 .stats-streak-fire { font-size: 24px; margin-top: -4px; }
 .stats-streak-label {
   font-size: 13px;
-  color: #556058;
+  color: var(--muted);
   margin-top: 4px;
 }
 .stats-cards {
@@ -11868,7 +12447,7 @@ const CSS = `
 }
 .stats-card-label {
   font-size: 10.5px;
-  color: #6c766e;
+  color: var(--muted);
   text-align: center;
 }
 .stats-h {
@@ -11900,7 +12479,7 @@ const CSS = `
 .stats-cell-3 { background: var(--teal); }
 .stats-dow {
   font-size: 9px;
-  color: #909a92;
+  color: var(--muted-soft);
 }
 .stats-cat-list {
   list-style: none;
@@ -11917,7 +12496,7 @@ const CSS = `
   margin-bottom: 5px;
 }
 .stats-cat-label { font-size: 13px; color: var(--ink); }
-.stats-cat-count { font-size: 12px; color: #6c766e; font-weight: 600; }
+.stats-cat-count { font-size: 12px; color: var(--muted); font-weight: 600; }
 .stats-cat-track {
   height: 8px;
   border-radius: 999px;
@@ -12015,7 +12594,7 @@ const CSS = `
 }
 .stats-backup-note {
   font-size: 12.5px;
-  color: #6c766e;
+  color: var(--muted);
   line-height: 1.5;
   margin: 0 0 14px;
 }
@@ -12048,7 +12627,7 @@ const CSS = `
 }
 .backup-modal-note {
   font-size: 12.5px;
-  color: #4a5650;
+  color: var(--ink);
   line-height: 1.5;
   margin: 0 0 12px;
 }
@@ -12087,7 +12666,7 @@ const CSS = `
   gap: 3px;
   border: 1.5px solid var(--sand-deep);
   background: var(--paper);
-  color: #6a756c;
+  color: var(--muted);
   font-size: 11px;
   font-weight: 600;
   padding: 5px 9px;
@@ -12112,7 +12691,7 @@ const CSS = `
 .known-tag {
   border: 1.5px solid var(--sand-deep);
   background: var(--paper);
-  color: #6a756c;
+  color: var(--muted);
   font-size: 11.5px;
   font-weight: 600;
   padding: 5px 11px;
@@ -12120,7 +12699,7 @@ const CSS = `
   cursor: pointer;
   transition: all 0.15s ease;
 }
-.known-tag:hover { border-color: #a4aea4; }
+.known-tag:hover { border-color: var(--muted-soft); }
 .known-tag-known.known-tag-active {
   background: #2e7d52;
   border-color: #2e7d52;
@@ -12174,7 +12753,7 @@ const CSS = `
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 700;
-  color: #909a92;
+  color: var(--muted-soft);
   margin: 18px 0 10px;
 }
 .settings-themes { display: flex; flex-direction: column; gap: 8px; }
@@ -12267,7 +12846,7 @@ const CSS = `
   line-height: 1.3;
 }
 .write-placeholder {
-  color: #a4aea4;
+  color: var(--muted-soft);
   font-size: 14px;
 }
 .write-answer-ok { border-color: #2e7d52; border-style: solid; background: rgba(46,125,82,0.06); }
@@ -12340,7 +12919,7 @@ const CSS = `
 .lesson-emoji { font-size: 28px; flex-shrink: 0; }
 .lesson-info { display: flex; flex-direction: column; flex: 1; }
 .lesson-title { font-family: Georgia, serif; font-size: 16px; font-weight: 700; color: var(--teal-deep); }
-.lesson-meta { font-size: 12px; color: #6c766e; margin-top: 2px; }
+.lesson-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .lesson-arrow { color: var(--teal); font-size: 18px; }
 .lesson-back {
   align-self: flex-start;
@@ -12356,7 +12935,7 @@ const CSS = `
 .lesson-head { text-align: center; margin-bottom: 18px; }
 .lesson-head-emoji { font-size: 36px; }
 .lesson-head-title { font-family: Georgia, serif; font-size: 22px; color: var(--teal-deep); margin: 6px 0 4px; }
-.lesson-head-context { font-size: 13px; color: #6c766e; margin: 0; }
+.lesson-head-context { font-size: 13px; color: var(--muted); margin: 0; }
 .lesson-dialogue {
   border: 1.5px solid var(--sand-deep);
   border-radius: 16px;
@@ -12375,7 +12954,7 @@ const CSS = `
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 700;
-  color: #909a92;
+  color: var(--muted-soft);
 }
 .lesson-hide-btn {
   border: none;
@@ -12413,7 +12992,7 @@ const CSS = `
 .lesson-tile-label { font-size: 13px; font-weight: 600; color: var(--ink); }
 .lesson-tile-count { font-size: 11px; color: var(--terracotta); font-weight: 600; }
 .lesson-tile-disabled { opacity: 0.4; cursor: not-allowed; }
-.lesson-tile-disabled .lesson-tile-count { color: #909a92; }
+.lesson-tile-disabled .lesson-tile-count { color: var(--muted-soft); }
 
 /* ---- Zdania w lekcji ---- */
 .sentence-answer-line {
@@ -12443,7 +13022,7 @@ const CSS = `
   display: flex;
   align-items: center;
 }
-.sentence-placeholder { color: #a4aea4; font-size: 13px; }
+.sentence-placeholder { color: var(--muted-soft); font-size: 13px; }
 .sentence-bank {
   display: flex;
   flex-wrap: wrap;
@@ -12472,7 +13051,7 @@ const CSS = `
 .sentence-fb-ok { color: #2e7d52; }
 .sentence-fb-reveal { color: var(--terracotta); }
 .sentence-note {
-  font-size: 12.5px; color: #6c766e; text-align: center;
+  font-size: 12.5px; color: var(--muted); text-align: center;
   background: rgba(0,0,0,0.03); padding: 8px 12px; border-radius: 8px; margin-bottom: 12px;
 }
 .sentence-actions { display: flex; gap: 8px; }
@@ -12492,12 +13071,12 @@ const CSS = `
 .reading-emoji { font-size: 28px; flex-shrink: 0; }
 .reading-info { display: flex; flex-direction: column; flex: 1; }
 .reading-title { font-family: Georgia, serif; font-size: 16px; font-weight: 700; color: var(--teal-deep); }
-.reading-meta { font-size: 12px; color: #6c766e; margin-top: 2px; }
+.reading-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .reading-arrow { color: var(--teal); font-size: 18px; }
 .reading-head { text-align: center; margin-bottom: 14px; }
 .reading-head-emoji { font-size: 36px; }
 .reading-head-title { font-family: Georgia, serif; font-size: 22px; color: var(--teal-deep); margin: 6px 0 4px; }
-.reading-head-context { font-size: 13px; color: #6c766e; margin: 0; }
+.reading-head-context { font-size: 13px; color: var(--muted); margin: 0; }
 .reading-tense-note {
   background: rgba(166,106,36,0.1); border: 1px solid rgba(166,106,36,0.25);
   border-radius: 10px; padding: 10px 14px; font-size: 12.5px; color: #8a5a1e;
@@ -12515,7 +13094,7 @@ const CSS = `
   direction: rtl; color: var(--ink); line-height: 1.6; margin-bottom: 4px;
 }
 .reading-ph { display: block; font-size: 13.5px; color: var(--terracotta); font-weight: 600; margin-bottom: 2px; }
-.reading-pl { display: block; font-size: 13.5px; color: #6c766e; }
+.reading-pl { display: block; font-size: 13.5px; color: var(--muted); }
 .reading-q-title { font-family: Georgia, serif; font-size: 17px; color: var(--teal-deep); margin: 0 0 14px; }
 .reading-questions { display: flex; flex-direction: column; gap: 18px; margin-bottom: 20px; }
 .reading-q-text { font-size: 14.5px; font-weight: 600; color: var(--ink); margin: 0 0 10px; }
@@ -12546,11 +13125,11 @@ const CSS = `
 .msa-tab {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
   padding: 10px 4px; border: 1.5px solid var(--sand-deep); background: var(--paper);
-  border-radius: 12px; cursor: pointer; font-size: 12px; font-weight: 600; color: #6c766e;
+  border-radius: 12px; cursor: pointer; font-size: 12px; font-weight: 600; color: var(--muted);
 }
 .msa-tab-active { border-color: var(--teal); border-width: 2px; color: var(--teal-deep); background: rgba(29,92,82,0.05); }
 .msa-tab-emoji { font-size: 15px; }
-.msa-group-hint { font-size: 12.5px; color: #6c766e; font-style: italic; margin: 0 0 14px; }
+.msa-group-hint { font-size: 12.5px; color: var(--muted); font-style: italic; margin: 0 0 14px; }
 .msa-list { display: flex; flex-direction: column; gap: 12px; }
 .msa-row {
   border: 1.5px solid var(--sand-deep); background: var(--paper);
@@ -12570,17 +13149,17 @@ const CSS = `
 .msa-badge-msa { background: rgba(166,106,36,0.15); color: #8a5a1e; }
 .msa-ar { font-family: var(--ar-font); font-size: 24px; direction: rtl; color: var(--ink); }
 .msa-ph { font-size: 13px; color: var(--terracotta); font-weight: 600; }
-.msa-note { font-size: 12px; color: #6c766e; margin: 10px 0 0; line-height: 1.5; }
+.msa-note { font-size: 12px; color: var(--muted); margin: 10px 0 0; line-height: 1.5; }
 .msa-pron-pair { display: flex; gap: 10px; margin-bottom: 8px; }
 .msa-pron { flex: 1; text-align: center; font-size: 15px; font-weight: 600; padding: 8px; border-radius: 8px; }
 .msa-pron-eg { background: rgba(29,92,82,0.08); color: var(--teal-deep); }
 .msa-pron-msa { background: rgba(166,106,36,0.08); color: #8a5a1e; }
-.msa-rule { font-size: 12px; color: #6c766e; margin: 0; text-align: center; }
+.msa-rule { font-size: 12px; color: var(--muted); margin: 0; text-align: center; }
 
 /* ---- Statystyki: przerobione fiszki ---- */
 .stats-empty-note {
   font-size: 12.5px;
-  color: #6c766e;
+  color: var(--muted);
   font-style: italic;
   margin: 0 0 8px;
 }
@@ -12606,7 +13185,7 @@ const CSS = `
 }
 .stats-known-label {
   font-size: 11px;
-  color: #4a5650;
+  color: var(--ink);
   text-align: center;
 }
 .stats-known-green { background: rgba(46,125,82,0.08); }
@@ -12639,14 +13218,14 @@ const CSS = `
 }
 .pattern-chevron {
   font-size: 18px;
-  color: #909a92;
+  color: var(--muted-soft);
 }
 .pattern-body {
   padding: 0 16px 16px;
 }
 .pattern-intro {
   font-size: 12.5px;
-  color: #4a5650;
+  color: var(--ink);
   line-height: 1.5;
   margin: 0 0 12px;
 }
@@ -12665,7 +13244,7 @@ const CSS = `
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.4px;
-  color: #909a92;
+  color: var(--muted-soft);
   padding: 4px 8px;
   border-bottom: 1.5px solid var(--sand-deep);
 }
@@ -12677,7 +13256,7 @@ const CSS = `
 }
 .pattern-pron {
   font-size: 12.5px;
-  color: #4a5650;
+  color: var(--ink);
 }
 .pattern-affix {
   font-family: var(--ar-font);
@@ -12715,13 +13294,13 @@ const CSS = `
 }
 .irr-desc {
   font-size: 12px;
-  color: #4a5650;
+  color: var(--ink);
   line-height: 1.45;
   margin: 0 0 4px;
 }
 .irr-example {
   font-size: 11.5px;
-  color: #6c766e;
+  color: var(--muted);
   font-style: italic;
   margin: 0 0 8px;
 }
