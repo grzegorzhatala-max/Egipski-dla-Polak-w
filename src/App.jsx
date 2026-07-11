@@ -1690,6 +1690,8 @@ const CATEGORIES = [
   { key: "emotions", label: "Emocje i stany", emoji: "😊" },
   { key: "animals", label: "Zwierzęta", emoji: "🐾" },
   { key: "ordinals", label: "Liczby porządkowe", emoji: "🔢" },
+  { key: "directions", label: "Kierunki i położenie", emoji: "🧭" },
+  { key: "constructions", label: "Konstrukcje zdaniowe", emoji: "🔗" },
   { key: "expressions", label: "Wyrażenia codzienne", emoji: "💬" },
   { key: "conjunctions", label: "Spójniki i łączniki", emoji: "🔗" },
   { key: "religious", label: "Wyrażenia religijne", emoji: "🕌" },
@@ -3080,16 +3082,16 @@ const TENSE_LABELS = {
 // Naturalne dopełnienie do przykładu czasownika (żeby przykład był pełnym zdaniem,
 // nie tylko „zaimek + czasownik”). Klucz = bezokolicznik polski.
 const VERB_OBJECTS = {
-  "chcieć": { ar: "شاي", ph: "shaay", pl: "herbaty" },
-  "robić": { ar: "حاجة", ph: "Haaga", pl: "coś" },
-  "pić": { ar: "قهوة", ph: "2ahwa", pl: "kawę" },
-  "rozumieć": { ar: "الدرس", ph: "id-dars", pl: "lekcję" },
-  "pracować": { ar: "هنا", ph: "hena", pl: "tutaj" },
-  "widzieć": { ar: "البحر", ph: "il-baHr", pl: "morze" },
-  "wiedzieć": { ar: "كل حاجة", ph: "koll Haaga", pl: "wszystko" },
-  "musieć": { ar: "أروح", ph: "aruuH", pl: "iść" },
-  "spać": { ar: "بدري", ph: "badri", pl: "wcześnie" },
-  "pisać": { ar: "رسالة", ph: "resaala", pl: "list" },
+  "chcieć": { ar: "شاي بالنعناع", ph: "shaay bin-ne3naa3", pl: "herbaty z miętą" },
+  "robić": { ar: "حاجة حلوة للعشا", ph: "Haaga Helwa lil-3asha", pl: "coś dobrego na kolację" },
+  "pić": { ar: "قهوة في القهوة", ph: "2ahwa fil-2ahwa", pl: "kawę w kawiarni" },
+  "rozumieć": { ar: "الدرس كويس", ph: "id-dars kwayyes", pl: "lekcję dobrze" },
+  "pracować": { ar: "في المكتب كل يوم", ph: "fil-maktab koll yoom", pl: "w biurze codziennie" },
+  "widzieć": { ar: "البحر من الشباك", ph: "il-baHr min ish-shebbaak", pl: "morze przez okno" },
+  "wiedzieć": { ar: "كل حاجة عن الموضوع", ph: "koll Haaga 3an il-mawDuu3", pl: "wszystko o tej sprawie" },
+  "musieć": { ar: "أروح الشغل بدري", ph: "aruuH ish-shughl badri", pl: "iść do pracy wcześnie" },
+  "spać": { ar: "بدري عشان الشغل", ph: "badri 3ashaan ish-shughl", pl: "wcześnie z powodu pracy" },
+  "pisać": { ar: "رسالة لصاحبي", ph: "resaala li-SaaHbi", pl: "list do przyjaciela" },
 };
 
 function verbsToWords(verbs) {
@@ -4415,6 +4417,56 @@ const ORDINAL_WORDS = [
   { cat: "ordinals", pl: "ostatni", ar: "آخر", ph: "aakher" },
 ];
 
+// ---------- Kierunki i położenie (przyimki miejsca) ----------
+const DIRECTION_WORDS = [
+  // kierunki
+  { cat: "directions", pl: "w prawo / prawa", ar: "يمين", ph: "yemiin", ex: { ar: "لف يمين بعد الإشارة.", ph: "leff yemiin ba3d il-eshaara.", pl: "Skręć w prawo za światłami." } },
+  { cat: "directions", pl: "w lewo / lewa", ar: "شمال", ph: "shemaal", ex: { ar: "البيت على الشمال.", ph: "il-beet 3ala ish-shemaal.", pl: "Dom jest po lewej." } },
+  { cat: "directions", pl: "prosto", ar: "على طول", ph: "3ala Tuul", ex: { ar: "امشي على طول.", ph: "emshi 3ala Tuul.", pl: "Idź prosto." } },
+  { cat: "directions", pl: "do góry / w górę", ar: "فوق", ph: "foo2", ex: { ar: "الأوضة فوق.", ph: "il-ooDa foo2.", pl: "Pokój jest na górze." } },
+  { cat: "directions", pl: "do dołu / w dół", ar: "تحت", ph: "taHt", ex: { ar: "المطبخ تحت.", ph: "il-maTbakh taHt.", pl: "Kuchnia jest na dole." } },
+  { cat: "directions", pl: "z przodu / na przedzie", ar: "قدام", ph: "2oddaam", ex: { ar: "العربية قدام البيت.", ph: "il-3arabeyya 2oddaam il-beet.", pl: "Samochód jest przed domem." } },
+  { cat: "directions", pl: "z tyłu / za", ar: "ورا", ph: "wara", ex: { ar: "الجنينة ورا البيت.", ph: "ig-geneena wara il-beet.", pl: "Ogród jest za domem." } },
+  // przyimki miejsca
+  { cat: "directions", pl: "na (czymś)", ar: "على", ph: "3ala", ex: { ar: "الكتاب على الترابيزة.", ph: "il-ketaab 3ala it-tarabeeza.", pl: "Książka jest na stole." } },
+  { cat: "directions", pl: "w / wewnątrz", ar: "في", ph: "fi", ex: { ar: "المفتاح في الشنطة.", ph: "il-moftaaH fish-shanTa.", pl: "Klucz jest w torbie." } },
+  { cat: "directions", pl: "pod", ar: "تحت", ph: "taHt", ex: { ar: "القطة تحت الكرسي.", ph: "il-2oTTa taHt il-korsi.", pl: "Kot jest pod krzesłem." } },
+  { cat: "directions", pl: "nad / powyżej", ar: "فوق", ph: "foo2", ex: { ar: "اللمبة فوق الترابيزة.", ph: "il-lamba foo2 it-tarabeeza.", pl: "Lampa jest nad stołem." } },
+  { cat: "directions", pl: "obok / przy", ar: "جنب", ph: "ganb", ex: { ar: "اقعد جنبي.", ph: "o23od ganbi.", pl: "Usiądź obok mnie." } },
+  { cat: "directions", pl: "między", ar: "بين", ph: "been", ex: { ar: "المحل بين البنك والصيدلية.", ph: "il-maHall been il-bank wiS-Saydaleyya.", pl: "Sklep jest między bankiem a apteką." } },
+  { cat: "directions", pl: "koło / w pobliżu", ar: "جنب", ph: "ganb", ex: { ar: "أنا جنب المحطة.", ph: "ana ganb il-maHaTTa.", pl: "Jestem koło stacji." } },
+  { cat: "directions", pl: "naprzeciwko", ar: "قصاد", ph: "2oSaad", ex: { ar: "المدرسة قصاد البيت.", ph: "il-madrasa 2oSaad il-beet.", pl: "Szkoła jest naprzeciwko domu." } },
+  { cat: "directions", pl: "w środku / wewnątrz", ar: "جوه", ph: "gowwa", ex: { ar: "استنى جوه.", ph: "estanna gowwa.", pl: "Poczekaj w środku." } },
+  { cat: "directions", pl: "na zewnątrz", ar: "برة", ph: "barra", ex: { ar: "العربية برة.", ph: "il-3arabeyya barra.", pl: "Samochód jest na zewnątrz." } },
+  // przydatne odniesienia
+  { cat: "directions", pl: "tutaj", ar: "هنا", ph: "hena", ex: { ar: "تعالى هنا.", ph: "ta3aala hena.", pl: "Chodź tutaj." } },
+  { cat: "directions", pl: "tam", ar: "هناك", ph: "henaak", ex: { ar: "المحطة هناك.", ph: "il-maHaTTa henaak.", pl: "Stacja jest tam." } },
+  { cat: "directions", pl: "blisko", ar: "قريب", ph: "2orayyeb", ex: { ar: "البيت قريب.", ph: "il-beet 2orayyeb.", pl: "Dom jest blisko." } },
+  { cat: "directions", pl: "daleko", ar: "بعيد", ph: "be3iid", ex: { ar: "المطار بعيد.", ph: "il-maTaar be3iid.", pl: "Lotnisko jest daleko." } },
+];
+
+// ---------- Konstrukcje zdaniowe (mowa złożona) ----------
+// Gotowe „ramki" do wyrażania niepewności, opinii, zamiaru, nadziei. To one
+// pozwalają budować złożone myśli: „nie wiem, czy…", „myślę, że…".
+const CONSTRUCTION_WORDS = [
+  { cat: "constructions", pl: "nie wiem (m.)", ar: "مش عارف", ph: "mish 3aaref", ex: { ar: "مش عارف هروح ولا لأ.", ph: "mish 3aaref haruuH walla la2.", pl: "Nie wiem, czy pójdę, czy nie." } },
+  { cat: "constructions", pl: "nie wiem (ż.)", ar: "مش عارفة", ph: "mish 3arfa", ex: { ar: "مش عارفة أعمل إيه.", ph: "mish 3arfa a3mel eeh.", pl: "Nie wiem, co robić." } },
+  { cat: "constructions", pl: "…czy… (w mowie zależnej)", ar: "لو", ph: "law", ex: { ar: "مش عارف لو هييجي.", ph: "mish 3aaref law hayiigi.", pl: "Nie wiem, czy przyjdzie." } },
+  { cat: "constructions", pl: "…czy nie", ar: "ولا لأ", ph: "walla la2", ex: { ar: "هتيجي ولا لأ؟", ph: "hatiigi walla la2?", pl: "Przyjdziesz czy nie?" } },
+  { cat: "constructions", pl: "myślę, że… (m.)", ar: "أنا فاكر إن", ph: "ana faaker enn", ex: { ar: "أنا فاكر إن ده صح.", ph: "ana faaker enn da SaHH.", pl: "Myślę, że to prawda." } },
+  { cat: "constructions", pl: "wydaje mi się, że…", ar: "أظن إن", ph: "aZonn enn", ex: { ar: "أظن إنه مشغول.", ph: "aZonn ennoh mashghuul.", pl: "Wydaje mi się, że jest zajęty." } },
+  { cat: "constructions", pl: "mam nadzieję, że…", ar: "أتمنى إن", ph: "atmanna enn", ex: { ar: "أتمنى إنك تيجي.", ph: "atmanna ennak tiigi.", pl: "Mam nadzieję, że przyjdziesz." } },
+  { cat: "constructions", pl: "boję się, że…", ar: "خايف إن", ph: "khaayef enn", ex: { ar: "خايف إن الوقت يخلص.", ph: "khaayef enn il-wa2t yekhlaS.", pl: "Boję się, że skończy się czas." } },
+  { cat: "constructions", pl: "cieszę się, że…", ar: "مبسوط إن", ph: "mabsuuT enn", ex: { ar: "مبسوط إنك هنا.", ph: "mabsuuT ennak hena.", pl: "Cieszę się, że tu jesteś." } },
+  { cat: "constructions", pl: "jestem pewien, że… (m.)", ar: "متأكد إن", ph: "met2akked enn", ex: { ar: "متأكد إن ده صح.", ph: "met2akked enn da SaHH.", pl: "Jestem pewien, że to prawda." } },
+  { cat: "constructions", pl: "może / możliwe, że…", ar: "يمكن", ph: "yemken", ex: { ar: "يمكن أروح بكرة.", ph: "yemken aruuH bukra.", pl: "Może pójdę jutro." } },
+  { cat: "constructions", pl: "musisz / trzeba (żeby)", ar: "لازم", ph: "laazem", ex: { ar: "لازم نروح دلوقتي.", ph: "laazem neruuH delwa2ti.", pl: "Musimy iść teraz." } },
+  { cat: "constructions", pl: "chcę, żeby…", ar: "عايز", ph: "3aayez", ex: { ar: "عايز أقولك حاجة.", ph: "3aayez a2ollak Haaga.", pl: "Chcę ci coś powiedzieć." } },
+  { cat: "constructions", pl: "wolałbym / wolę", ar: "أفضّل", ph: "afaDDal", ex: { ar: "أفضّل أقعد في البيت.", ph: "afaDDal a23od fil-beet.", pl: "Wolę zostać w domu." } },
+  { cat: "constructions", pl: "zależy (od tego)", ar: "على حسب", ph: "3ala Hasab", ex: { ar: "على حسب الجو.", ph: "3ala Hasab il-gaww.", pl: "Zależy od pogody." } },
+  { cat: "constructions", pl: "dlatego / z tego powodu (że)", ar: "عشان كده", ph: "3ashaan keda", ex: { ar: "تعبان، عشان كده مش هخرج.", ph: "ta3baan, 3ashaan keda mish hakhrog.", pl: "Jestem zmęczony, dlatego nie wyjdę." } },
+];
+
 // Przykłady dla słów, które nie mają własnego pola ex i nie występują w dialogach.
 // Klucz = wordId (cat|pl|ar). Doklejane w loadWords, nie zmieniają definicji słowa
 // (więc wordId się nie zmienia i postęp jest zachowany).
@@ -4900,6 +4952,39 @@ const MSA_COMPARISON = {
 // Dłuższe teksty narracyjne (nie dialogi) z użyciem różnych czasów.
 // Każde zdanie: ar/ph/pl. tenseNote wyjaśnia użyte czasy. questions = pytania
 // na rozumienie (typu prawda/fałsz lub wybór), oparte wyłącznie na treści tekstu.
+// ---------- Edycja dialogów i czytanek ----------
+// Poprawki treści (błędy w ar/ph/pl) zapisywane w localStorage jako nakładki,
+// nakładane na dane z kodu. Dzięki temu poprawki przetrwają aktualizacje aplikacji.
+const CONTENT_EDITS_KEY = "ar-eg-content-edits-v1";
+
+function loadContentEdits() {
+  try {
+    const raw = localStorage.getItem(CONTENT_EDITS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveContentEdit(key, value) {
+  try {
+    const all = loadContentEdits();
+    all[key] = value;
+    localStorage.setItem(CONTENT_EDITS_KEY, JSON.stringify(all));
+  } catch (e) {}
+}
+
+// Klucz linii: "dialog|{tytuł}|{index}" lub "reading|{tytuł}|{index}".
+function lineEditKey(kind, title, i) {
+  return `${kind}|${title}|${i}`;
+}
+
+// Nakłada zapisane poprawki na linię (ar/ph/pl). edits = obiekt z loadContentEdits.
+function applyLineEdit(line, edits, key) {
+  const e = edits[key];
+  return e ? { ...line, ...e } : line;
+}
+
 const READINGS = [
   {
     title: "Mój dzień",
@@ -5404,6 +5489,9 @@ const PHRASE_WORDS = [
   { cat: "questions", pl: "Głośniej trochę", ar: "أعلى شوية", ph: "a3la shwayya" },
   { cat: "questions_pron", pl: "Dlaczego?", ar: "ليه؟", ph: "leeh?" },
   { cat: "questions_pron", pl: "Dokąd?", ar: "على فين؟", ph: "3ala feen?" },
+  { cat: "questions_pron", pl: "Który? (rodz. męski)", ar: "أنهو؟", ph: "anhu?", ex: { ar: "أنهو دور؟", ph: "anhu door?", pl: "Które piętro?" } },
+  { cat: "questions_pron", pl: "Która? (rodz. żeński)", ar: "أنهي؟", ph: "anhi?", ex: { ar: "إنت ساكن في أنهي شقة؟", ph: "enta saaken fi anhi sha22a?", pl: "W którym mieszkaniu mieszkasz?" } },
+  { cat: "questions_pron", pl: "Którzy? / Które? (l. mnoga)", ar: "أنهم؟", ph: "anhum?", ex: { ar: "أنهم كتب؟", ph: "anhum kotob?", pl: "Które książki?" } },
   { cat: "questions", pl: "Co się stało?", ar: "حصل إيه؟", ph: "HaSal eeh?" },
   { cat: "work_daily", pl: "Mieszkam w Polsce", ar: "أنا ساكن في بولندا", ph: "ana saaken fi bolanda" },
   { cat: "work_daily", pl: "Jestem Polakiem", ar: "أنا بولندي", ph: "ana bolandi" },
@@ -5449,7 +5537,7 @@ function freshDeck() {
     ...FOOD_WORDS, ...KITCHEN_WORDS, ...PHRASE_WORDS, ...CONJUNCTION_WORDS, ...FAMILY_WORDS, ...HEALTH_WORDS, ...WEATHER_WORDS, ...SMALLTALK_WORDS, ...FILLER_WORDS, ...SLANG_WORDS, ...LIFE_WORDS,
     ...COLOR_WORDS, ...ADJECTIVE_WORDS, ...DAILY_VERB_WORDS, ...MOTION_VERB_WORDS, ...TIME_ADVERB_WORDS,
     ...BODY_WORDS, ...CLOTHES_WORDS, ...HOME_FURNITURE_WORDS, ...NATURE_WORDS, ...TRANSPORT_WORDS,
-    ...JOB_WORDS, ...EMOTION_WORDS, ...ANIMAL_WORDS, ...ORDINAL_WORDS,
+    ...JOB_WORDS, ...EMOTION_WORDS, ...ANIMAL_WORDS, ...ORDINAL_WORDS, ...DIRECTION_WORDS, ...CONSTRUCTION_WORDS,
   ];
 }
 
@@ -5493,18 +5581,41 @@ function saveProgress(words) {
 function loadWords() {
   // 1) Zbuduj aktualną bazę (z nowymi słowami z każdej aktualizacji).
   const deck = freshDeck();
-  // 2) Dołóż słówka dodane ręcznie przez użytkownika (zapisane pod starym kluczem).
-  let userAdded = [];
+  // 2) Wczytaj zapisane słówka. Rozdziel na:
+  //    - edycje słów z bazy (ten sam wordId co w decku, ale zmieniona treść/ph/ex),
+  //    - słówka dodane ręcznie (wordId spoza decku).
+  let saved = [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const saved = JSON.parse(raw);
-      const deckIds = new Set(deck.map(wordId));
-      userAdded = saved.filter((w) => !deckIds.has(wordId(w)));
-    }
+    if (raw) saved = JSON.parse(raw) || [];
   } catch (e) {}
-  const all = [...deck, ...userAdded];
-  // 3) Nałóż zapisany postęp na dopasowane słówka (po stabilnym id).
+  const deckIds = new Set(deck.map(wordId));
+  const savedById = new Map(saved.map((w) => [wordId(w), w]));
+  const userAdded = saved.filter((w) => !deckIds.has(wordId(w)));
+
+  // Lista oryginałów z bazy ukrytych, bo użytkownik zmienił ich pl/ar (nowy wordId).
+  let hidden = [];
+  try {
+    const rawH = localStorage.getItem("ar-eg-hidden");
+    if (rawH) hidden = JSON.parse(rawH) || [];
+  } catch (e) {}
+  const hiddenSet = new Set(hidden);
+
+  // 3) Dla słów z decku: jeśli użytkownik je edytował (zapisana wersja różni się
+  //    treścią), użyj zapisanej wersji zamiast tej z kodu — inaczej edycje znikają.
+  //    Pomiń oryginały ukryte (zastąpione edycją zmieniającą pl/ar).
+  const merged = deck
+    .filter((w) => !hiddenSet.has(wordId(w)))
+    .map((w) => {
+      const s = savedById.get(wordId(w));
+      if (s && (s.ph !== w.ph || (s.ex && !w.ex) || (s.pl !== w.pl))) {
+        return { ...w, ...s };
+      }
+      return w;
+    });
+  const all = [...merged, ...userAdded];
+
+  // 4) Nałóż zapisany postęp na dopasowane słówka (po stabilnym id).
   const prog = loadProgress();
   return all.map((w) => {
     // Dolej dodatkowy przykład, jeśli słowo go nie ma (nie zmienia wordId).
@@ -7843,18 +7954,71 @@ function SentencesView() {
 }
 
 // ---------- Widok: Mini-dialogi ----------
+// ---------- Edytor pojedynczej linii (dialog/czytanka) ----------
+function LineEditor({ line, onSave, onCancel }) {
+  const [ar, setAr] = useState(line.ar || "");
+  const [ph, setPh] = useState(line.ph || "");
+  const [pl, setPl] = useState(line.pl || "");
+
+  function save() {
+    if (!ar.trim() || !ph.trim() || !pl.trim()) return;
+    onSave({ ar: ar.trim(), ph: ph.trim(), pl: pl.trim() });
+  }
+
+  return (
+    <div className="line-editor">
+      <input
+        className="text-input input-arabic"
+        value={ar}
+        onChange={(e) => setAr(e.target.value)}
+        placeholder="arabski"
+        dir="rtl"
+      />
+      <input
+        className="text-input input-mono"
+        value={ph}
+        onChange={(e) => setPh(e.target.value)}
+        placeholder="transkrypcja"
+      />
+      <input
+        className="text-input"
+        value={pl}
+        onChange={(e) => setPl(e.target.value)}
+        placeholder="tłumaczenie"
+      />
+      <div className="line-editor-btns">
+        <button type="button" className="line-editor-cancel" onClick={onCancel}>
+          anuluj
+        </button>
+        <button type="button" className="line-editor-save" onClick={save}>
+          zapisz
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function DialoguesView() {
   const [idx, setIdx] = useState(0);
   const [hidePl, setHidePl] = useState(false);
   const [hidePh, setHidePh] = useState(false);
+  const [edits, setEdits] = useState(loadContentEdits);
+  const [editingLine, setEditingLine] = useState(null); // index edytowanej linii
   const d = DIALOGUES[idx];
+
+  function handleSaveLine(lineIdx, value) {
+    const key = lineEditKey("dialog", d.title, lineIdx);
+    saveContentEdit(key, value);
+    setEdits(loadContentEdits());
+    setEditingLine(null);
+  }
 
   return (
     <div className="view-verbs">
       <p className="verbs-intro">
         Krótkie scenki z życia — poznane słowa w realnych sytuacjach. Przełączaj dialogi,
-        a przyciskami możesz ukryć tłumaczenia lub transkrypcję i sprawdzić, ile rozumiesz
-        z samego pisma.
+        a przyciskami możesz ukryć tłumaczenia lub transkrypcję. Znalazłeś błąd? Dotknij
+        ołówka przy zdaniu, żeby je poprawić.
       </p>
 
       <div className="dlg-picker">
@@ -7863,7 +8027,10 @@ function DialoguesView() {
             key={i}
             type="button"
             className={`dlg-tab ${idx === i ? "dlg-tab-active" : ""}`}
-            onClick={() => setIdx(i)}
+            onClick={() => {
+              setIdx(i);
+              setEditingLine(null);
+            }}
           >
             <span className="dlg-tab-emoji">{dl.emoji}</span>
             {dl.title}
@@ -7896,13 +8063,35 @@ function DialoguesView() {
         <p className="dlg-context">{d.context}</p>
 
         <div className="dlg-thread">
-          {d.lines.map((ln, i) => (
-            <div key={i} className={`dlg-bubble dlg-bubble-${ln.s}`}>
-              <span className="dlg-ar">{ln.ar}</span>
-              {!hidePh && <span className="dlg-ph">{ln.ph}</span>}
-              {!hidePl && <span className="dlg-pl">{ln.pl}</span>}
-            </div>
-          ))}
+          {d.lines.map((rawLn, i) => {
+            const ln = applyLineEdit(rawLn, edits, lineEditKey("dialog", d.title, i));
+            if (editingLine === i) {
+              return (
+                <div key={i} className={`dlg-bubble dlg-bubble-${ln.s}`}>
+                  <LineEditor
+                    line={ln}
+                    onSave={(v) => handleSaveLine(i, v)}
+                    onCancel={() => setEditingLine(null)}
+                  />
+                </div>
+              );
+            }
+            return (
+              <div key={i} className={`dlg-bubble dlg-bubble-${ln.s}`}>
+                <button
+                  type="button"
+                  className="line-edit-btn"
+                  onClick={() => setEditingLine(i)}
+                  title="Popraw to zdanie"
+                >
+                  <Pencil size={12} />
+                </button>
+                <span className="dlg-ar">{ln.ar}</span>
+                {!hidePh && <span className="dlg-ph">{ln.ph}</span>}
+                {!hidePl && <span className="dlg-pl">{ln.pl}</span>}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -9146,6 +9335,8 @@ function ReadingsView() {
   const [hidePh, setHidePh] = useState(false);
   const [answers, setAnswers] = useState({}); // {questionIndex: chosenOption}
   const [showResults, setShowResults] = useState(false);
+  const [edits, setEdits] = useState(loadContentEdits);
+  const [editingLine, setEditingLine] = useState(null);
 
   // Lista czytanek
   if (idx === null) {
@@ -9188,6 +9379,7 @@ function ReadingsView() {
     setShowResults(false);
     setHidePl(false);
     setHidePh(false);
+    setEditingLine(null);
   }
 
   return (
@@ -9220,13 +9412,39 @@ function ReadingsView() {
       </div>
 
       <div className="reading-text">
-        {r.sentences.map((s, i) => (
-          <div key={i} className="reading-sentence">
-            <span className="reading-ar">{s.ar}</span>
-            {!hidePh && <span className="reading-ph">{s.ph}</span>}
-            {!hidePl && <span className="reading-pl">{s.pl}</span>}
-          </div>
-        ))}
+        {r.sentences.map((rawS, i) => {
+          const s = applyLineEdit(rawS, edits, lineEditKey("reading", r.title, i));
+          if (editingLine === i) {
+            return (
+              <div key={i} className="reading-sentence">
+                <LineEditor
+                  line={s}
+                  onSave={(v) => {
+                    saveContentEdit(lineEditKey("reading", r.title, i), v);
+                    setEdits(loadContentEdits());
+                    setEditingLine(null);
+                  }}
+                  onCancel={() => setEditingLine(null)}
+                />
+              </div>
+            );
+          }
+          return (
+            <div key={i} className="reading-sentence">
+              <button
+                type="button"
+                className="line-edit-btn"
+                onClick={() => setEditingLine(i)}
+                title="Popraw to zdanie"
+              >
+                <Pencil size={12} />
+              </button>
+              <span className="reading-ar">{s.ar}</span>
+              {!hidePh && <span className="reading-ph">{s.ph}</span>}
+              {!hidePl && <span className="reading-pl">{s.pl}</span>}
+            </div>
+          );
+        })}
       </div>
 
       <h3 className="reading-q-title">Pytania na rozumienie</h3>
@@ -9715,7 +9933,31 @@ export default function App() {
   // treść istniejącej (gdy editingCard wskazuje na konkretne słówko).
   function saveCard(card) {
     if (editingCard && editingCard !== "new") {
-      setWords((ws) => ws.map((w) => (w === editingCard ? card : w)));
+      const targetId = wordId(editingCard);
+      const newId = wordId(card);
+      // Jeśli edycja zmienia wordId (zmiana pl/ar/cat), zapamiętaj, że oryginał
+      // z bazy ma być ukryty — inaczej po przeładowaniu wróciłby obok edycji.
+      if (newId !== targetId) {
+        try {
+          const raw = localStorage.getItem("ar-eg-hidden");
+          const hidden = raw ? JSON.parse(raw) : [];
+          if (!hidden.includes(targetId)) {
+            hidden.push(targetId);
+            localStorage.setItem("ar-eg-hidden", JSON.stringify(hidden));
+          }
+        } catch (e) {}
+      }
+      setWords((ws) => {
+        let replaced = false;
+        const next = ws.map((w) => {
+          if (w === editingCard || wordId(w) === targetId) {
+            replaced = true;
+            return card;
+          }
+          return w;
+        });
+        return replaced ? next : [...ws, card];
+      });
     } else {
       setWords((ws) => [...ws, card]);
     }
@@ -9723,7 +9965,17 @@ export default function App() {
 
   function deleteCard() {
     if (editingCard && editingCard !== "new") {
-      setWords((ws) => ws.filter((w) => w !== editingCard));
+      const targetId = wordId(editingCard);
+      // Trwale ukryj, żeby usunięte słowo z bazy nie wróciło po przeładowaniu.
+      try {
+        const raw = localStorage.getItem("ar-eg-hidden");
+        const hidden = raw ? JSON.parse(raw) : [];
+        if (!hidden.includes(targetId)) {
+          hidden.push(targetId);
+          localStorage.setItem("ar-eg-hidden", JSON.stringify(hidden));
+        }
+      } catch (e) {}
+      setWords((ws) => ws.filter((w) => w !== editingCard && wordId(w) !== targetId));
     }
   }
 
@@ -10231,7 +10483,7 @@ const CSS = `
 
 .card-stage {
   width: 100%;
-  height: 400px;
+  height: 440px;
   perspective: 1200px;
   cursor: pointer;
   margin-bottom: 18px;
@@ -10259,8 +10511,15 @@ const CSS = `
   backface-visibility: hidden;
   padding: 24px 24px 56px;
   text-align: center;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
+/* Tylna strona bywa dłuższa (przykład + oceny + panel) — wyrównaj do góry
+   i pozwól przewijać, żeby elementy się nie nakładały. */
+.card-back {
+  justify-content: flex-start;
+}
+.card-face::-webkit-scrollbar { width: 0; background: transparent; }
 
 .card-front {
   background: var(--paper);
@@ -12222,7 +12481,55 @@ const CSS = `
   gap: 2px;
   padding: 10px 13px;
   border-radius: 16px;
+  position: relative;
 }
+
+/* Przycisk edycji przy linii dialogu/czytanki */
+.line-edit-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  border: none;
+  background: rgba(0,0,0,0.06);
+  color: var(--muted);
+  border-radius: 6px;
+  padding: 3px;
+  display: flex;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.15s;
+}
+.line-edit-btn:hover { opacity: 1; }
+.reading-sentence { position: relative; }
+.reading-sentence .line-edit-btn { top: 0; right: 0; }
+
+/* Edytor linii */
+.line-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+}
+.line-editor .text-input {
+  font-size: 14px;
+  padding: 8px 10px;
+}
+.line-editor-btns {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.line-editor-cancel,
+.line-editor-save {
+  border: none;
+  border-radius: 8px;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.line-editor-cancel { background: var(--sand-deep); color: var(--ink); }
+.line-editor-save { background: var(--teal); color: #fff; }
 
 .dlg-bubble-a {
   align-self: flex-start;
