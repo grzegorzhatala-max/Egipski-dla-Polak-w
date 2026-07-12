@@ -1692,6 +1692,8 @@ const CATEGORIES = [
   { key: "ordinals", label: "Liczby porządkowe", emoji: "🔢" },
   { key: "directions", label: "Kierunki i położenie", emoji: "🧭" },
   { key: "constructions", label: "Konstrukcje zdaniowe", emoji: "🔗" },
+  { key: "culture", label: "Kultura i życie w Egipcie", emoji: "🇪🇬" },
+  { key: "practical", label: "Praktyczne (podróże, sprawy)", emoji: "🧳" },
   { key: "expressions", label: "Wyrażenia codzienne", emoji: "💬" },
   { key: "conjunctions", label: "Spójniki i łączniki", emoji: "🔗" },
   { key: "religious", label: "Wyrażenia religijne", emoji: "🕌" },
@@ -3013,6 +3015,142 @@ const NOUNS = [
       hum:    { ar: "شغلانتهم",  ph: "sho8lanet-hom" },
     },
   },
+  {
+    gen: "m", pl: "przyjaciel / kolega",
+    sing: { ar: "صاحب", ph: "SaaHeb" },
+    dual: { ar: "صاحبين", ph: "SaHbeen" },
+    plur: { ar: "صحاب", ph: "SoHaab" },
+    note: "Mnoga łamana: SaaHeb → SoHaab. Bardzo częste słowo w rozmowie.",
+    poss: {
+      i:      { ar: "صاحبي",   ph: "SaaHbi" },
+      ak:     { ar: "صاحبك",   ph: "SaaHbak" },
+      ik:     { ar: "صاحبك",   ph: "SaHbek" },
+      uh:     { ar: "صاحبه",   ph: "SaaHbo" },
+      ha:     { ar: "صاحبها",  ph: "SaHabha" },
+      na:     { ar: "صاحبنا",  ph: "SaHebna" },
+      ku:     { ar: "صاحبكو",  ph: "SaHebko" },
+      hum:    { ar: "صاحبهم",  ph: "SaHebhom" },
+    },
+  },
+  {
+    gen: "m", pl: "dzień",
+    sing: { ar: "يوم", ph: "yoom" },
+    dual: { ar: "يومين", ph: "yomeen" },
+    plur: { ar: "أيام", ph: "ayyaam" },
+    note: "Mnoga łamana: yoom → ayyaam. Dual „yomeen” bardzo częsty („dwa dni”).",
+    poss: {
+      i:      { ar: "يومي",   ph: "yoomi" },
+      ak:     { ar: "يومك",   ph: "yoomak" },
+      ik:     { ar: "يومك",   ph: "yoomek" },
+      uh:     { ar: "يومه",   ph: "yoomo" },
+      ha:     { ar: "يومها",  ph: "yomha" },
+      na:     { ar: "يومنا",  ph: "yomna" },
+      ku:     { ar: "يومكو",  ph: "yomko" },
+      hum:    { ar: "يومهم",  ph: "yomhom" },
+    },
+  },
+  {
+    gen: "f", pl: "ręka",
+    sing: { ar: "إيد", ph: "iid" },
+    dual: { ar: "إيدين", ph: "ideen" },
+    plur: { ar: "إيدين", ph: "ideen" },
+    note: "Części ciała parzyste używają zwykle formy dualnej zamiast mnogiej.",
+    poss: {
+      i:      { ar: "إيدي",   ph: "iidi" },
+      ak:     { ar: "إيدك",   ph: "iidak" },
+      ik:     { ar: "إيدك",   ph: "iidek" },
+      uh:     { ar: "إيده",   ph: "iido" },
+      ha:     { ar: "إيدها",  ph: "idha" },
+      na:     { ar: "إيدنا",  ph: "idna" },
+      ku:     { ar: "إيدكو",  ph: "idko" },
+      hum:    { ar: "إيدهم",  ph: "idhom" },
+    },
+  },
+  {
+    gen: "m", pl: "pieniądze",
+    sing: { ar: "فلوس", ph: "feluus" },
+    dual: { ar: "—", ph: "—" },
+    plur: { ar: "فلوس", ph: "feluus" },
+    note: "Rzeczownik zbiorowy — zawsze w liczbie mnogiej, bez dualu.",
+    poss: {
+      i:      { ar: "فلوسي",   ph: "feluusi" },
+      ak:     { ar: "فلوسك",   ph: "feluusak" },
+      ik:     { ar: "فلوسك",   ph: "feluusek" },
+      uh:     { ar: "فلوسه",   ph: "feluuso" },
+      ha:     { ar: "فلوسها",  ph: "felusha" },
+      na:     { ar: "فلوسنا",  ph: "felusna" },
+      ku:     { ar: "فلوسكو",  ph: "felusko" },
+      hum:    { ar: "فلوسهم",  ph: "felushom" },
+    },
+  },
+  {
+    gen: "f", pl: "samochód",
+    sing: { ar: "عربية", ph: "3arabeyya" },
+    dual: { ar: "عربيتين", ph: "3arabeyyiteen" },
+    plur: { ar: "عربيات", ph: "3arabeyyaat" },
+    possNote: "ة → ت przed sufiksem: عربية → عربيتي (3arabeyyeti).",
+    poss: {
+      i:      { ar: "عربيتي",   ph: "3arabeyyeti" },
+      ak:     { ar: "عربيتك",   ph: "3arabeyyetak" },
+      ik:     { ar: "عربيتك",   ph: "3arabeyyetek" },
+      uh:     { ar: "عربيته",   ph: "3arabeyyeto" },
+      ha:     { ar: "عربيتها",  ph: "3arabeyyet-ha" },
+      na:     { ar: "عربيتنا",  ph: "3arabeyyetna" },
+      ku:     { ar: "عربيتكو",  ph: "3arabeyyetko" },
+      hum:    { ar: "عربيتهم",  ph: "3arabeyyet-hom" },
+    },
+  },
+  {
+    gen: "m", pl: "problem / sprawa",
+    sing: { ar: "موضوع", ph: "mawDuu3" },
+    dual: { ar: "موضوعين", ph: "mawDu3een" },
+    plur: { ar: "مواضيع", ph: "mawaDii3" },
+    note: "Mnoga łamana wg wzorca mafaa3iil: mawDuu3 → mawaDii3.",
+    poss: {
+      i:      { ar: "موضوعي",   ph: "mawDu3i" },
+      ak:     { ar: "موضوعك",   ph: "mawDu3ak" },
+      ik:     { ar: "موضوعك",   ph: "mawDu3ek" },
+      uh:     { ar: "موضوعه",   ph: "mawDu3o" },
+      ha:     { ar: "موضوعها",  ph: "mawDu3ha" },
+      na:     { ar: "موضوعنا",  ph: "mawDu3na" },
+      ku:     { ar: "موضوعكو",  ph: "mawDu3ko" },
+      hum:    { ar: "موضوعهم",  ph: "mawDu3hom" },
+    },
+  },
+  {
+    gen: "f", pl: "sprawa / rzecz",
+    sing: { ar: "حاجة", ph: "Haaga" },
+    dual: { ar: "حاجتين", ph: "Hagteen" },
+    plur: { ar: "حاجات", ph: "Hagaat" },
+    note: "Bardzo częste, uniwersalne słowo — „rzecz”, „coś”, „sprawa”.",
+    poss: {
+      i:      { ar: "حاجتي",   ph: "Hagti" },
+      ak:     { ar: "حاجتك",   ph: "Hagtak" },
+      ik:     { ar: "حاجتك",   ph: "Hagtek" },
+      uh:     { ar: "حاجته",   ph: "Hagto" },
+      ha:     { ar: "حاجتها",  ph: "Haget-ha" },
+      na:     { ar: "حاجتنا",  ph: "Hagetna" },
+      ku:     { ar: "حاجتكو",  ph: "Hagetko" },
+      hum:    { ar: "حاجتهم",  ph: "Haget-hom" },
+    },
+  },
+  {
+    gen: "m", pl: "chłopiec / syn",
+    sing: { ar: "ولد", ph: "walad" },
+    dual: { ar: "ولدين", ph: "waladeen" },
+    plur: { ar: "أولاد", ph: "awlaad" },
+    note: "Mnoga łamana: walad → awlaad („dzieci” ogólnie, nie tylko chłopcy).",
+    poss: {
+      i:      { ar: "ولدي",   ph: "waladi" },
+      ak:     { ar: "ولدك",   ph: "waladak" },
+      ik:     { ar: "ولدك",   ph: "waladek" },
+      uh:     { ar: "ولده",   ph: "walado" },
+      ha:     { ar: "ولدها",  ph: "waladha" },
+      na:     { ar: "ولدنا",  ph: "waladna" },
+      ku:     { ar: "ولدكو",  ph: "waladko" },
+      hum:    { ar: "ولدهم",  ph: "waladhom" },
+    },
+  },
 ];
 
 // Etykiety sufiksów dzierżawczych (8 osób).
@@ -3424,6 +3562,41 @@ const COMPARATIVES = [
     comp: { ar: "أسهل", ph: "as-hal" }, sup: { ar: "الأسهل", ph: "il-as-hal" },
     ex: { ar: "دي أسهل طريقة.", ph: "di as-hal Tarii2a.", pl: "To najłatwiejszy sposób." },
   },
+  {
+    pl: "ładny / piękny", base: { ar: "حلو", ph: "Helw" },
+    comp: { ar: "أحلى", ph: "aHla" }, sup: { ar: "الأحلى", ph: "il-aHla" },
+    ex: { ar: "الجو أحلى النهارده.", ph: "il-gaww aHla innaharda.", pl: "Pogoda jest dziś ładniejsza." },
+  },
+  {
+    pl: "drogi", base: { ar: "غالي", ph: "8aali" },
+    comp: { ar: "أغلى", ph: "a8la" }, sup: { ar: "الأغلى", ph: "il-a8la" },
+    ex: { ar: "ده أغلى من ده.", ph: "da a8la min da.", pl: "To jest droższe od tamtego." },
+  },
+  {
+    pl: "tani", base: { ar: "رخيص", ph: "rekhiiS" },
+    comp: { ar: "أرخص", ph: "arkhaS" }, sup: { ar: "الأرخص", ph: "il-arkhaS" },
+    ex: { ar: "فين أرخص محل؟", ph: "feen arkhaS maHall?", pl: "Gdzie jest najtańszy sklep?" },
+  },
+  {
+    pl: "trudny", base: { ar: "صعب", ph: "Sa3b" },
+    comp: { ar: "أصعب", ph: "aS3ab" }, sup: { ar: "الأصعب", ph: "il-aS3ab" },
+    ex: { ar: "العربي أصعب من الإنجليزي.", ph: "il-3arabi aS3ab min il-engliizi.", pl: "Arabski jest trudniejszy niż angielski." },
+  },
+  {
+    pl: "długi", base: { ar: "طويل", ph: "Tawiil" },
+    comp: { ar: "أطول", ph: "aTwal" }, sup: { ar: "الأطول", ph: "il-aTwal" },
+    ex: { ar: "هو أطول واحد فينا.", ph: "howwa aTwal waaHed fiina.", pl: "On jest najwyższy z nas." },
+  },
+  {
+    pl: "szybki", base: { ar: "سريع", ph: "sarii3" },
+    comp: { ar: "أسرع", ph: "asra3" }, sup: { ar: "الأسرع", ph: "il-asra3" },
+    ex: { ar: "المترو أسرع من الأتوبيس.", ph: "il-metro asra3 min il-otobiis.", pl: "Metro jest szybsze niż autobus." },
+  },
+  {
+    pl: "lepszy (dobry)", base: { ar: "كويس", ph: "kwayyes" },
+    comp: { ar: "أحسن", ph: "aHsan" }, sup: { ar: "الأحسن", ph: "il-aHsan" },
+    ex: { ar: "ده أحسن حل.", ph: "da aHsan Hall.", pl: "To najlepsze rozwiązanie." },
+  },
 ];
 
 // ---------- Gramatyka: liczebniki 11–100 ----------
@@ -3494,6 +3667,51 @@ const IMPERATIVES = [
     pl: "powiedzieć / powiedz", forms: {
       m: { ar: "قول", ph: "2uul" }, f: { ar: "قولي", ph: "2uuli" }, pl_: { ar: "قولوا", ph: "2uulu" },
     }, neg: { ar: "متقولش", ph: "mat2ulsh" },
+  },
+  {
+    pl: "czekać / poczekaj", forms: {
+      m: { ar: "استنى", ph: "estanna" }, f: { ar: "استني", ph: "estanni" }, pl_: { ar: "استنوا", ph: "estannu" },
+    }, neg: { ar: "متستناش", ph: "matestannaash" },
+  },
+  {
+    pl: "słuchać / posłuchaj", forms: {
+      m: { ar: "اسمع", ph: "esma3" }, f: { ar: "اسمعي", ph: "esma3i" }, pl_: { ar: "اسمعوا", ph: "esma3u" },
+    }, neg: { ar: "متسمعش", ph: "matesma3sh" },
+  },
+  {
+    pl: "patrzeć / popatrz", forms: {
+      m: { ar: "بص", ph: "boSS" }, f: { ar: "بصي", ph: "boSSi" }, pl_: { ar: "بصوا", ph: "boSSu" },
+    }, neg: { ar: "متبصش", ph: "matboSSesh" },
+  },
+  {
+    pl: "otworzyć / otwórz", forms: {
+      m: { ar: "افتح", ph: "eftaH" }, f: { ar: "افتحي", ph: "eftaHi" }, pl_: { ar: "افتحوا", ph: "eftaHu" },
+    }, neg: { ar: "متفتحش", ph: "mateftaHsh" },
+  },
+  {
+    pl: "zamknąć / zamknij", forms: {
+      m: { ar: "اقفل", ph: "e2fel" }, f: { ar: "اقفلي", ph: "e2fili" }, pl_: { ar: "اقفلوا", ph: "e2filu" },
+    }, neg: { ar: "متقفلش", ph: "mate2felsh" },
+  },
+  {
+    pl: "wziąć / weź", forms: {
+      m: { ar: "خد", ph: "khod" }, f: { ar: "خدي", ph: "khodi" }, pl_: { ar: "خدوا", ph: "khodu" },
+    }, neg: { ar: "متخدش", ph: "matakhodsh" },
+  },
+  {
+    pl: "jeść / jedz", forms: {
+      m: { ar: "كل", ph: "kol" }, f: { ar: "كلي", ph: "koli" }, pl_: { ar: "كلوا", ph: "kolu" },
+    }, neg: { ar: "متكلش", ph: "matakolsh" },
+  },
+  {
+    pl: "pić / pij", forms: {
+      m: { ar: "اشرب", ph: "eshrab" }, f: { ar: "اشربي", ph: "eshrabi" }, pl_: { ar: "اشربوا", ph: "eshrabu" },
+    }, neg: { ar: "متشربش", ph: "mateshrabsh" },
+  },
+  {
+    pl: "pomóc / pomóż", forms: {
+      m: { ar: "ساعد", ph: "saa3ed" }, f: { ar: "ساعدي", ph: "sa3di" }, pl_: { ar: "ساعدوا", ph: "sa3du" },
+    }, neg: { ar: "متساعدش", ph: "matsa3edsh" },
   },
 ];
 
@@ -4467,6 +4685,66 @@ const CONSTRUCTION_WORDS = [
   { cat: "constructions", pl: "dlatego / z tego powodu (że)", ar: "عشان كده", ph: "3ashaan keda", ex: { ar: "تعبان، عشان كده مش هخرج.", ph: "ta3baan, 3ashaan keda mish hakhrog.", pl: "Jestem zmęczony, dlatego nie wyjdę." } },
 ];
 
+// ---------- Kultura i życie codzienne w Egipcie ----------
+// Słownictwo osadzone w realiach egipskich (wiedza ogólna o kulturze).
+const CULTURE_WORDS = [
+  { cat: "culture", pl: "dozorca / portier (bawwāb)", ar: "بواب", ph: "bawwaab", ex: { ar: "البواب بيفتح الباب.", ph: "il-bawwaab biyeftaH il-baab.", pl: "Dozorca otwiera drzwi." } },
+  { cat: "culture", pl: "hagga (zwrot do starszej kobiety)", ar: "حاجة", ph: "Hagga", ex: { ar: "الحاجة أم أحمد ساكنة تحت.", ph: "il-Hagga omm aHmad sakna taHt.", pl: "Hagga Umm Ahmed mieszka na dole." } },
+  { cat: "culture", pl: "hagg (zwrot do starszego mężczyzny)", ar: "حاج", ph: "Hagg" },
+  { cat: "culture", pl: "wujek/starszy (3amm, z szacunkiem)", ar: "عم", ph: "3amm", ex: { ar: "عم مصطفى بياع الفاكهة.", ph: "3amm muSTafa bayyaa3 il-faakha.", pl: "Amm Mustafa sprzedaje owoce." } },
+  { cat: "culture", pl: "gołąb", ar: "حمامة", ph: "Hamaama" },
+  { cat: "culture", pl: "gołębie (zbiorowo)", ar: "حمام", ph: "Hamaam", ex: { ar: "بيربّي حمام فوق السطح.", ph: "biyrabbi Hamaam foo2 is-saTH.", pl: "Hoduje gołębie na dachu." } },
+  { cat: "culture", pl: "dach (taras na dachu)", ar: "سطح", ph: "saTH" },
+  { cat: "culture", pl: "henna", ar: "حنة", ph: "Henna", ex: { ar: "ليلة الحنة قبل الفرح.", ph: "lelet il-Henna 2abl il-faraH.", pl: "Wieczór henny przed weselem." } },
+  { cat: "culture", pl: "wesele", ar: "فرح", ph: "faraH" },
+  { cat: "culture", pl: "panna młoda", ar: "عروسة", ph: "3aruusa" },
+  { cat: "culture", pl: "pan młody", ar: "عريس", ph: "3ariis" },
+  { cat: "culture", pl: "oaza", ar: "واحة", ph: "waaHa", ex: { ar: "واحة سيوة في الصحرا.", ph: "waaHet siiwa fiS-SaHra.", pl: "Oaza Siwa na pustyni." } },
+  { cat: "culture", pl: "koszari (danie)", ar: "كشري", ph: "koshari", ex: { ar: "الكشري أكلة مصرية شعبية.", ph: "il-koshari akla maSreyya sha3beyya.", pl: "Koszari to popularne egipskie danie." } },
+  { cat: "culture", pl: "ludowy / uliczny (sha3bi)", ar: "شعبي", ph: "sha3bi" },
+  { cat: "culture", pl: "tradycje", ar: "تقاليد", ph: "ta2aliid" },
+  { cat: "culture", pl: "pokolenie", ar: "جيل", ph: "giil" },
+  { cat: "culture", pl: "przodkowie / dziadowie", ar: "أجداد", ph: "agdaad" },
+  { cat: "culture", pl: "dzielnica / okolica", ar: "الحتة", ph: "il-Hetta" },
+  { cat: "culture", pl: "centrum miasta (wist il-balad)", ar: "وسط البلد", ph: "wisT il-balad" },
+  { cat: "culture", pl: "kawiarnia (tradycyjna, ahwa)", ar: "قهوة", ph: "2ahwa", ex: { ar: "الرجالة قاعدين في القهوة.", ph: "ir-reggaala 2a3diin fil-2ahwa.", pl: "Mężczyźni siedzą w kawiarni." } },
+  { cat: "culture", pl: "sziszа / fajka wodna", ar: "شيشة", ph: "shiisha" },
+  { cat: "culture", pl: "meczet", ar: "جامع", ph: "gaame3" },
+  { cat: "culture", pl: "wezwanie na modlitwę (azan)", ar: "أذان", ph: "azaan" },
+];
+
+// ---------- Praktyczne: podróże, formalności, umawianie się ----------
+const PRACTICAL_WORDS = [
+  // dokumenty i podróż
+  { cat: "practical", pl: "paszport", ar: "باسبور", ph: "basbuur", ex: { ar: "الباسبور معايا.", ph: "il-basbuur ma3aaya.", pl: "Mam paszport przy sobie." } },
+  { cat: "practical", pl: "wiza", ar: "فيزا", ph: "viiza" },
+  { cat: "practical", pl: "rezerwacja", ar: "حجز", ph: "Hagz", ex: { ar: "عندي حجز باسمي.", ph: "3andi Hagz be-esmi.", pl: "Mam rezerwację na moje nazwisko." } },
+  { cat: "practical", pl: "hotel", ar: "فندق", ph: "fondo2" },
+  { cat: "practical", pl: "walizka", ar: "شنطة سفر", ph: "shanTet safar" },
+  { cat: "practical", pl: "portfel", ar: "محفظة", ph: "maHfaZa" },
+  { cat: "practical", pl: "kieszeń", ar: "جيب", ph: "geeb", ex: { ar: "المفتاح في جيبي.", ph: "il-moftaaH fi geebi.", pl: "Klucz jest w mojej kieszeni." } },
+  // pieniądze
+  { cat: "practical", pl: "rachunek", ar: "حساب", ph: "Hisaab" },
+  { cat: "practical", pl: "napiwek", ar: "بقشيش", ph: "ba2shiish", ex: { ar: "سيبله بقشيش.", ph: "sebbo ba2shiish.", pl: "Zostaw mu napiwek." } },
+  { cat: "practical", pl: "czynsz", ar: "إيجار", ph: "igaar" },
+  { cat: "practical", pl: "rozmiar", ar: "مقاس", ph: "ma2aas", ex: { ar: "مقاسك كام؟", ph: "ma2aasak kaam?", pl: "Jaki masz rozmiar?" } },
+  { cat: "practical", pl: "przymierzyć", ar: "يقيس", ph: "ye2iis" },
+  // czas i umawianie się
+  { cat: "practical", pl: "spotkanie / umówiony termin", ar: "معاد", ph: "me3aad", ex: { ar: "عندي معاد الساعة تلاتة.", ph: "3andi me3aad is-saa3a talaata.", pl: "Mam spotkanie o trzeciej." } },
+  { cat: "practical", pl: "umówić się", ar: "يتفق", ph: "yettefe2" },
+  { cat: "practical", pl: "spóźnić się", ar: "يتأخر", ph: "yet2akhkhar", ex: { ar: "أسف، اتأخرت.", ph: "aasef, et2akhkhart.", pl: "Przepraszam, spóźniłem się." } },
+  { cat: "practical", pl: "zdążyć", ar: "يلحق", ph: "yelHa2" },
+  { cat: "practical", pl: "wolny czas", ar: "وقت فاضي", ph: "wa2t faaDi" },
+  { cat: "practical", pl: "odpoczywać", ar: "يرتاح", ph: "yertaaH" },
+  { cat: "practical", pl: "zajęty", ar: "مشغول", ph: "mashghuul", ex: { ar: "أنا مشغول دلوقتي.", ph: "ana mashghuul delwa2ti.", pl: "Jestem teraz zajęty." } },
+  // problemy
+  { cat: "practical", pl: "pomyłka / błąd", ar: "غلط", ph: "8alaT", ex: { ar: "ده غلط، آسف.", ph: "da 8alaT, aasef.", pl: "To pomyłka, przepraszam." } },
+  { cat: "practical", pl: "zepsuty", ar: "بايظ", ph: "baayeZ", ex: { ar: "الأسانسير بايظ.", ph: "il-asanseer baayeZ.", pl: "Winda jest zepsuta." } },
+  { cat: "practical", pl: "naprawić", ar: "يصلح", ph: "yeSallaH" },
+  { cat: "practical", pl: "zgubić", ar: "يضيع", ph: "yeDayya3" },
+  { cat: "practical", pl: "znaleźć", ar: "يلاقي", ph: "yelaa2i" },
+];
+
 // Przykłady dla słów, które nie mają własnego pola ex i nie występują w dialogach.
 // Klucz = wordId (cat|pl|ar). Doklejane w loadWords, nie zmieniają definicji słowa
 // (więc wordId się nie zmienia i postęp jest zachowany).
@@ -4896,6 +5174,112 @@ const SENTENCE_DRILLS = [
     ],
     note: "mafiish (nie ma) → mafiish moshkila = „nie ma problemu”.",
   },
+  {
+    pl: "Nie wiem, czy przyjdzie.",
+    tiles: [
+      { ar: "مش", ph: "mish" },
+      { ar: "عارف", ph: "3aaref" },
+      { ar: "لو", ph: "law" },
+      { ar: "هييجي", ph: "hayiigi" },
+    ],
+    note: "„Czy” w mowie zależnej = law. Przyszły: ha- + czasownik (hayiigi).",
+  },
+  {
+    pl: "Książka jest na stole.",
+    tiles: [
+      { ar: "الكتاب", ph: "il-ketaab" },
+      { ar: "على", ph: "3ala" },
+      { ar: "الترابيزة", ph: "it-tarabeeza" },
+    ],
+    note: "Zdanie bez czasownika „być” — typowe dla arabskiego w czasie teraźniejszym.",
+  },
+  {
+    pl: "Skręć w prawo za światłami.",
+    tiles: [
+      { ar: "لف", ph: "leff" },
+      { ar: "يمين", ph: "yemiin" },
+      { ar: "بعد", ph: "ba3d" },
+      { ar: "الإشارة", ph: "il-eshaara" },
+    ],
+    note: "Tryb rozkazujący (leff) + kierunek. Przydatne w taksówce.",
+  },
+  {
+    pl: "Myślę, że to dobry pomysł.",
+    tiles: [
+      { ar: "أنا", ph: "ana" },
+      { ar: "فاكر", ph: "faaker" },
+      { ar: "إن", ph: "enn" },
+      { ar: "دي", ph: "di" },
+      { ar: "فكرة", ph: "fekra" },
+      { ar: "حلوة", ph: "Helwa" },
+    ],
+    note: "Konstrukcja opinii: faaker enn (myślę, że). Przymiotnik zgadza się rodzajem (fekra Helwa — ż.).",
+  },
+  {
+    pl: "Mój brat jest starszy ode mnie.",
+    tiles: [
+      { ar: "أخويا", ph: "akhuuya" },
+      { ar: "أكبر", ph: "akbar" },
+      { ar: "مني", ph: "menni" },
+    ],
+    note: "Stopień wyższy: akbar (większy/starszy) + min (od) + sufiks (menni = ode mnie).",
+  },
+  {
+    pl: "Możesz mi pomóc?",
+    tiles: [
+      { ar: "ممكن", ph: "momken" },
+      { ar: "تساعدني", ph: "tesa3edni" },
+    ],
+    note: "momken + czasownik = grzeczna prośba. Sufiks -ni = mnie.",
+  },
+  {
+    pl: "Kupuję warzywa na targu.",
+    tiles: [
+      { ar: "بشتري", ph: "bashteri" },
+      { ar: "خضار", ph: "khoDaar" },
+      { ar: "من", ph: "min" },
+      { ar: "السوق", ph: "is-suu2" },
+    ],
+    note: "Czas teraźniejszy z prefiksem بـ (bashteri = kupuję, zwyczajowo).",
+  },
+  {
+    pl: "Wczoraj poszedłem do lekarza.",
+    tiles: [
+      { ar: "إمبارح", ph: "embaareH" },
+      { ar: "رحت", ph: "roHt" },
+      { ar: "للدكتور", ph: "lid-doktoor" },
+    ],
+    note: "Czas przeszły (roHt = poszedłem). Przyimek li- + rodzajnik → lid-.",
+  },
+  {
+    pl: "Kot jest pod krzesłem.",
+    tiles: [
+      { ar: "القطة", ph: "il-2oTTa" },
+      { ar: "تحت", ph: "taHt" },
+      { ar: "الكرسي", ph: "il-korsi" },
+    ],
+    note: "Przyimek miejsca taHt (pod). Uwaga: taHt znaczy też „na dole”.",
+  },
+  {
+    pl: "Poczekaj chwilę, proszę.",
+    tiles: [
+      { ar: "استنى", ph: "estanna" },
+      { ar: "شوية", ph: "shwayya" },
+      { ar: "لو سمحت", ph: "law samaHt" },
+    ],
+    note: "Rozkaźnik (estanna) + shwayya (trochę) + grzeczne law samaHt.",
+  },
+  {
+    pl: "Mam nadzieję, że pogoda będzie ładna.",
+    tiles: [
+      { ar: "أتمنى", ph: "atmanna" },
+      { ar: "إن", ph: "enn" },
+      { ar: "الجو", ph: "il-gaww" },
+      { ar: "يبقى", ph: "yeb2a" },
+      { ar: "حلو", ph: "Helw" },
+    ],
+    note: "atmanna enn (mam nadzieję, że) + subjunctive (yeb2a — bez بـ).",
+  },
 ];
 
 // ---------- Egipski a MSA (fuS7a) ----------
@@ -4945,6 +5329,16 @@ const MSA_COMPARISON = {
     { pl: "trochę", eg: { ar: "شوية", ph: "shwayya" }, msa: { ar: "قليلاً", ph: "qaliilan" } },
     { pl: "jak (podobny)", eg: { ar: "زي", ph: "zayy" }, msa: { ar: "مثل", ph: "mithl" } },
     { pl: "znowu / jeszcze", eg: { ar: "كمان", ph: "kamaan" }, msa: { ar: "أيضاً", ph: "ayDan" } },
+    { pl: "chcieć", eg: { ar: "عايز", ph: "3aayez" }, msa: { ar: "يريد", ph: "yuriid" } },
+    { pl: "patrzeć", eg: { ar: "بص", ph: "boSS" }, msa: { ar: "ينظر", ph: "yanZur" } },
+    { pl: "przynieść", eg: { ar: "جاب", ph: "gaab" }, msa: { ar: "أحضر", ph: "aHDara" } },
+    { pl: "usiąść", eg: { ar: "قعد", ph: "2a3ad" }, msa: { ar: "جلس", ph: "jalasa" } },
+    { pl: "pieniądze", eg: { ar: "فلوس", ph: "feluus" }, msa: { ar: "نقود", ph: "nuquud" } },
+    { pl: "samochód", eg: { ar: "عربية", ph: "3arabeyya" }, msa: { ar: "سيارة", ph: "sayyaara" } },
+    { pl: "telefon", eg: { ar: "موبايل", ph: "mobaayel" }, msa: { ar: "هاتف", ph: "haatif" } },
+    { pl: "kiedy?", eg: { ar: "إمتى", ph: "emta" }, msa: { ar: "متى", ph: "mata" } },
+    { pl: "ile?", eg: { ar: "كام", ph: "kaam" }, msa: { ar: "كم", ph: "kam" } },
+    { pl: "teraz (drugi wariant)", eg: { ar: "حالاً", ph: "Haalan" }, msa: { ar: "الآن", ph: "al-2aan" } },
   ],
 };
 
@@ -5142,6 +5536,86 @@ const READINGS = [
       { q: "Skąd jest jego nauczycielka?", options: ["Z Egiptu", "Z Syrii", "Z Polski"], correct: 1 },
       { q: "Gdzie ona mieszka?", options: ["W Damaszku", "W Kairze", "W Krakowie"], correct: 1 },
       { q: "Czego chce Grzegorz?", options: ["Mówić lepiej po arabsku", "Przestać się uczyć", "Zamieszkać w Egipcie"], correct: 0 },
+    ],
+  },
+  {
+    title: "Dozorca z naszego budynku",
+    emoji: "🇪🇬",
+    level: "średni",
+    context: "Scenka z życia kairskiego budynku — czas teraźniejszy i przeszły.",
+    tenseNote: "Tekst miesza teraźniejszy (co dzieje się zwykle) z przeszłym (co się wydarzyło). Dobre do poczucia realiów codziennego Egiptu.",
+    sentences: [
+      { ar: "في العمارة بتاعتنا بواب اسمه عم سيد.", ph: "fil-3imaara bta3etna bawwaab esmo 3amm sayyed.", pl: "W naszym budynku jest dozorca imieniem Amm Sajjed." },
+      { ar: "كل الصبح بيفتح الباب وبينضّف السلم.", ph: "koll iS-SobH biyeftaH il-baab we biynaDDaf is-sellem.", pl: "Każdego ranka otwiera drzwi i sprząta schody." },
+      { ar: "الأسانسير بايظ من زمان، بس هو بيقول 'بكرة نصلّحه'.", ph: "il-asanseer baayeZ min zamaan, bass howwa biy2uul 'bukra neSallaHo'.", pl: "Winda jest zepsuta od dawna, ale on mówi „jutro ją naprawimy”." },
+      { ar: "إمبارح ساعدني أطلّع الشنط لحد الدور الخامس.", ph: "embaareH sa3edni aTalla3 ish-shonaT leHadd id-door il-khaames.", pl: "Wczoraj pomógł mi wnieść torby na piąte piętro." },
+      { ar: "الناس في الحتة كلها بتحبه وبتحترمه.", ph: "in-naas fil-Hetta kollaha betHebbo we betaHtermo.", pl: "Wszyscy w okolicy go lubią i szanują." },
+    ],
+    questions: [
+      { q: "Jak nazywa się dozorca?", options: ["Amm Mustafa", "Amm Sajjed", "Amm Ahmed"], correct: 1 },
+      { q: "Co jest zepsute w budynku?", options: ["Winda", "Drzwi", "Schody"], correct: 0 },
+      { q: "W czym dozorca pomógł wczoraj?", options: ["W naprawie windy", "W wniesieniu toreb", "W sprzątaniu"], correct: 1 },
+      { q: "Jak ludzie go traktują?", options: ["Lubią i szanują", "Ignorują", "Boją się go"], correct: 0 },
+    ],
+  },
+  {
+    title: "Dzień na targu",
+    emoji: "🛒",
+    level: "łatwy",
+    context: "Zakupy na egipskim targu — czas teraźniejszy i targowanie.",
+    tenseNote: "Czas teraźniejszy z prefiksem بـ (bashteri, bakhod). Zwróć uwagę na liczby i targowanie się — to codzienność w Egipcie.",
+    sentences: [
+      { ar: "كل يوم جمعة بروح السوق.", ph: "koll yoom gom3a baruuH is-suu2.", pl: "W każdy piątek chodzę na targ." },
+      { ar: "السوق زحمة، بس الخضار طازة.", ph: "is-suu2 zaHma, bass il-khoDaar Taaza.", pl: "Targ jest zatłoczony, ale warzywa są świeże." },
+      { ar: "بشتري طماطم وبصل وخيار.", ph: "bashteri TamaaTem we baSal we khiyaar.", pl: "Kupuję pomidory, cebulę i ogórki." },
+      { ar: "البياع بيقول عشرين جنيه، وأنا بقول خمستاشر.", ph: "il-bayyaa3 biy2uul 3eshriin gineeh, we ana ba2uul khamastaashar.", pl: "Sprzedawca mówi dwadzieścia funtów, a ja mówię piętnaście." },
+      { ar: "في الآخر بندفع تمنتاشر — كله تمام.", ph: "fil-aakher bnedfa3 tamantaashar — kollo tamaam.", pl: "W końcu płacimy osiemnaście — wszystko w porządku." },
+    ],
+    questions: [
+      { q: "Kiedy autor chodzi na targ?", options: ["W piątek", "W sobotę", "Codziennie"], correct: 0 },
+      { q: "Co kupuje?", options: ["Mięso", "Warzywa", "Owoce"], correct: 1 },
+      { q: "Ile ostatecznie płaci?", options: ["Piętnaście", "Osiemnaście", "Dwadzieścia"], correct: 1 },
+    ],
+  },
+  {
+    title: "Zgubiłem klucze",
+    emoji: "🔑",
+    level: "średni",
+    context: "Mała katastrofa dnia codziennego — czas przeszły.",
+    tenseNote: "Czas przeszły (Dayya3t, dawwart, la2eet) + konstrukcje niepewności (mish 3aaref). Typowa opowieść o kłopocie.",
+    sentences: [
+      { ar: "إمبارح ضيعت مفاتيحي.", ph: "embaareH Dayya3t mafatiiHi.", pl: "Wczoraj zgubiłem klucze." },
+      { ar: "دورت في كل حتة: في الشنطة، تحت الكرسي، جوه العربية.", ph: "dawwart fi koll Hetta: fish-shanTa, taHt il-korsi, gowwa il-3arabeyya.", pl: "Szukałem wszędzie: w torbie, pod krzesłem, w samochodzie." },
+      { ar: "مش عارف راحوا فين.", ph: "mish 3aaref raaHu feen.", pl: "Nie wiem, gdzie się podziały." },
+      { ar: "البواب ساعدني وفتحلي الباب.", ph: "il-bawwaab sa3edni we fataHli il-baab.", pl: "Dozorca pomógł mi i otworzył drzwi." },
+      { ar: "وبعدين لقيتهم في جيب الجاكيت!", ph: "we ba3deen la2ethom fi geeb iz-zhakeet!", pl: "A potem znalazłem je w kieszeni kurtki!" },
+      { ar: "ضحكنا كتير على الموضوع ده.", ph: "DeHekna ketiir 3ala il-mawDuu3 da.", pl: "Dużo się śmialiśmy z tej sprawy." },
+    ],
+    questions: [
+      { q: "Co zgubił autor?", options: ["Telefon", "Klucze", "Portfel"], correct: 1 },
+      { q: "Kto mu pomógł?", options: ["Sąsiad", "Dozorca", "Żona"], correct: 1 },
+      { q: "Gdzie ostatecznie były klucze?", options: ["W torbie", "W samochodzie", "W kieszeni kurtki"], correct: 2 },
+    ],
+  },
+  {
+    title: "Plany na przyszłość",
+    emoji: "🔮",
+    level: "trudny",
+    context: "Rozmyślania o tym, co dalej — czas przyszły i konstrukcje niepewności.",
+    tenseNote: "Czas przyszły (ha- + czasownik) połączony z konstrukcjami niepewności (yemken, mish 3aaref law, atmanna enn). Zaawansowany, ale bardzo przydatny.",
+    sentences: [
+      { ar: "السنة الجاية عايز أتعلم عربي أحسن.", ph: "is-sana ig-gaaya 3aayez at3allem 3arabi aHsan.", pl: "W przyszłym roku chcę nauczyć się arabskiego lepiej." },
+      { ar: "يمكن أروح مصر شهرين، ويمكن أكتر.", ph: "yemken aruuH maSr shahreen, we yemken aktar.", pl: "Może pojadę do Egiptu na dwa miesiące, a może dłużej." },
+      { ar: "مش عارف لو هينفع مع الشغل ولا لأ.", ph: "mish 3aaref law hayenfa3 ma3 ish-shughl walla la2.", pl: "Nie wiem, czy da się to pogodzić z pracą, czy nie." },
+      { ar: "على حسب الظروف.", ph: "3ala Hasab iZ-Zuruuf.", pl: "Zależy od okoliczności." },
+      { ar: "بس أتمنى إني أتكلم زي المصريين.", ph: "bass atmanna enni atkallem zayy il-maSreyyiin.", pl: "Ale mam nadzieję, że będę mówić jak Egipcjanie." },
+      { ar: "الحلم ده مش سهل، بس مش مستحيل.", ph: "il-Helm da mish sahl, bass mish mostaHiil.", pl: "To marzenie nie jest łatwe, ale nie jest niemożliwe." },
+    ],
+    questions: [
+      { q: "Czego chce autor w przyszłym roku?", options: ["Zmienić pracę", "Nauczyć się arabskiego lepiej", "Kupić dom"], correct: 1 },
+      { q: "Ile czasu może spędzić w Egipcie?", options: ["Tydzień", "Dwa miesiące lub dłużej", "Rok"], correct: 1 },
+      { q: "Od czego to zależy?", options: ["Od okoliczności", "Od pieniędzy", "Od pogody"], correct: 0 },
+      { q: "Jak autor ocenia swoje marzenie?", options: ["Niemożliwe", "Łatwe", "Trudne, ale możliwe"], correct: 2 },
     ],
   },
 ];
@@ -5391,6 +5865,62 @@ const DIALOGUES = [
       { s: "b", ar: "أكيد! رحت كذا مرة وحبيت البلد.", ph: "akiid! roHt kaza marra we Habbeet il-balad.", pl: "Jasne! Byłem kilka razy i pokochałem ten kraj." },
     ],
   },
+  {
+    title: "W taksówce",
+    emoji: "🚕",
+    context: "Podajesz cel i negocjujesz cenę.",
+    lines: [
+      { s: "a", ar: "على فين يا أستاذ؟", ph: "3ala feen ya ostaaz?", pl: "Dokąd jedziemy?" },
+      { s: "b", ar: "على وسط البلد، لو سمحت.", ph: "3ala wisT il-balad, law samaHt.", pl: "Do centrum, proszę." },
+      { s: "a", ar: "خمسين جنيه.", ph: "khamsiin gineeh.", pl: "Pięćdziesiąt funtów." },
+      { s: "b", ar: "غالي شوية. أربعين؟", ph: "8aali shwayya. arbe3iin?", pl: "Trochę drogo. Czterdzieści?" },
+      { s: "a", ar: "ماشي، اركب.", ph: "maashi, erkab.", pl: "Dobra, wsiadaj." },
+      { s: "b", ar: "لف يمين بعد الإشارة، بعدين على طول.", ph: "leff yemiin ba3d il-eshaara, ba3deen 3ala Tuul.", pl: "Skręć w prawo za światłami, potem prosto." },
+      { s: "a", ar: "حاضر. وصلنا، اتفضل.", ph: "HaaDer. weSelna, etfaDDal.", pl: "Jasne. Dojechaliśmy, proszę." },
+    ],
+  },
+  {
+    title: "Szukam mieszkania",
+    emoji: "🏠",
+    context: "Rozmowa o wynajmie mieszkania.",
+    lines: [
+      { s: "a", ar: "بدور على شقة في الحتة دي.", ph: "badawwar 3ala sha22a fil-Hetta di.", pl: "Szukam mieszkania w tej okolicy." },
+      { s: "b", ar: "عايز كام أوضة؟", ph: "3aayez kaam ooDa?", pl: "Ile pokoi chcesz?" },
+      { s: "a", ar: "تلات أوض، وقريبة من المترو.", ph: "talat ooWaD, we 2orayyiba min il-metro.", pl: "Trzy pokoje, i blisko metra." },
+      { s: "b", ar: "عندي واحدة في الدور الخامس. بس الأسانسير بايظ.", ph: "3andi waHda fid-door il-khaames. bass il-asanseer baayeZ.", pl: "Mam jedno na piątym piętrze. Ale winda jest zepsuta." },
+      { s: "a", ar: "الإيجار كام؟", ph: "il-igaar kaam?", pl: "Ile wynosi czynsz?" },
+      { s: "b", ar: "خمس تلاف في الشهر.", ph: "khamas talaaf fish-shahr.", pl: "Pięć tysięcy miesięcznie." },
+      { s: "a", ar: "ممكن أشوفها بكرة؟", ph: "momken ashufha bukra?", pl: "Mogę je zobaczyć jutro?" },
+    ],
+  },
+  {
+    title: "W kawiarni",
+    emoji: "☕",
+    context: "Zamawiasz i rozmawiasz w tradycyjnej kawiarni.",
+    lines: [
+      { s: "a", ar: "تشرب إيه؟", ph: "teshrab eeh?", pl: "Co pijesz?" },
+      { s: "b", ar: "قهوة مظبوط، من فضلك.", ph: "2ahwa maZbuuT, min faDlak.", pl: "Kawę średnio słodką, proszę." },
+      { s: "a", ar: "وأنا شاي بالنعناع.", ph: "we ana shaay bin-ne3naa3.", pl: "A ja herbatę z miętą." },
+      { s: "b", ar: "المكان ده حلو أوي.", ph: "il-makaan da Helw awi.", pl: "To miejsce jest bardzo miłe." },
+      { s: "a", ar: "أيوا، بقالي سنين بجي هنا.", ph: "aywa, ba2aali siniin baagi hena.", pl: "Tak, od lat tu przychodzę." },
+      { s: "b", ar: "على فكرة، الحساب عليا النهارده.", ph: "3ala fekra, il-Hisaab 3alayya innaharda.", pl: "A propos, dziś ja płacę." },
+      { s: "a", ar: "لأ، ولا يهمك. أنا هدفع.", ph: "la2, wala yhemmak. ana hadfa3.", pl: "Nie, nie ma sprawy. Ja zapłacę." },
+    ],
+  },
+  {
+    title: "Kupowanie ubrań",
+    emoji: "👕",
+    context: "Przymierzasz i pytasz o rozmiar.",
+    lines: [
+      { s: "a", ar: "عايز قميص أزرق.", ph: "3aayez 2amiiS azra2.", pl: "Chcę niebieską koszulę." },
+      { s: "b", ar: "مقاسك كام؟", ph: "ma2aasak kaam?", pl: "Jaki masz rozmiar?" },
+      { s: "a", ar: "مش عارف بالظبط. ممكن أقيس؟", ph: "mish 3aaref biZ-ZabT. momken a2iis?", pl: "Nie wiem dokładnie. Mogę przymierzyć?" },
+      { s: "b", ar: "أكيد، اتفضل. الأوضة هناك.", ph: "akiid, etfaDDal. il-ooDa henaak.", pl: "Jasne, proszę. Przymierzalnia jest tam." },
+      { s: "a", ar: "ده صغير شوية. عندك أكبر؟", ph: "da So8ayyar shwayya. 3andak akbar?", pl: "Ten jest trochę mały. Masz większy?" },
+      { s: "b", ar: "اتفضل، جرب ده.", ph: "etfaDDal, garrab da.", pl: "Proszę, przymierz ten." },
+      { s: "a", ar: "ده مظبوط. بكام؟", ph: "da maZbuuT. bikaam?", pl: "Ten pasuje. Ile kosztuje?" },
+    ],
+  },
 ];
 
 // ---------- Lekcje: dopasowanie słówek z bazy do dialogu ----------
@@ -5537,7 +6067,7 @@ function freshDeck() {
     ...FOOD_WORDS, ...KITCHEN_WORDS, ...PHRASE_WORDS, ...CONJUNCTION_WORDS, ...FAMILY_WORDS, ...HEALTH_WORDS, ...WEATHER_WORDS, ...SMALLTALK_WORDS, ...FILLER_WORDS, ...SLANG_WORDS, ...LIFE_WORDS,
     ...COLOR_WORDS, ...ADJECTIVE_WORDS, ...DAILY_VERB_WORDS, ...MOTION_VERB_WORDS, ...TIME_ADVERB_WORDS,
     ...BODY_WORDS, ...CLOTHES_WORDS, ...HOME_FURNITURE_WORDS, ...NATURE_WORDS, ...TRANSPORT_WORDS,
-    ...JOB_WORDS, ...EMOTION_WORDS, ...ANIMAL_WORDS, ...ORDINAL_WORDS, ...DIRECTION_WORDS, ...CONSTRUCTION_WORDS,
+    ...JOB_WORDS, ...EMOTION_WORDS, ...ANIMAL_WORDS, ...ORDINAL_WORDS, ...DIRECTION_WORDS, ...CONSTRUCTION_WORDS, ...CULTURE_WORDS, ...PRACTICAL_WORDS,
   ];
 }
 
@@ -5554,6 +6084,68 @@ function loadProgress() {
   return {};
 }
 
+// ---------- SRS: system powtórek rozłożonych w czasie ----------
+// Uproszczony SM-2 (jak Anki). Każde słowo ma:
+//   interval — za ile dni pokazać ponownie
+//   ease     — mnożnik trudności (rośnie przy trafieniach, spada przy błędach)
+//   due      — data (ISO) następnej powtórki
+// Trafienie → interwał rośnie (1 → 3 → 7 → 16 dni…). Błąd → wraca do 1 dnia.
+const SRS_MIN_EASE = 1.3;
+const SRS_START_EASE = 2.5;
+
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function addDays(dateStr, days) {
+  const d = new Date(dateStr + "T00:00:00");
+  d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
+// Zwraca zaktualizowane pola SRS po odpowiedzi.
+function srsUpdate(word, correct) {
+  const ease = word.ease || SRS_START_EASE;
+  const interval = word.interval || 0;
+  if (!correct) {
+    // Błąd: powtórz jutro, obniż łatwość.
+    return {
+      interval: 1,
+      ease: Math.max(SRS_MIN_EASE, ease - 0.2),
+      due: addDays(todayISO(), 1),
+    };
+  }
+  // Trafienie: rośnie interwał.
+  let next;
+  if (interval === 0) next = 1;
+  else if (interval === 1) next = 3;
+  else next = Math.round(interval * ease);
+  next = Math.min(next, 180); // nie dłużej niż pół roku
+  return {
+    interval: next,
+    ease: Math.min(3.0, ease + 0.1),
+    due: addDays(todayISO(), next),
+  };
+}
+
+// Czy słowo jest do powtórki dziś (lub zaległe)?
+function isDue(word) {
+  if (!word.due) return true; // nigdy nie ćwiczone = do nauki
+  return word.due <= todayISO();
+}
+
+// Słowa do powtórki dziś, posortowane: najbardziej zaległe pierwsze.
+function dueWords(words) {
+  return words
+    .filter((w) => (w.correctCount || w.wrongCount) && isDue(w))
+    .sort((a, b) => (a.due || "").localeCompare(b.due || ""));
+}
+
+// Słowa jeszcze nie ruszone (nowe do nauki).
+function newWords(words) {
+  return words.filter((w) => !w.correctCount && !w.wrongCount);
+}
+
 function saveProgress(words) {
   try {
     const prog = {};
@@ -5567,6 +6159,10 @@ function saveProgress(words) {
           correctCount: c, wrongCount: x,
           verified: !!w.verified, flagged: !!w.flagged,
           known: w.known || undefined, // "known" | "unknown" | "review"
+          // Pola SRS (mogą być puste dla starych zapisów — wtedy słowo jest „do nauki").
+          interval: w.interval || undefined,
+          ease: w.ease || undefined,
+          due: w.due || undefined,
         };
       }
     }
@@ -8441,6 +9037,31 @@ function markStudiedToday(stats) {
   return { ...stats, days };
 }
 
+// ---------- Cel dzienny ----------
+const GOAL_KEY = "ar-eg-goal-v1";
+const GOAL_OPTIONS = [10, 20, 30, 50];
+
+function loadGoal() {
+  try {
+    const raw = localStorage.getItem(GOAL_KEY);
+    const n = raw ? parseInt(raw, 10) : 20;
+    return GOAL_OPTIONS.includes(n) ? n : 20;
+  } catch (e) {
+    return 20;
+  }
+}
+
+function saveGoal(n) {
+  try {
+    localStorage.setItem(GOAL_KEY, String(n));
+  } catch (e) {}
+}
+
+// Ile odpowiedzi udzielono dziś.
+function todayCount(stats) {
+  return (stats.days && stats.days[todayKey()]) || 0;
+}
+
 // Odnotuj odpowiedź w quizie na danym poziomie trudności.
 function recordQuizLevel(stats, level, isCorrect) {
   const lvl = level === "hard" || level === "expert" ? level : "easy";
@@ -9602,6 +10223,122 @@ function MsaView() {
   );
 }
 
+// ---------- Widok: Na dziś (SRS + cel dzienny + seria) ----------
+function TodayView({ words, stats, goal, setGoal, onStartReview, onStartNew }) {
+  const due = useMemo(() => dueWords(words), [words]);
+  const fresh = useMemo(() => newWords(words), [words]);
+  const done = todayCount(stats);
+  const streak = computeStreak(stats.days || {});
+  const pct = Math.min(100, Math.round((done / goal) * 100));
+  const goalMet = done >= goal;
+
+  // Ile słów „opanowanych" (interwał ≥ 21 dni = utrwalone).
+  const mastered = words.filter((w) => (w.interval || 0) >= 21).length;
+  const learning = words.filter(
+    (w) => (w.correctCount || w.wrongCount) && (w.interval || 0) < 21
+  ).length;
+
+  return (
+    <div className="view-today">
+      {/* Cel dzienny */}
+      <div className="today-card today-goal">
+        <div className="today-goal-head">
+          <span className="today-goal-label">Cel na dziś</span>
+          <span className={`today-goal-count ${goalMet ? "today-goal-met" : ""}`}>
+            {done} / {goal}
+          </span>
+        </div>
+        <div className="today-bar">
+          <div
+            className={`today-bar-fill ${goalMet ? "today-bar-done" : ""}`}
+            style={{ width: pct + "%" }}
+          />
+        </div>
+        {goalMet ? (
+          <p className="today-goal-msg">🎉 Cel osiągnięty! Możesz ćwiczyć dalej.</p>
+        ) : (
+          <p className="today-goal-msg">Jeszcze {goal - done} do celu.</p>
+        )}
+        <div className="today-goal-picker">
+          <span className="today-goal-picker-label">zmień cel:</span>
+          {GOAL_OPTIONS.map((g) => (
+            <button
+              key={g}
+              type="button"
+              className={`today-goal-btn ${goal === g ? "today-goal-btn-active" : ""}`}
+              onClick={() => setGoal(g)}
+            >
+              {g}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Seria */}
+      <div className="today-streak">
+        <span className="today-streak-flame">🔥</span>
+        <span className="today-streak-num">{streak}</span>
+        <span className="today-streak-label">
+          {streak === 1 ? "dzień z rzędu" : "dni z rzędu"}
+        </span>
+      </div>
+
+      {/* Do powtórki (SRS) */}
+      <div className="today-card">
+        <div className="today-row-head">
+          <span className="today-row-title">🔁 Do powtórki dziś</span>
+          <span className="today-row-num">{due.length}</span>
+        </div>
+        <p className="today-row-desc">
+          Słowa, które według harmonogramu zaczynasz zapominać. Powtórka teraz
+          utrwala je najskuteczniej.
+        </p>
+        <button
+          className="nav-btn nav-btn-primary today-start"
+          onClick={onStartReview}
+          disabled={due.length < 4}
+        >
+          {due.length < 4
+            ? "za mało do powtórki (min. 4)"
+            : `powtórz ${due.length} ${due.length === 1 ? "słowo" : "słów"} →`}
+        </button>
+      </div>
+
+      {/* Nowe słowa */}
+      <div className="today-card">
+        <div className="today-row-head">
+          <span className="today-row-title">✨ Nowe słowa</span>
+          <span className="today-row-num">{fresh.length}</span>
+        </div>
+        <p className="today-row-desc">Jeszcze nieruszone — do pierwszego poznania.</p>
+        <button
+          className="nav-btn today-start"
+          onClick={onStartNew}
+          disabled={fresh.length < 4}
+        >
+          ucz się nowych →
+        </button>
+      </div>
+
+      {/* Postęp ogólny */}
+      <div className="today-summary">
+        <div className="today-sum-item">
+          <span className="today-sum-num">{mastered}</span>
+          <span className="today-sum-label">opanowane</span>
+        </div>
+        <div className="today-sum-item">
+          <span className="today-sum-num">{learning}</span>
+          <span className="today-sum-label">w nauce</span>
+        </div>
+        <div className="today-sum-item">
+          <span className="today-sum-num">{fresh.length}</span>
+          <span className="today-sum-label">nowe</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ---------- Motywy i czcionki (ustawienia wyglądu) ----------
 // Motyw = zestaw zmiennych CSS nakładanych na :root. Domyślny = "morski".
 const THEMES = {
@@ -9718,9 +10455,13 @@ function appearanceCSS(appearance) {
 // ---------- App ----------
 export default function App() {
   const [words, setWords] = useState(loadWords);
-  const [tab, setTab] = useState("flash");
+  const [tab, setTab] = useState("today");
   const [activeCat, setActiveCat] = useState("all");
   const [stats, setStats] = useState(loadStats);
+  // Cel dzienny (liczba odpowiedzi) — grywalizacja.
+  const [goal, setGoalState] = useState(loadGoal);
+  // Gdy niepuste, quiz/fiszki pracują na tej zawężonej liście (sesja SRS).
+  const [srsSession, setSrsSession] = useState(null);
   // null = modal zamknięty, "new" = dodawanie nowej fiszki, obiekt słówka = edycja istniejącej
   const [editingCard, setEditingCard] = useState(null);
   // Tekst kopii do ręcznego skopiowania (gdy pobranie pliku jest zablokowane w ramce)
@@ -9728,6 +10469,27 @@ export default function App() {
   // Wygląd: motyw kolorów + czcionka arabska (zapisywane osobno, nie ruszają postępu).
   const [appearance, setAppearance] = useState(loadAppearance);
   const [showSettings, setShowSettings] = useState(false);
+
+  function setGoal(n) {
+    setGoalState(n);
+    saveGoal(n);
+  }
+
+  // Start sesji powtórkowej (SRS): quiz tylko na słowach do powtórki.
+  function startReview() {
+    const due = dueWords(words);
+    if (due.length < 4) return;
+    setSrsSession({ mode: "review", ids: due.map(wordId) });
+    setTab("quiz");
+  }
+
+  // Start nauki nowych słów.
+  function startNew() {
+    const fresh = newWords(words).slice(0, 20);
+    if (fresh.length < 4) return;
+    setSrsSession({ mode: "new", ids: fresh.map(wordId) });
+    setTab("flash");
+  }
 
   useEffect(() => {
     ensureFontsLoaded();
@@ -9815,6 +10577,12 @@ export default function App() {
   }
 
   const filteredWords = useMemo(() => {
+    // Sesja SRS (powtórka / nowe słowa) ma pierwszeństwo nad filtrem kategorii.
+    if (srsSession && srsSession.ids && srsSession.ids.length) {
+      const set = new Set(srsSession.ids);
+      const picked = words.filter((w) => set.has(wordId(w)));
+      if (picked.length) return picked;
+    }
     if (activeCat === "review") {
       return words.filter(isDueForReview).sort((a, b) => difficultyScore(b) - difficultyScore(a));
     }
@@ -9825,7 +10593,7 @@ export default function App() {
     if (activeCat === "toreview") return words.filter((w) => w.known === "review");
     if (activeCat === "all") return words;
     return words.filter((w) => (w.cat || "other") === activeCat);
-  }, [words, activeCat]);
+  }, [words, activeCat, srsSession]);
 
   // Lista dla QUIZU jest zamrażana na czas sesji (odświeża się przy wejściu
   // w zakładkę lub zmianie kategorii, a NIE po każdej odpowiedzi).
@@ -9890,10 +10658,13 @@ export default function App() {
       if (i === -1) return ws;
       return ws.map((w, j) => {
         if (j !== i) return w;
+        // Aktualizuj też harmonogram powtórek (SRS): trafienie wydłuża interwał,
+        // błąd cofa słowo do jutra.
+        const srs = srsUpdate(w, isCorrect);
         if (isCorrect) {
-          return { ...w, correctCount: (w.correctCount || 0) + 1 };
+          return { ...w, correctCount: (w.correctCount || 0) + 1, ...srs };
         }
-        return { ...w, wrongCount: (w.wrongCount || 0) + 1 };
+        return { ...w, wrongCount: (w.wrongCount || 0) + 1, ...srs };
       });
     });
   }
@@ -10013,6 +10784,7 @@ export default function App() {
 
       <nav className="tab-bar">
         {[
+          { key: "today", label: "na dziś", Icon: TrendingUp },
           { key: "lessons", label: "lekcje", Icon: GraduationCap },
           { key: "flash", label: "fiszki", Icon: BookOpen },
           { key: "quiz", label: "quiz", Icon: ListChecks },
@@ -10033,7 +10805,11 @@ export default function App() {
           <button
             key={key}
             className={`tab-btn ${tab === key ? "tab-active" : ""}`}
-            onClick={() => setTab(key)}
+            onClick={() => {
+              setTab(key);
+              // Ręczne przejście kończy sesję powtórkową (wracamy do normalnych filtrów).
+              setSrsSession(null);
+            }}
           >
             <Icon size={16} />
             {label}
@@ -10086,6 +10862,17 @@ export default function App() {
       )}
 
       <main className="app-main">
+        {tab === "today" && (
+          <TodayView
+            words={words}
+            stats={stats}
+            goal={goal}
+            setGoal={setGoal}
+            onStartReview={startReview}
+            onStartNew={startNew}
+          />
+        )}
+
         {tab === "lessons" && (
           <LessonsView
             words={words}
@@ -13368,6 +14155,52 @@ const CSS = `
 .dlg-toggles { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 
 /* ---- Czytanki ---- */
+/* ---- Ekran „Na dziś" (SRS + grywalizacja) ---- */
+.view-today { display: flex; flex-direction: column; gap: 14px; }
+.today-card {
+  border: 1.5px solid var(--sand-deep);
+  background: var(--paper);
+  border-radius: 16px;
+  padding: 18px;
+}
+.today-goal-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.today-goal-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: var(--muted-soft); }
+.today-goal-count { font-family: Georgia, serif; font-size: 24px; font-weight: 700; color: var(--teal-deep); }
+.today-goal-met { color: #2e7d52; }
+.today-bar { height: 10px; background: var(--sand-deep); border-radius: 999px; overflow: hidden; }
+.today-bar-fill { height: 100%; background: var(--teal); border-radius: 999px; transition: width 0.4s ease; }
+.today-bar-done { background: #2e7d52; }
+.today-goal-msg { font-size: 12.5px; color: var(--muted); margin: 8px 0 0; }
+.today-goal-picker { display: flex; align-items: center; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+.today-goal-picker-label { font-size: 11px; color: var(--muted-soft); }
+.today-goal-btn {
+  border: 1.5px solid var(--sand-deep); background: transparent;
+  color: var(--muted); border-radius: 999px; padding: 4px 12px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.today-goal-btn-active { border-color: var(--teal); color: var(--teal-deep); background: rgba(29,92,82,0.08); }
+.today-streak {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px; background: rgba(217,138,43,0.10);
+  border: 1.5px solid rgba(217,138,43,0.25); border-radius: 16px;
+}
+.today-streak-flame { font-size: 22px; }
+.today-streak-num { font-family: Georgia, serif; font-size: 28px; font-weight: 700; color: var(--terracotta); }
+.today-streak-label { font-size: 13px; color: var(--muted); }
+.today-row-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.today-row-title { font-family: Georgia, serif; font-size: 16px; font-weight: 700; color: var(--teal-deep); }
+.today-row-num { font-family: Georgia, serif; font-size: 22px; font-weight: 700; color: var(--terracotta); }
+.today-row-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin: 0 0 12px; }
+.today-start { width: 100%; }
+.today-summary { display: flex; gap: 10px; }
+.today-sum-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 14px 8px; border: 1.5px solid var(--sand-deep);
+  background: var(--paper); border-radius: 14px;
+}
+.today-sum-num { font-family: Georgia, serif; font-size: 22px; font-weight: 700; color: var(--teal-deep); }
+.today-sum-label { font-size: 11px; color: var(--muted-soft); text-align: center; }
+
 .reading-list { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
 .reading-card {
   display: flex; align-items: center; gap: 14px; padding: 16px;
