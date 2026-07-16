@@ -3521,6 +3521,48 @@ const VERB_OBJECTS = {
   "pisać": { ar: "رسالة لصاحبي", ph: "resaala li-SaaHbi", pl: "list do przyjaciela", en: "a letter to my friend" },
 };
 
+// Angielskie formy czasowników: base -> [3. os. l.poj. (present), past].
+// Future = "will " + base. Reszta osób w present = base.
+const EN_VERB_FORMS = {
+  "want": ["wants", "wanted"], "do": ["does", "did"], "drink": ["drinks", "drank"],
+  "understand": ["understands", "understood"], "work": ["works", "worked"],
+  "see": ["sees", "saw"], "know": ["knows", "knew"], "must": ["must", "had to"],
+  "sleep": ["sleeps", "slept"], "write": ["writes", "wrote"], "go": ["goes", "went"],
+  "eat": ["eats", "ate"], "speak": ["speaks", "spoke"], "read": ["reads", "read"],
+  "buy": ["buys", "bought"], "take": ["takes", "took"], "give": ["gives", "gave"],
+  "live": ["lives", "lived"], "like": ["likes", "liked"], "come": ["comes", "came"],
+  "return": ["returns", "returned"], "open": ["opens", "opened"], "close": ["closes", "closed"],
+  "help": ["helps", "helped"], "play": ["plays", "played"], "listen": ["listens", "listened"],
+  "think": ["thinks", "thought"], "pay": ["pays", "paid"], "wait": ["waits", "waited"],
+  "look for": ["looks for", "looked for"], "find": ["finds", "found"], "sell": ["sells", "sold"],
+};
+
+// Podmiot angielski (mianownik) dla klucza zaimka.
+const EN_SUBJECT = {
+  ana: "I", enta: "you", enti: "you", huwwa: "he", howwa: "he", heyya: "she",
+  e7na: "we", ento: "you", homma: "they",
+};
+
+// Buduje naturalne angielskie zdanie: podmiot + poprawnie odmieniony czasownik.
+// tense: "present" | "past" | "future". base = bezokolicznik bez "to ".
+function enVerbSentence(base, pronounKey, tense, objectEn) {
+  const subj = EN_SUBJECT[pronounKey] || "";
+  const forms = EN_VERB_FORMS[base];
+  const isThird = pronounKey === "huwwa" || pronounKey === "howwa" || pronounKey === "heyya";
+  let verb;
+  if (base === "must") {
+    verb = tense === "past" ? "had to" : (tense === "future" ? "will have to" : "must");
+  } else if (tense === "future") {
+    verb = "will " + base;
+  } else if (tense === "past") {
+    verb = forms ? forms[1] : base + "ed";
+  } else {
+    verb = isThird ? (forms ? forms[0] : base + "s") : base;
+  }
+  const obj = objectEn ? " " + objectEn : "";
+  return `${subj} ${verb}${obj}`.trim();
+}
+
 function verbsToWords(verbs) {
   const out = [];
   for (const v of verbs) {
@@ -3540,19 +3582,19 @@ function verbsToWords(verbs) {
                 ar: `${pronoun.ar} ${f.ar} ${obj.ar}`,
                 ph: `${pronoun.ph} ${f.ph} ${obj.ph}`,
                 pl: `${pronoun.pl} ${plClean} ${obj.pl}`,
-                en: `${PRONOUN_EN[f.pronoun] || ""} — ${enVerbBase} — ${obj.en || ""}`.trim(),
+                en: enVerbSentence(enVerbBase, f.pronoun, tenseKey, obj.en),
               }
             : {
                 ar: `${pronoun.ar} ${f.ar}`,
                 ph: `${pronoun.ph} ${f.ph}`,
                 pl: `${pronoun.pl} ${plClean}`,
-                en: `${PRONOUN_EN[f.pronoun] || ""} — ${enVerbBase}`.trim(),
+                en: enVerbSentence(enVerbBase, f.pronoun, tenseKey, null),
               };
         }
         out.push({
           cat: "verbs",
           pl: `${f.pl} (${v.pl}, ${TENSE_LABELS[tenseKey]})`,
-          en: `${PRONOUN_EN[f.pronoun] || ""} — ${v.en || VERB_EN[v.pl] || v.pl} (${TENSE_LABELS_EN[tenseKey]})`,
+          en: `${enVerbSentence(enVerbBase, f.pronoun, tenseKey, null)} (${TENSE_LABELS_EN[tenseKey]})`,
           ar: f.ar,
           ph: f.ph,
           ex,
@@ -7571,19 +7613,19 @@ function ListView({ words, setWords, activeCat, onToggleFlag, onToggleVerified, 
       <form className="add-form" onSubmit={addWord}>
         <input
           className="text-input"
-          placeholder="polski (np. dom)"
+          placeholder={ui("polski (np. dom)")}
           value={pl}
           onChange={(e) => setPl(e.target.value)}
         />
         <input
           className="text-input input-arabic"
-          placeholder="arabski (np. بيت)"
+          placeholder={ui("arabski (np. بيت)")}
           value={ar}
           onChange={(e) => setAr(e.target.value)}
         />
         <input
           className="text-input input-mono"
-          placeholder="transkrypcja (np. beet)"
+          placeholder={ui("transkrypcja (np. beet)")}
           value={ph}
           onChange={(e) => setPh(e.target.value)}
         />
@@ -7619,7 +7661,7 @@ function ListView({ words, setWords, activeCat, onToggleFlag, onToggleVerified, 
         />
         <button className="nav-btn nav-btn-primary add-submit" type="submit">
           <Plus size={16} style={{ marginRight: 6 }} />
-          dodaj
+          {lang==="en"?"add":"dodaj"}
         </button>
       </form>
 
@@ -7657,7 +7699,7 @@ function ListView({ words, setWords, activeCat, onToggleFlag, onToggleVerified, 
         <input
           type="text"
           className="search-input"
-          placeholder="Szukaj: polski, transkrypcja lub arabski…"
+          placeholder={ui("Szukaj: polski, transkrypcja lub arabski…")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -7675,10 +7717,10 @@ function ListView({ words, setWords, activeCat, onToggleFlag, onToggleVerified, 
 
       <div className="status-filter-row">
         {[
-          { key: "all", label: "wszystkie" },
-          { key: "untouched", label: "nieprzerobione" },
-          { key: "inprogress", label: "w trakcie" },
-          { key: "mastered", label: "opanowane" },
+          { key: "all", label: "wszystkie", labelEn: "all" },
+          { key: "untouched", label: "nieprzerobione", labelEn: "untouched" },
+          { key: "inprogress", label: "w trakcie", labelEn: "in progress" },
+          { key: "mastered", label: "opanowane", labelEn: "mastered" },
         ].map((f) => (
           <button
             key={f.key}
@@ -7686,7 +7728,7 @@ function ListView({ words, setWords, activeCat, onToggleFlag, onToggleVerified, 
             className={`status-filter-btn ${statusFilter === f.key ? "status-filter-active" : ""}`}
             onClick={() => setStatusFilter(f.key)}
           >
-            {f.label}
+            {lang==="en"&&f.labelEn?f.labelEn:f.label}
           </button>
         ))}
         <span className="status-filter-count">{visibleWords.length} {lang==="en"?"words":"słówek"}</span>
@@ -7892,7 +7934,7 @@ function CardFormModal({ onClose, onSave, onDelete, initial }) {
           />
           <input
             className="text-input input-arabic"
-            placeholder="arabski (np. ممكن الفاتورة؟)"
+            placeholder={ui("arabski (np. ممكن الفاتورة؟)")}
             value={ar}
             onChange={(e) => setAr(e.target.value)}
           />
@@ -10899,6 +10941,12 @@ function catLabel(c, lang) {
 // Teksty interfejsu.
 // Słownik tłumaczeń interfejsu: polski tekst → angielski. Używany przez ui(pl).
 const UI_DICT = {
+  "Szukaj: polski, transkrypcja lub arabski…": "Search: meaning, transcription or Arabic…",
+  "polski (np. dom)": "meaning (e.g. house)",
+  "arabski (np. بيت)": "Arabic (e.g. بيت)",
+  "transkrypcja (np. beet)": "transcription (e.g. beet)",
+  "arabski (np. ممكن الفاتورة؟)": "Arabic (e.g. ممكن الفاتورة؟)",
+
   "co poprawić?": "what to fix?",
   "Usuń oznaczenie": "Remove flag",
   "Usuń zatwierdzenie": "Remove verification",
@@ -11941,6 +11989,7 @@ const CSS = `
 .app-main {
   max-width: 480px;
   width: 100%;
+  overflow-x: hidden;
 }
 
 /* ---- Flashcards ---- */
@@ -12313,6 +12362,9 @@ const CSS = `
   background: var(--paper);
   color: var(--ink);
   outline: none;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 .text-input:focus { border-color: var(--teal); }
 
@@ -12375,6 +12427,8 @@ const CSS = `
   font-size: 11.5px;
   color: var(--muted);
   margin: -6px 0 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .word-list {
@@ -13176,8 +13230,16 @@ const CSS = `
   gap: 16px;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 340px) {
+  .list-toolbar-actions { gap: 10px; }
+  .csv-hint { font-size: 11px; }
+}
+
+@media (max-width: 480px) {
   .add-form { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 380px) {
   .verb-row { grid-template-columns: 40px 44px 1fr; gap: 6px; }
   .verb-form-ph { font-size: 10px; white-space: normal; }
   .verb-pronoun-pl { font-size: 10px; }
