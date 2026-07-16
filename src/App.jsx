@@ -6939,6 +6939,7 @@ function KnownBadge({ value }) {
 
 // ---------- Widok: Fiszki ----------
 function FlashcardsView({ words, onToggleFlag, onToggleVerified, onSetKnown, onSaveExample, onEditCard, preserveOrder, emptyHint }) {
+  const lang = useLang();
   const ui = useUi();
   // Tryb kolejności: "shuffle" (losowo), "oldest" (od dodania), "newest" (od końca).
   // Kolejność tablicy `words` odzwierciedla kolejność dodawania (nowe na końcu).
@@ -6997,7 +6998,7 @@ function FlashcardsView({ words, onToggleFlag, onToggleVerified, onSetKnown, onS
   const current = words[safeOrder[safePos]];
 
   if (!current) {
-    return <EmptyState text="Wczytywanie słówek…" />;
+    return <EmptyState text={lang==="en"?"Loading words…":"Wczytywanie słówek…"} />;
   }
 
   function next() {
@@ -7245,11 +7246,11 @@ function QuizView({ words, onAnswer, preserveOrder }) {
 
   // Wczesne returny DOPIERO poniżej wszystkich hooków.
   if (words.length < 4) {
-    return <EmptyState text="Dodaj przynajmniej 4 słówka, aby uruchomić quiz." />;
+    return <EmptyState text={lang==="en"?"Add at least 4 words to start the quiz.":"Dodaj przynajmniej 4 słówka, aby uruchomić quiz."} />;
   }
 
   if (!correctWord) {
-    return <EmptyState text="Wczytywanie słówek…" />;
+    return <EmptyState text={lang==="en"?"Loading words…":"Wczytywanie słówek…"} />;
   }
 
   function choose(opt) {
@@ -7371,7 +7372,9 @@ function QuizView({ words, onAnswer, preserveOrder }) {
 
       <div className="quiz-prompt">
         <span className="card-eyebrow">
-          {direction === "ar2pl" ? "co to znaczy?" : "jak po egipsku?"}
+          {direction === "ar2pl"
+            ? (lang === "en" ? "what does it mean?" : "co to znaczy?")
+            : (lang === "en" ? "how do you say it?" : "jak po egipsku?")}
         </span>
         {direction === "ar2pl" ? (
           <>
@@ -7430,7 +7433,7 @@ function QuizView({ words, onAnswer, preserveOrder }) {
                 <span className="quiz-reveal-ex-label">{ui("przykład użycia")}</span>
                 <span className="quiz-reveal-ex-ar">{usage.ar}</span>
                 <span className="quiz-reveal-ex-ph">{usage.ph}</span>
-                <span className="quiz-reveal-ex-pl">„{usage.pl}”</span>
+                <span className="quiz-reveal-ex-pl">„{trx(usage)}”</span>
               </div>
             ) : null}
           </div>
@@ -7439,7 +7442,9 @@ function QuizView({ words, onAnswer, preserveOrder }) {
 
       {selected && (
         <button className="nav-btn nav-btn-primary nav-btn-full" onClick={nextQuestion}>
-          {idx + 1 >= pool.length ? "zobacz wynik" : "następne słowo"} →
+          {idx + 1 >= pool.length
+            ? (lang === "en" ? "see result" : "zobacz wynik")
+            : (lang === "en" ? "next word" : "następne słowo")} →
         </button>
       )}
     </div>
@@ -8058,7 +8063,7 @@ function VerbsView() {
                 </button>
               ))}
             </div>
-            <p className="pattern-rule">{pat.note}</p>
+            <p className="pattern-rule">{lang==="en"&&pat.noteEn?pat.noteEn:pat.note}</p>
             <table className="pattern-table">
               <thead>
                 <tr>
@@ -8140,7 +8145,7 @@ function VerbsView() {
                     })}
                   </tbody>
                 </table>
-                <p className="pattern-rule irr-note">{grp.note}</p>
+                <p className="pattern-rule irr-note">{lang==="en"&&grp.noteEn?grp.noteEn:grp.note}</p>
               </div>
             ))}
           </div>
@@ -8560,7 +8565,7 @@ function GrammarView() {
                     <span className="num-ph">{n.ph}</span>
                   </div>
                 </div>
-                {n.note && <p className="verb-note num-note">{n.note}</p>}
+                {n.note && <p className="verb-note num-note">{lang==="en"&&n.noteEn?n.noteEn:n.note}</p>}
               </li>
             ))}
           </ul>
@@ -8702,7 +8707,7 @@ function GrammarView() {
                     <span className="num-ph">{n.ph}</span>
                   </div>
                 </div>
-                {n.note && <p className="verb-note num-note">{n.note}</p>}
+                {n.note && <p className="verb-note num-note">{lang==="en"&&n.noteEn?n.noteEn:n.note}</p>}
               </li>
             ))}
           </ul>
@@ -8943,7 +8948,7 @@ function SentencesView() {
           <span className="sentence-solution-ph">
             {drill.tiles.map((t) => t.ph).join(" ")}
           </span>
-          {drill.note && <p className="verb-note sentence-note">{drill.note}</p>}
+          {drill.note && <p className="verb-note sentence-note">{lang==="en"&&drill.noteEn?drill.noteEn:drill.note}</p>}
         </div>
       )}
       {isWrong && !revealed && (
@@ -9222,7 +9227,7 @@ function GapView() {
   }
 
   if (rounds.length === 0) {
-    return <EmptyState text="Brak zdań do ćwiczenia luki." />;
+    return <EmptyState text={lang==="en"?"No sentences for the gap exercise.":"Brak zdań do ćwiczenia luki."} />;
   }
 
   if (finished) {
@@ -9330,7 +9335,7 @@ function GapView() {
           <span className="gap-solution-ph">
             {round.drill.tiles.map((t) => t.ph).join(" ")}
           </span>
-          {round.drill.note && <p className="verb-note gap-note">{round.drill.note}</p>}
+          {round.drill.note && <p className="verb-note gap-note">{lang==="en"&&round.drill.noteEn?round.drill.noteEn:round.drill.note}</p>}
         </div>
       )}
 
@@ -9900,7 +9905,7 @@ function MatchView({ words }) {
   }
 
   if (pool.length < MATCH_PAIRS) {
-    return <EmptyState text="Za mało krótkich słówek do gry w pary." />;
+    return <EmptyState text={lang==="en"?"Not enough short words for the pairs game.":"Za mało krótkich słówek do gry w pary."} />;
   }
 
   const byId = (id) => game.pairs.find((p) => p.id === id);
@@ -10022,7 +10027,7 @@ function WriteView({ words }) {
   }, [round, pool.length]);
 
   if (pool.length === 0) {
-    return <EmptyState text="Brak odpowiednich słów do ćwiczenia pisania (potrzebne słowa 3–7 liter bez znaków spacji)." />;
+    return <EmptyState text={lang==="en"?"No suitable words for the writing exercise (need words of 3–7 letters without spaces).":"Brak odpowiednich słów do ćwiczenia pisania (potrzebne słowa 3–7 liter bez znaków spacji)."} />;
   }
   if (!game) return null;
 
@@ -10105,7 +10110,7 @@ function WriteView({ words }) {
       {checked && (
         <div className={`write-feedback ${isCorrect ? "write-fb-ok" : "write-fb-bad"}`}>
           {isCorrect ? (
-            <>✓ Dobrze! <span className="write-fb-word">{correctStr}</span></>
+            <>✓ {lang==="en"?"Correct!":"Dobrze!"} <span className="write-fb-word">{correctStr}</span></>
           ) : (
             <>{lang==="en"?"Not quite. Correct: ":"Niezupełnie. Poprawnie: "}<span className="write-fb-word">{correctStr}</span></>
           )}
@@ -10113,7 +10118,7 @@ function WriteView({ words }) {
       )}
       {revealed && (
         <div className="write-feedback write-fb-reveal">
-          Poprawna kolejność: <span className="write-fb-word">{correctStr}</span>
+          {lang==="en"?"Correct order: ":"Poprawna kolejność: "}<span className="write-fb-word">{correctStr}</span>
         </div>
       )}
 
@@ -10140,11 +10145,11 @@ function WriteView({ words }) {
           <>
             {checked && !isCorrect && (
               <button className="nav-btn" onClick={() => { setPlaced([]); setChecked(false); }}>
-                spróbuj ponownie
+                {lang==="en"?"try again":"spróbuj ponownie"}
               </button>
             )}
             <button className="nav-btn nav-btn-primary" onClick={nextWord}>
-              następne słowo →
+              {lang==="en"?"next word":"następne słowo"} →
             </button>
           </>
         )}
@@ -10328,7 +10333,7 @@ function LessonSentences({ sentences }) {
   }, [safeIdx, drill]);
 
   if (!drill) {
-    return <EmptyState text="Brak pasujących zdań do tego dialogu." />;
+    return <EmptyState text={lang==="en"?"No matching sentences for this dialogue.":"Brak pasujących zdań do tego dialogu."} />;
   }
 
   const allPlaced = placed.length === drill.tiles.length;
@@ -10388,11 +10393,11 @@ function LessonSentences({ sentences }) {
         ))}
       </div>
 
-      {isCorrect && <div className="sentence-fb sentence-fb-ok">✓ Dobrze!</div>}
+      {isCorrect && <div className="sentence-fb sentence-fb-ok">✓ {lang==="en"?"Correct!":"Dobrze!"}</div>}
       {revealed && !isCorrect && (
         <div className="sentence-fb sentence-fb-reveal">{ui("Poprawna kolejność powyżej.")}</div>
       )}
-      {drill.note && solved && <p className="sentence-note">{drill.note}</p>}
+      {drill.note && solved && <p className="sentence-note">{lang==="en"&&drill.noteEn?drill.noteEn:drill.note}</p>}
 
       <div className="sentence-actions">
         {!solved && (
@@ -11804,12 +11809,12 @@ function CategoryPicker({ categories, activeCat, setActiveCat, totalCount, flagg
           <option value="unknown">{special.unknown}</option>
           <option value="toreview">{special.toreview}</option>
         </optgroup>
-        <optgroup label="── Do przeglądu ──">
+        <optgroup label={lang==="en"?"── To review ──":"── Do przeglądu ──"}>
           {reviewCount > 0 && <option value="review">{special.review}</option>}
           {flaggedCount > 0 && <option value="flagged">{special.flagged}</option>}
           {verifiedCount > 0 && <option value="verified">{special.verified}</option>}
         </optgroup>
-        <optgroup label="── Działy ──">
+        <optgroup label={lang==="en"?"── Categories ──":"── Działy ──"}>
           {categories.map((c) => (
             <option key={c.key} value={c.key}>
               {c.emoji} {catLabel(c, lang)}
