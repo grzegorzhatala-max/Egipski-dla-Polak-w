@@ -9066,10 +9066,10 @@ function LineEditor({ line, onSave, onCancel }) {
 // Wzorowane na graded readers: im wyższy poziom, tym mniej podpórek.
 // Kolejno znikają: tłumaczenie → transkrypcja → harakat (znaki samogłoskowe).
 const READ_LEVELS = [
-  { key: "a1", label: "A1", desc: "wszystko widoczne", pl: true, ph: true, harakat: true },
-  { key: "a2", label: "A2", desc: "bez tłumaczenia", pl: false, ph: true, harakat: true },
-  { key: "b1", label: "B1", desc: "bez transkrypcji", pl: false, ph: false, harakat: true },
-  { key: "b2", label: "B2", desc: "samo pismo (bez harakat)", pl: false, ph: false, harakat: false },
+  { key: "a1", label: "A1", desc: "wszystko widoczne", descEn: "all visible", pl: true, ph: true, harakat: true },
+  { key: "a2", label: "A2", desc: "bez tłumaczenia", descEn: "no translation", pl: false, ph: true, harakat: true },
+  { key: "b1", label: "B1", desc: "bez transkrypcji", descEn: "no transcription", pl: false, ph: false, harakat: true },
+  { key: "b2", label: "B2", desc: "samo pismo (bez harakat)", descEn: "script only (no harakat)", pl: false, ph: false, harakat: false },
 ];
 
 // Usuwa harakat (znaki samogłoskowe) z tekstu arabskiego.
@@ -9085,6 +9085,7 @@ function arForLevel(line, lvl) {
 }
 
 function LevelPicker({ level, setLevel }) {
+  const lang = useLang();
   const cur = READ_LEVELS.find((l) => l.key === level) || READ_LEVELS[0];
   return (
     <div className="level-picker">
@@ -9100,7 +9101,7 @@ function LevelPicker({ level, setLevel }) {
           </button>
         ))}
       </div>
-      <span className="level-desc">{cur.desc}</span>
+      <span className="level-desc">{lang==="en"&&cur.descEn?cur.descEn:cur.desc}</span>
     </div>
   );
 }
@@ -10289,7 +10290,7 @@ function LessonsView({ words, onToggleFlag, onToggleVerified, onSetKnown, onSave
   return (
     <div className="view-lessons">
       <button className="lesson-back" onClick={() => setLessonIdx(null)}>
-        ← wszystkie lekcje
+        ← {lang==="en"?"all lessons":"wszystkie lekcje"}
       </button>
 
       <div className="lesson-head">
