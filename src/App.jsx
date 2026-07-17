@@ -3598,6 +3598,8 @@ function verbsToWords(verbs) {
           ar: f.ar,
           ph: f.ph,
           ex,
+          verbBase: v.pl,
+          verbTense: tenseKey,
         });
       }
     }
@@ -5688,6 +5690,246 @@ const SENTENCE_DRILLS = [
 // Porównanie dialektu egipskiego z arabskim literackim (Modern Standard Arabic).
 // Trzy grupy: identyczne / to samo słowo, inna wymowa / zupełnie inne słowo.
 // Reguły wymowy potwierdzone: ج j→g, ق q→hamza(2), ث th→t, ذ dh→d/z.
+// ---------- MSA: rdzenie i rodziny słów (جذور) ----------
+// Fundament arabskiego: z jednego rdzenia trójspółgłoskowego wyrastają słowa
+// według wzorów (أوزان). Pokazujemy rodzinę słów + most do egipskiego.
+// Pola równoległe (msa/eg/wazn/note) — nie wchodzą do wordId, więc bezpieczne.
+// ---------- Lekcje MSA od podstaw — Moduł 1: fonetyka i pismo ----------
+// Krótka teoria (prosto + technicznie) + przykłady MSA vs egipski.
+// Cel: czytanie MSA. Każda lekcja buduje na tym, co znasz z egipskiego.
+// ---------- Pełny alfabet arabski: 28 liter, 4 formy pozycyjne ----------
+// iso=izolowana, ini=początkowa, med=środkowa, fin=końcowa.
+// nonConnect: litery niełączące się z następną (ا د ذ ر ز و).
+const ARABIC_ALPHABET = [
+  { name: "alif", iso: "ا", ini: "ا", med: "ـا", fin: "ـا", sound: { pl: "ā / nośnik", en: "ā / carrier" }, ex: { iso: { w: "دار", ph: "daar", pl: "dom, siedziba", en: "home" }, ini: { w: "أَسَد", ph: "asad", pl: "lew", en: "lion" }, med: { w: "بَاب", ph: "baab", pl: "drzwi", en: "door" }, fin: { w: "سَمَا", ph: "samaa", pl: "niebo", en: "sky" } }, nonConnect: true },
+  { name: "bā'", iso: "ب", ini: "بـ", med: "ـبـ", fin: "ـب", sound: { pl: "b", en: "b" }, ex: { iso: { w: "بابْ", ph: "baab", pl: "drzwi", en: "door" }, ini: { w: "بَيْت", ph: "bayt", pl: "dom", en: "house" }, med: { w: "كَبير", ph: "kabiir", pl: "duży", en: "big" }, fin: { w: "قَلْب", ph: "qalb", pl: "serce", en: "heart" } }, },
+  { name: "tā'", iso: "ت", ini: "تـ", med: "ـتـ", fin: "ـت", sound: { pl: "t", en: "t" }, ex: { iso: { w: "مَوْت", ph: "mawt", pl: "śmierć", en: "death" }, ini: { w: "تِين", ph: "tiin", pl: "figa", en: "fig" }, med: { w: "كِتاب", ph: "kitaab", pl: "książka", en: "book" }, fin: { w: "بَيْت", ph: "bayt", pl: "dom", en: "house" } }, },
+  { name: "thā'", iso: "ث", ini: "ثـ", med: "ـثـ", fin: "ـث", sound: { pl: "th (jak „think”)", en: "th (as in 'think')" }, ex: { iso: { w: "أَثاث", ph: "athaath", pl: "meble", en: "furniture" }, ini: { w: "ثَلْج", ph: "thalj", pl: "śnieg", en: "snow" }, med: { w: "مِثْل", ph: "mithl", pl: "jak, podobny", en: "like" }, fin: { w: "ثُلُث", ph: "thuluth", pl: "jedna trzecia", en: "a third" } }, },
+  { name: "jīm", iso: "ج", ini: "جـ", med: "ـجـ", fin: "ـج", sound: { pl: "j (eg. g)", en: "j (Egy. g)" }, ex: { iso: { w: "بُرْج", ph: "burj", pl: "wieża", en: "tower" }, ini: { w: "جَمَل", ph: "jamal", pl: "wielbłąd", en: "camel" }, med: { w: "رَجُل", ph: "rajul", pl: "mężczyzna", en: "man" }, fin: { w: "ثَلْج", ph: "thalj", pl: "śnieg", en: "snow" } }, },
+  { name: "ḥā'", iso: "ح", ini: "حـ", med: "ـحـ", fin: "ـح", sound: { pl: "H (gardłowe)", en: "H (throaty)" }, ex: { iso: { w: "صَباح", ph: "Sabaah", pl: "poranek", en: "morning" }, ini: { w: "حُبّ", ph: "Hubb", pl: "miłość", en: "love" }, med: { w: "بَحْر", ph: "baHr", pl: "morze", en: "sea" }, fin: { w: "مِلْح", ph: "milH", pl: "sól", en: "salt" } }, },
+  { name: "khā'", iso: "خ", ini: "خـ", med: "ـخـ", fin: "ـخ", sound: { pl: "kh (jak „ch”)", en: "kh (like 'loch')" }, ex: { iso: { w: "صَرْخ", ph: "Sarkh", pl: "krzyk", en: "scream" }, ini: { w: "خُبْز", ph: "khubz", pl: "chleb", en: "bread" }, med: { w: "نَخْل", ph: "nakhl", pl: "palmy", en: "palm trees" }, fin: { w: "طَبْخ", ph: "Tabkh", pl: "gotowanie", en: "cooking" } }, },
+  { name: "dāl", iso: "د", ini: "د", med: "ـد", fin: "ـد", sound: { pl: "d", en: "d" }, ex: { iso: { w: "وَرْد", ph: "ward", pl: "róże", en: "roses" }, ini: { w: "دَار", ph: "daar", pl: "dom, siedziba", en: "home" }, med: { w: "مَدْرَسة", ph: "madrasa", pl: "szkoła", en: "school" }, fin: { w: "وَلَد", ph: "walad", pl: "chłopiec", en: "boy" } }, nonConnect: true },
+  { name: "dhāl", iso: "ذ", ini: "ذ", med: "ـذ", fin: "ـذ", sound: { pl: "dh (jak „this”)", en: "dh (as in 'this')" }, ex: { iso: { w: "رَذاذ", ph: "radhaadh", pl: "mżawka", en: "drizzle" }, ini: { w: "ذَهَب", ph: "dhahab", pl: "złoto", en: "gold" }, med: { w: "لَذيذ", ph: "ladhiidh", pl: "pyszny", en: "delicious" }, fin: { w: "نَبيذ", ph: "nabiidh", pl: "wino", en: "wine" } }, nonConnect: true },
+  { name: "rā'", iso: "ر", ini: "ر", med: "ـر", fin: "ـر", sound: { pl: "r", en: "r" }, ex: { iso: { w: "زَأْر", ph: "za'r", pl: "ryk", en: "roar" }, ini: { w: "رَأْس", ph: "ra's", pl: "głowa", en: "head" }, med: { w: "مَريض", ph: "mariiD", pl: "chory", en: "sick" }, fin: { w: "قَمَر", ph: "qamar", pl: "księżyc", en: "moon" } }, nonConnect: true },
+  { name: "zāy", iso: "ز", ini: "ز", med: "ـز", fin: "ـز", sound: { pl: "z", en: "z" }, ex: { iso: { w: "أَرُز", ph: "aruzz", pl: "ryż", en: "rice" }, ini: { w: "زَيْت", ph: "zayt", pl: "olej", en: "oil" }, med: { w: "خِزانة", ph: "khizaana", pl: "szafa", en: "cupboard" }, fin: { w: "خُبْز", ph: "khubz", pl: "chleb", en: "bread" } }, nonConnect: true },
+  { name: "sīn", iso: "س", ini: "سـ", med: "ـسـ", fin: "ـس", sound: { pl: "s", en: "s" }, ex: { iso: { w: "فَأْس", ph: "fa's", pl: "topór", en: "axe" }, ini: { w: "سَمَك", ph: "samak", pl: "ryba", en: "fish" }, med: { w: "مَسْجِد", ph: "masjid", pl: "meczet", en: "mosque" }, fin: { w: "شَمْس", ph: "shams", pl: "słońce", en: "sun" } }, },
+  { name: "shīn", iso: "ش", ini: "شـ", med: "ـشـ", fin: "ـش", sound: { pl: "sh", en: "sh" }, ex: { iso: { w: "فِراش", ph: "firaash", pl: "pościel", en: "bedding" }, ini: { w: "شَمْس", ph: "shams", pl: "słońce", en: "sun" }, med: { w: "مِشْمِش", ph: "mishmish", pl: "morela", en: "apricot" }, fin: { w: "فِراش", ph: "firaash", pl: "pościel", en: "bedding" } }, },
+  { name: "ṣād", iso: "ص", ini: "صـ", med: "ـصـ", fin: "ـص", sound: { pl: "S (emfatyczne)", en: "S (emphatic)" }, ex: { iso: { w: "رَصاص", ph: "raSaaS", pl: "ołów", en: "lead" }, ini: { w: "صَباح", ph: "Sabaah", pl: "poranek", en: "morning" }, med: { w: "قَصْر", ph: "qaSr", pl: "pałac", en: "palace" }, fin: { w: "قَميص", ph: "qamiiS", pl: "koszula", en: "shirt" } }, },
+  { name: "ḍād", iso: "ض", ini: "ضـ", med: "ـضـ", fin: "ـض", sound: { pl: "D (emfatyczne)", en: "D (emphatic)" }, ex: { iso: { w: "أَرْض", ph: "arD", pl: "ziemia", en: "earth" }, ini: { w: "ضَيْف", ph: "Dayf", pl: "gość", en: "guest" }, med: { w: "أَخْضَر", ph: "akhDar", pl: "zielony", en: "green" }, fin: { w: "أَبْيَض", ph: "abyaD", pl: "biały", en: "white" } }, },
+  { name: "ṭā'", iso: "ط", ini: "طـ", med: "ـطـ", fin: "ـط", sound: { pl: "T (emfatyczne)", en: "T (emphatic)" }, ex: { iso: { w: "شَرْط", ph: "sharT", pl: "warunek", en: "condition" }, ini: { w: "طَريق", ph: "Tariiq", pl: "droga", en: "road" }, med: { w: "مَطَر", ph: "maTar", pl: "deszcz", en: "rain" }, fin: { w: "قِطّ", ph: "qiTT", pl: "kot", en: "cat" } }, },
+  { name: "ẓā'", iso: "ظ", ini: "ظـ", med: "ـظـ", fin: "ـظ", sound: { pl: "Z / DH (emfatyczne)", en: "Z / DH (emphatic)" }, ex: { iso: { w: "حُظوظ", ph: "HuZuuZ", pl: "losy, szczęście", en: "fortunes" }, ini: { w: "ظُهْر", ph: "Zuhr", pl: "południe", en: "noon" }, med: { w: "نَظيف", ph: "naZiif", pl: "czysty", en: "clean" }, fin: { w: "حِفْظ", ph: "HifZ", pl: "zapamiętanie", en: "memorization" } }, },
+  { name: "ʿayn", iso: "ع", ini: "عـ", med: "ـعـ", fin: "ـع", sound: { pl: "3 (gardłowe)", en: "3 (throaty)" }, ex: { iso: { w: "ذِراع", ph: "dhiraa3", pl: "ramię", en: "arm" }, ini: { w: "عَيْن", ph: "3ayn", pl: "oko", en: "eye" }, med: { w: "سَعيد", ph: "sa3iid", pl: "szczęśliwy", en: "happy" }, fin: { w: "جائِع", ph: "jaa'i3", pl: "głodny", en: "hungry" } }, },
+  { name: "ghayn", iso: "غ", ini: "غـ", med: "ـغـ", fin: "ـغ", sound: { pl: "gh (jak fr. „r”)", en: "gh (French 'r')" }, ex: { iso: { w: "فَراغ", ph: "faraagh", pl: "pustka", en: "void" }, ini: { w: "غَريب", ph: "ghariib", pl: "obcy, dziwny", en: "strange" }, med: { w: "صَغير", ph: "Saghiir", pl: "mały", en: "small" }, fin: { w: "فارِغ", ph: "faarigh", pl: "pusty", en: "empty" } }, },
+  { name: "fā'", iso: "ف", ini: "فـ", med: "ـفـ", fin: "ـف", sound: { pl: "f", en: "f" }, ex: { iso: { w: "رَفّ", ph: "raff", pl: "półka", en: "shelf" }, ini: { w: "فيل", ph: "fiil", pl: "słoń", en: "elephant" }, med: { w: "سَفَر", ph: "safar", pl: "podróż", en: "travel" }, fin: { w: "ضَيْف", ph: "Dayf", pl: "gość", en: "guest" } }, },
+  { name: "qāf", iso: "ق", ini: "قـ", med: "ـقـ", fin: "ـق", sound: { pl: "q (eg. hamza)", en: "q (Egy. hamza)" }, ex: { iso: { w: "وَرَق", ph: "waraq", pl: "papier", en: "paper" }, ini: { w: "قَلَم", ph: "qalam", pl: "długopis", en: "pen" }, med: { w: "يَقْرَأ", ph: "yaqra'", pl: "czyta", en: "reads" }, fin: { w: "طَريق", ph: "Tariiq", pl: "droga", en: "road" } }, },
+  { name: "kāf", iso: "ك", ini: "كـ", med: "ـكـ", fin: "ـك", sound: { pl: "k", en: "k" }, ex: { iso: { w: "مُبارَك", ph: "mubaarak", pl: "błogosławiony", en: "blessed" }, ini: { w: "كَلْب", ph: "kalb", pl: "pies", en: "dog" }, med: { w: "سُكّر", ph: "sukkar", pl: "cukier", en: "sugar" }, fin: { w: "سَمَك", ph: "samak", pl: "ryba", en: "fish" } }, },
+  { name: "lām", iso: "ل", ini: "لـ", med: "ـلـ", fin: "ـل", sound: { pl: "l", en: "l" }, ex: { iso: { w: "طِوال", ph: "Tiwaal", pl: "wysocy", en: "tall (pl.)" }, ini: { w: "لَيْل", ph: "layl", pl: "noc", en: "night" }, med: { w: "قَلَم", ph: "qalam", pl: "długopis", en: "pen" }, fin: { w: "جَمَل", ph: "jamal", pl: "wielbłąd", en: "camel" } }, },
+  { name: "mīm", iso: "م", ini: "مـ", med: "ـمـ", fin: "ـم", sound: { pl: "m", en: "m" }, ex: { iso: { w: "يَوْم", ph: "yawm", pl: "dzień", en: "day" }, ini: { w: "ماء", ph: "maa'", pl: "woda", en: "water" }, med: { w: "قَمَر", ph: "qamar", pl: "księżyc", en: "moon" }, fin: { w: "يَوْم", ph: "yawm", pl: "dzień", en: "day" } }, },
+  { name: "nūn", iso: "ن", ini: "نـ", med: "ـنـ", fin: "ـن", sound: { pl: "n", en: "n" }, ex: { iso: { w: "فُرْن", ph: "furn", pl: "piec", en: "oven" }, ini: { w: "نَهْر", ph: "nahr", pl: "rzeka", en: "river" }, med: { w: "بِنْت", ph: "bint", pl: "dziewczyna", en: "girl" }, fin: { w: "لَبَن", ph: "laban", pl: "mleko", en: "milk" } }, },
+  { name: "hā'", iso: "ه", ini: "هـ", med: "ـهـ", fin: "ـه", sound: { pl: "h", en: "h" }, ex: { iso: { w: "مِياه", ph: "miyaah", pl: "wody", en: "waters" }, ini: { w: "هَواء", ph: "hawaa'", pl: "powietrze", en: "air" }, med: { w: "نَهْر", ph: "nahr", pl: "rzeka", en: "river" }, fin: { w: "وَجْه", ph: "wajh", pl: "twarz", en: "face" } }, },
+  { name: "wāw", iso: "و", ini: "و", med: "ـو", fin: "ـو", sound: { pl: "w / ū", en: "w / ū" }, ex: { iso: { w: "دَوْر", ph: "dawr", pl: "rola, tura", en: "role, turn" }, ini: { w: "وَرْدة", ph: "warda", pl: "róża", en: "rose" }, med: { w: "يَوْم", ph: "yawm", pl: "dzień", en: "day" }, fin: { w: "دَلْو", ph: "dalw", pl: "wiadro", en: "bucket" } }, nonConnect: true },
+  { name: "yā'", iso: "ي", ini: "يـ", med: "ـيـ", fin: "ـي", sound: { pl: "y / ī", en: "y / ī" }, ex: { iso: { w: "رَأْي", ph: "ra'y", pl: "opinia", en: "opinion" }, ini: { w: "يَد", ph: "yad", pl: "ręka", en: "hand" }, med: { w: "بَيْت", ph: "bayt", pl: "dom", en: "house" }, fin: { w: "كُرْسي", ph: "kursii", pl: "krzesło", en: "chair" } }, },
+];
+
+// Grupy liter podobnych wizualnie (najczęściej mylone).
+const SIMILAR_GROUPS = [
+  { id: "bataTha", letters: ["ب", "ت", "ث", "ن", "ي"], hint: { pl: "Różnią się kropkami: ب (1 pod), ت (2 nad), ث (3 nad), ن (1 nad), ي (2 pod).", en: "Differ by dots: ب (1 below), ت (2 above), ث (3 above), ن (1 above), ي (2 below)." } },
+  { id: "jimHaKha", letters: ["ج", "ح", "خ"], hint: { pl: "Ten sam kształt „miseczki”: ج (kropka pod), ح (bez kropki), خ (kropka nad).", en: "Same 'bowl' shape: ج (dot below), ح (no dot), خ (dot above)." } },
+  { id: "dalDhal", letters: ["د", "ذ"], hint: { pl: "د (bez kropki) vs ذ (kropka nad).", en: "د (no dot) vs ذ (dot above)." } },
+  { id: "raZay", letters: ["ر", "ز"], hint: { pl: "ر (bez kropki) vs ز (kropka nad).", en: "ر (no dot) vs ز (dot above)." } },
+  { id: "sinShin", letters: ["س", "ش"], hint: { pl: "س (bez kropek) vs ش (3 kropki nad).", en: "س (no dots) vs ش (3 dots above)." } },
+  { id: "sadDad", letters: ["ص", "ض"], hint: { pl: "ص (bez kropki) vs ض (kropka nad).", en: "ص (no dot) vs ض (dot above)." } },
+  { id: "taZa", letters: ["ط", "ظ"], hint: { pl: "ط (bez kropki) vs ظ (kropka nad).", en: "ط (no dot) vs ظ (dot above)." } },
+  { id: "aynGhayn", letters: ["ع", "غ"], hint: { pl: "ع (bez kropki) vs غ (kropka nad).", en: "ع (no dot) vs غ (dot above)." } },
+  { id: "faQaf", letters: ["ف", "ق"], hint: { pl: "ف (1 kropka nad) vs ق (2 kropki nad).", en: "ف (1 dot above) vs ق (2 dots above)." } },
+];
+
+const MSA_MODULE_1 = {
+  id: "phonetics",
+  title: { pl: "Fonetyka i pismo MSA", en: "MSA phonetics & script" },
+  desc: { pl: "Jak litery brzmią w literackim arabskim — i czym różnią się od egipskiego.", en: "How letters sound in literary Arabic — and how they differ from Egyptian." },
+  lessons: [
+    {
+      id: "qaf",
+      title: { pl: "Litera ق (qāf)", en: "The letter ق (qāf)" },
+      letter: "ق",
+      simple: { pl: "W MSA ق to głoska „q” — twarde k wymawiane głęboko w gardle. W egipskim ta sama litera to zwykle hamza (przerwa krtaniowa).", en: "In MSA ق is 'q' — a hard k made deep in the throat. In Egyptian the same letter is usually a hamza (glottal stop)." },
+      tech: { pl: "ق (qāf) to spółgłoska zwarta języczkowa bezdźwięczna [q]. W większości dialektów miejskich (w tym kairskim) przeszła w zwarcie krtaniowe [ʔ]. W czytaniu MSA zawsze wymawiamy pełne [q].", en: "ق (qāf) is a voiceless uvular stop [q]. In most urban dialects (including Cairene) it shifted to a glottal stop [ʔ]. In reading MSA we always pronounce the full [q]." },
+      bridge: { pl: "Egipskie „2alb” (serce) to w MSA „qalb”. Ta sama pisownia قلب, inna wymowa.", en: "Egyptian '2alb' (heart) is 'qalb' in MSA. Same spelling قلب, different sound." },
+      examples: [
+        { ar: "قَلْب", msaPh: "qalb", egPh: "2alb", pl: "serce", en: "heart" },
+        { ar: "قَمَر", msaPh: "qamar", egPh: "2amar", pl: "księżyc", en: "moon" },
+        { ar: "قَهْوة", msaPh: "qahwa", egPh: "2ahwa", pl: "kawa", en: "coffee" },
+        { ar: "قَلَم", msaPh: "qalam", egPh: "2alam", pl: "długopis, pióro", en: "pen" },
+      ],
+    },
+    {
+      id: "tha",
+      title: { pl: "Litera ث (thā')", en: "The letter ث (thā')" },
+      letter: "ث",
+      simple: { pl: "W MSA ث to angielskie „th” (jak w „think”). W egipskim zwykle staje się „t” albo „s”.", en: "In MSA ث is the English 'th' (as in 'think'). In Egyptian it usually becomes 't' or 's'." },
+      tech: { pl: "ث (thā') to spółgłoska szczelinowa międzyzębowa bezdźwięczna [θ]. W egipskim potocznym przechodzi w [t] (w słowach dziedzicznych) lub [s] (w zapożyczeniach z MSA).", en: "ث (thā') is a voiceless interdental fricative [θ]. In colloquial Egyptian it becomes [t] (in inherited words) or [s] (in MSA loanwords)." },
+      bridge: { pl: "„Trzy” to MSA „thalātha”, egipskie „talāta”. Ta sama ث, inna realizacja.", en: "'Three' is MSA 'thalātha', Egyptian 'talāta'. Same ث, different realization." },
+      examples: [
+        { ar: "ثَلاثة", msaPh: "thalātha", egPh: "talāta", pl: "trzy", en: "three" },
+        { ar: "ثَوْب", msaPh: "thawb", egPh: "toob", pl: "szata, ubranie", en: "garment, robe" },
+        { ar: "ثَقافة", msaPh: "thaqāfa", egPh: "saʔāfa", pl: "kultura", en: "culture" },
+        { ar: "ثَلْج", msaPh: "thalj", egPh: "talg", pl: "śnieg, lód", en: "snow, ice" },
+      ],
+    },
+    {
+      id: "jim",
+      title: { pl: "Litera ج (jīm)", en: "The letter ج (jīm)" },
+      letter: "ج",
+      simple: { pl: "W MSA ج to „j” jak w angielskim „jam” (dź). W kairskim egipskim to twarde „g” jak w „góra”.", en: "In MSA ج is 'j' as in English 'jam'. In Cairene Egyptian it's a hard 'g' as in 'go'." },
+      tech: { pl: "ج (jīm) to w MSA zwykle afrykata dziąsłowa dźwięczna [dʒ]. Kair jest wyjątkiem wśród stolic arabskich — realizuje ją jako zwarte [g]. To najbardziej rozpoznawalna cecha egipskiej wymowy.", en: "ج (jīm) in MSA is usually a voiced postalveolar affricate [dʒ]. Cairo is exceptional among Arab capitals — it realizes it as a stop [g]. This is the most recognizable feature of Egyptian pronunciation." },
+      bridge: { pl: "„Piękny” to MSA „jamīl”, egipskie „gamīl”. Znasz „gamīl” — w MSA to „jamīl”.", en: "'Beautiful' is MSA 'jamīl', Egyptian 'gamīl'. You know 'gamīl' — in MSA it's 'jamīl'." },
+      examples: [
+        { ar: "جَميل", msaPh: "jamīl", egPh: "gamīl", pl: "piękny", en: "beautiful" },
+        { ar: "جَبَل", msaPh: "jabal", egPh: "gabal", pl: "góra", en: "mountain" },
+        { ar: "جَديد", msaPh: "jadīd", egPh: "gedīd", pl: "nowy", en: "new" },
+        { ar: "رَجُل", msaPh: "rajul", egPh: "rāgil", pl: "mężczyzna", en: "man" },
+      ],
+    },
+    {
+      id: "dhal",
+      title: { pl: "Litera ذ (dhāl)", en: "The letter ذ (dhāl)" },
+      letter: "ذ",
+      simple: { pl: "W MSA ذ to dźwięczne „th” jak w angielskim „this”. W egipskim zwykle staje się „d” albo „z”.", en: "In MSA ذ is a voiced 'th' as in English 'this'. In Egyptian it usually becomes 'd' or 'z'." },
+      tech: { pl: "ذ (dhāl) to spółgłoska szczelinowa międzyzębowa dźwięczna [ð]. To dźwięczny odpowiednik ث. W egipskim przechodzi w [d] (słowa dziedziczne) lub [z] (zapożyczenia z MSA). Nie mylić z ز (zāy), które zawsze jest [z].", en: "ذ (dhāl) is a voiced interdental fricative [ð]. It's the voiced counterpart of ث. In Egyptian it becomes [d] (inherited words) or [z] (MSA loans). Don't confuse with ز (zāy), which is always [z]." },
+      bridge: { pl: "„To/tamto” to MSA „dhālika”, egipskie „da”. A „złoto” — MSA „dhahab”, egipskie „dahab”.", en: "'That' is MSA 'dhālika', Egyptian 'da'. And 'gold' — MSA 'dhahab', Egyptian 'dahab'." },
+      examples: [
+        { ar: "ذَهَب", msaPh: "dhahab", egPh: "dahab", pl: "złoto", en: "gold" },
+        { ar: "ذَكَر", msaPh: "dhakara", egPh: "zakar", pl: "wspomniał", en: "he mentioned" },
+        { ar: "هٰذا", msaPh: "hādhā", egPh: "da", pl: "ten, to", en: "this" },
+        { ar: "لَذيذ", msaPh: "ladhīdh", egPh: "lazīz", pl: "pyszny", en: "delicious" },
+      ],
+    },
+    {
+      id: "ta-marbuta",
+      title: { pl: "Końcówka ة (tā' marbūṭa)", en: "The ending ة (tā' marbūṭa)" },
+      letter: "ة",
+      simple: { pl: "ة to końcówka rodzaju żeńskiego. Zwykle czytamy ją jako „a”, ale gdy słowo łączy się z następnym (iḍāfa), brzmi jako „-at”.", en: "ة is the feminine ending. Usually read as 'a', but when the word links to the next (iḍāfa), it sounds as '-at'." },
+      tech: { pl: "tā' marbūṭa („związane t”) to ت zapisane jak ه z dwiema kropkami. Na końcu wyrazu w pauzie: [a]. W iḍāfie lub przed końcówką ujawnia się jako [t]. W MSA z pełnym i'rāb: -atun/-atin/-atan. To jeden z najważniejszych sygnałów rodzaju żeńskiego.", en: "tā' marbūṭa ('tied t') is a ت written like ه with two dots. Word-finally in pause: [a]. In iḍāfa or before a suffix it surfaces as [t]. In MSA with full i'rāb: -atun/-atin/-atan. It's a key marker of feminine gender." },
+      bridge: { pl: "„Szkoła” to „madrasa”, ale „szkoła języków” to „madrasat al-lughāt” — ة ujawnia „t”. To znasz z egipskiego: „madraset...”.", en: "'School' is 'madrasa', but 'school of languages' is 'madrasat al-lughāt' — ة reveals the 't'. You know this from Egyptian: 'madraset...'." },
+      examples: [
+        { ar: "مَدينة", msaPh: "madīna", egPh: "medīna", pl: "miasto", en: "city" },
+        { ar: "سَيّارة", msaPh: "sayyāra", egPh: "3arabeyya", pl: "samochód", en: "car" },
+        { ar: "جامِعة", msaPh: "jāmiʿa", egPh: "gam3a", pl: "uniwersytet", en: "university" },
+        { ar: "لُغة", msaPh: "lugha", egPh: "logha", pl: "język", en: "language" },
+      ],
+    },
+    {
+      id: "hamza",
+      title: { pl: "Znak ء (hamza)", en: "The sign ء (hamza)" },
+      letter: "ء",
+      simple: { pl: "hamza to zwarcie krtaniowe — krótka „przerwa” w głosie. Siedzi na nośniku: أ إ ؤ ئ, albo samodzielnie ء.", en: "hamza is a glottal stop — a brief 'catch' in the voice (like in 'uh-oh'). It sits on a carrier: أ إ ؤ ئ, or stands alone ء." },
+      tech: { pl: "hamza [ʔ] to pełnoprawna spółgłoska w MSA. Nośnik zależy od otaczających samogłosek (reguły „siły”: i > u > a). Na początku wyrazu prawie zawsze na alifie: أ (a/u) lub إ (i). Egipskie „2” (z ق) to inny dźwięk niż etymologiczna hamza, choć brzmią tak samo.", en: "hamza [ʔ] is a full consonant in MSA. Its carrier depends on surrounding vowels (strength rules: i > u > a). Word-initially almost always on alif: أ (a/u) or إ (i). The Egyptian '2' (from ق) is a different sound from etymological hamza, though they sound alike." },
+      bridge: { pl: "„Pytanie” to „su'āl” z hamzą na nośniku ؤ. hamzę wymawiasz jak egipskie „2” — tylko pochodzi z innego miejsca.", en: "'Question' is 'su'āl' with hamza on the carrier ؤ. You pronounce hamza just like the Egyptian '2' — it just comes from a different source." },
+      examples: [
+        { ar: "سُؤال", msaPh: "su'āl", egPh: "su2āl", pl: "pytanie", en: "question" },
+        { ar: "أَكَل", msaPh: "akala", egPh: "akal", pl: "zjadł", en: "he ate" },
+        { ar: "مَساء", msaPh: "masā'", egPh: "masā2", pl: "wieczór", en: "evening" },
+        { ar: "شَيء", msaPh: "shay'", egPh: "shē2", pl: "rzecz", en: "thing" },
+      ],
+    },
+    {
+      id: "alif-maqsura",
+      title: { pl: "Litera ى (alif maqṣūra)", en: "The letter ى (alif maqṣūra)" },
+      letter: "ى",
+      simple: { pl: "ى na końcu wyrazu to „ukryte alif” — wygląda jak ي (yā') bez kropek, ale czyta się jak długie „ā”.", en: "ى at the end of a word is a 'hidden alif' — it looks like ي (yā') without dots, but reads as a long 'ā'." },
+      tech: { pl: "alif maqṣūra („skrócone alif”) występuje tylko na końcu wyrazu i brzmi [aː]. Historycznie to zredukowane yā' lub wāw. Pojawia się w czasownikach o słabym rdzeniu (np. رمى ramā) i przysłówkach. W Egipcie ي i ى często pisze się wymiennie — w MSA rozróżnienie jest ścisłe.", en: "alif maqṣūra ('shortened alif') occurs only word-finally and sounds [aː]. Historically a reduced yā' or wāw. It appears in weak-root verbs (e.g. رمى ramā) and adverbs. In Egypt ي and ى are often written interchangeably — in MSA the distinction is strict." },
+      bridge: { pl: "„Na/do” to „ʿalā” pisane z ى na końcu. Czytasz „ā”, nie „i”. To samo w „ilā” (do).", en: "'On/onto' is 'ʿalā' written with ى at the end. You read 'ā', not 'i'. Same in 'ilā' (to)." },
+      examples: [
+        { ar: "عَلى", msaPh: "ʿalā", egPh: "3ala", pl: "na, do", en: "on, onto" },
+        { ar: "إِلى", msaPh: "ilā", egPh: "ila", pl: "do, ku", en: "to, towards" },
+        { ar: "مَعْنى", msaPh: "maʿnā", egPh: "ma3na", pl: "znaczenie", en: "meaning" },
+        { ar: "مُستَشْفى", msaPh: "mustashfā", egPh: "mustashfa", pl: "szpital", en: "hospital" },
+      ],
+    },
+  ],
+};
+
+const MSA_MODULE_2 = {
+  id: "vocab",
+  title: { pl: "Słownictwo literackie", en: "Literary vocabulary" },
+  desc: { pl: "Pierwsze prawdziwe słowa MSA różne od egipskich — z odpowiednikiem egipskim i zdaniem użycia.", en: "The first real MSA words that differ from Egyptian — with an Egyptian equivalent and a usage sentence." },
+  lessons: [
+    {
+      id: "questions",
+      title: { pl: "Pytajniki (MSA)", en: "Question words (MSA)" },
+      simple: { pl: "Pytajniki to jedne z najczęstszych słów w tekście — i prawie wszystkie różnią się od egipskich. W prasie i literaturze spotkasz formy MSA.", en: "Question words are among the most frequent words in text — and almost all differ from Egyptian. In press and literature you'll meet the MSA forms." },
+      tech: { pl: "W MSA pytajniki są bardziej zróżnicowane niż w egipskim. Niektóre rządzą przypadkiem (np. كَم + biernik nieokreślony). مَا vs مَاذَا: مَا pyta o rzeczy w zdaniu imiennym, مَاذَا przed czasownikiem.", en: "In MSA question words are more differentiated than in Egyptian. Some govern case (e.g. كَم + accusative singular). مَا vs مَاذَا: مَا asks about things in nominal sentences, مَاذَا before a verb." },
+      words: [
+        { ar: "كَيْفَ", msaPh: "kayfa", egPh: "ezzāy", pl: "jak", en: "how", sMsa: "كَيْفَ حالُك؟", sMsaPh: "kayfa ḥāluk?", sEg: "ezzayyak?", sPl: "Jak się masz?", sEn: "How are you?" },
+        { ar: "مَاذَا", msaPh: "mādhā", egPh: "eeh", pl: "co", en: "what", sMsa: "مَاذَا تَفْعَل؟", sMsaPh: "mādhā tafʿal?", sEg: "bti3mel eeh?", sPl: "Co robisz?", sEn: "What are you doing?" },
+        { ar: "لِمَاذَا", msaPh: "limādhā", egPh: "leeh", pl: "dlaczego", en: "why", sMsa: "لِمَاذَا تَأَخَّرْت؟", sMsaPh: "limādhā ta'akhkhart?", sEg: "et'akhkhart leeh?", sPl: "Dlaczego się spóźniłeś?", sEn: "Why are you late?" },
+        { ar: "أَيْنَ", msaPh: "ayna", egPh: "feen", pl: "gdzie", en: "where", sMsa: "أَيْنَ الْبَيْت؟", sMsaPh: "ayna al-bayt?", sEg: "feen el-beet?", sPl: "Gdzie jest dom?", sEn: "Where is the house?" },
+        { ar: "مَتَى", msaPh: "matā", egPh: "emta", pl: "kiedy", en: "when", sMsa: "مَتَى تَصِل؟", sMsaPh: "matā taṣil?", sEg: "hatewsal emta?", sPl: "Kiedy przyjedziesz?", sEn: "When do you arrive?" },
+        { ar: "مَنْ", msaPh: "man", egPh: "meen", pl: "kto", en: "who", sMsa: "مَنْ هٰذا؟", sMsaPh: "man hādhā?", sEg: "meen da?", sPl: "Kto to?", sEn: "Who is this?" },
+        { ar: "كَمْ", msaPh: "kam", egPh: "kām", pl: "ile", en: "how many", sMsa: "كَمْ عُمْرُك؟", sMsaPh: "kam ʿumruk?", sEg: "3andak kām sana?", sPl: "Ile masz lat?", sEn: "How old are you?" },
+      ],
+    },
+    {
+      id: "connectors",
+      title: { pl: "Łączniki tekstu (MSA)", en: "Text connectors (MSA)" },
+      simple: { pl: "Łączniki spajają zdania w tekście. To fundament czytania prasy — pojawiają się w niemal każdym zdaniu i nadają tekstowi rytm i logikę.", en: "Connectors bind sentences in text. They're the foundation of reading press — they appear in almost every sentence and give text its rhythm and logic." },
+      tech: { pl: "وَ (wa) to zwykłe „i”. فَ (fa) = „i wtedy / więc” (następstwo). ثُمَّ (thumma) = „potem” (odstęp w czasie). لٰكِنَّ (lākinna) rządzi biernikiem. لِأَنَّ (li-anna) = „ponieważ” + biernik. Te słowa często zlewają się z następnym wyrazem w piśmie.", en: "وَ (wa) is plain 'and'. فَ (fa) = 'and so / then' (immediate result). ثُمَّ (thumma) = 'then' (time gap). لٰكِنَّ (lākinna) governs the accusative. لِأَنَّ (li-anna) = 'because' + accusative. These often attach to the next word in writing." },
+      words: [
+        { ar: "وَ", msaPh: "wa", egPh: "we", pl: "i", en: "and", sMsa: "الأَبُ وَالأُمّ", sMsaPh: "al-abu wa-l-umm", sEg: "el-ab we-l-omm", sPl: "ojciec i matka", sEn: "the father and the mother" },
+        { ar: "فَ", msaPh: "fa", egPh: "fa", pl: "więc, i wtedy", en: "so, and then", sMsa: "دَرَسَ فَنَجَح", sMsaPh: "darasa fa-najaḥ", sEg: "zaakir fa-negeh", sPl: "Uczył się, więc zdał.", sEn: "He studied, so he passed." },
+        { ar: "ثُمَّ", msaPh: "thumma", egPh: "ba3dēn", pl: "potem, następnie", en: "then, afterwards", sMsa: "أَكَلَ ثُمَّ نَامَ", sMsaPh: "akala thumma nāma", sEg: "kal wa ba3dēn nām", sPl: "Zjadł, potem zasnął.", sEn: "He ate, then slept." },
+        { ar: "لٰكِنْ", msaPh: "lākin", egPh: "bass", pl: "ale, lecz", en: "but", sMsa: "أُريدُ لٰكِنْ لا أَسْتَطيع", sMsaPh: "urīdu lākin lā astaṭīʿ", sEg: "3āyez bass mush 2ādir", sPl: "Chcę, ale nie mogę.", sEn: "I want to, but I can't." },
+        { ar: "لِأَنَّ", msaPh: "li-anna", egPh: "3ashān", pl: "ponieważ, bo", en: "because", sMsa: "بَقِيَ لِأَنَّهُ مَريض", sMsaPh: "baqiya li-annahu marīḍ", sEg: "2a3ad 3ashān 3ayyān", sPl: "Został, bo jest chory.", sEn: "He stayed because he's sick." },
+        { ar: "أَوْ", msaPh: "aw", egPh: "walla", pl: "albo, lub", en: "or", sMsa: "شايٌ أَوْ قَهْوة", sMsaPh: "shāyun aw qahwa", sEg: "shāy walla 2ahwa", sPl: "Herbata albo kawa?", sEn: "Tea or coffee?" },
+        { ar: "إِذَا", msaPh: "idhā", egPh: "law", pl: "jeśli", en: "if", sMsa: "إِذَا دَرَسْتَ نَجَحْت", sMsaPh: "idhā darasta najaḥt", sEg: "law zaakirt hatengaḥ", sPl: "Jeśli się uczysz, zdasz.", sEn: "If you study, you'll pass." },
+      ],
+    },
+  ],
+};
+
+const MSA_MODULES = [MSA_MODULE_1, MSA_MODULE_2];
+
+const MSA_ROOTS = [
+  {
+    root: { ar: "ك-ت-ب", tr: "k-t-b" },
+    meaning: { pl: "pisanie, pismo", en: "writing" },
+    coreIdea: { pl: "wszystko związane z pisaniem i tekstem", en: "everything to do with writing and text" },
+    family: [
+      { role: "verb", wazn: { ar: "فَعَلَ", tr: "fa3ala" }, msa: { ar: "كَتَبَ", ph: "kataba" }, eg: { ar: "كتب", ph: "katab" }, pl: "napisał", en: "he wrote", note: { pl: "Podstawowy czasownik I wzoru. Egipski gubi końcówkę -a.", en: "Basic form-I verb. Egyptian drops the final -a." } },
+      { role: "noun", wazn: { ar: "فِعَال", tr: "fi3aal" }, msa: { ar: "كِتَاب", ph: "kitaab" }, eg: { ar: "كتاب", ph: "ketaab" }, pl: "książka", en: "book", note: { pl: "Ten sam rdzeń, MSA „kitaab” → egipskie „ketaab”.", en: "Same root, MSA 'kitaab' → Egyptian 'ketaab'." } },
+      { role: "agent", wazn: { ar: "فاعِل", tr: "faa3il" }, msa: { ar: "كاتِب", ph: "kaatib" }, eg: { ar: "كاتب", ph: "kaatib" }, pl: "pisarz, autor", en: "writer", note: { pl: "Wzór فاعِل = wykonawca czynności (ten, kto pisze).", en: "The فاعِل pattern = the doer (the one who writes)." } },
+      { role: "place", wazn: { ar: "مَفْعَل", tr: "maf3al" }, msa: { ar: "مَكْتَب", ph: "maktab" }, eg: { ar: "مكتب", ph: "maktab" }, pl: "biuro, biurko", en: "office, desk", note: { pl: "Wzór مَفْعَل = miejsce czynności (miejsce pisania).", en: "The مَفْعَل pattern = place of the action (place of writing)." } },
+      { role: "place", wazn: { ar: "مَفْعَلة", tr: "maf3ala" }, msa: { ar: "مَكْتَبة", ph: "maktaba" }, eg: { ar: "مكتبة", ph: "maktaba" }, pl: "biblioteka, księgarnia", en: "library, bookshop", note: { pl: "Ten sam wzór miejsca z końcówką -a.", en: "The same place-pattern with an -a ending." } },
+      { role: "plural", wazn: { ar: "فُعُل", tr: "fu3ul" }, msa: { ar: "كُتُب", ph: "kutub" }, eg: { ar: "كتب", ph: "kotob" }, pl: "książki", en: "books", note: { pl: "Liczba mnoga łamana od „kitaab”.", en: "Broken plural of 'kitaab'." } },
+    ],
+  },
+  {
+    root: { ar: "أ-ك-ل", tr: "2-k-l" },
+    meaning: { pl: "jedzenie", en: "eating" },
+    coreIdea: { pl: "wszystko związane z jedzeniem", en: "everything to do with eating" },
+    family: [
+      { role: "verb", wazn: { ar: "فَعَلَ", tr: "fa3ala" }, msa: { ar: "أَكَلَ", ph: "akala" }, eg: { ar: "أكل", ph: "akal" }, pl: "zjadł", en: "he ate", note: { pl: "Czasownik I wzoru. W egipskim rozkaźnik nieregularny: kul (jedz).", en: "Form-I verb. Egyptian imperative is irregular: kul (eat)." } },
+      { role: "noun", wazn: { ar: "فَعْل", tr: "fa3l" }, msa: { ar: "أَكْل", ph: "akl" }, eg: { ar: "أكل", ph: "akl" }, pl: "jedzenie (rzecz)", en: "food", note: { pl: "Rzeczownik odczasownikowy. W egipskim „akl” = jedzenie w ogóle.", en: "Verbal noun. In Egyptian 'akl' = food in general." } },
+      { role: "agent", wazn: { ar: "فاعِل", tr: "faa3il" }, msa: { ar: "آكِل", ph: "aakil" }, eg: { ar: "آكل", ph: "aakil" }, pl: "jedzący", en: "eater / eating", note: { pl: "Imiesłów czynny: ten, kto je.", en: "Active participle: the one eating." } },
+      { role: "food", wazn: { ar: "مَفْعُولات", tr: "maf3uulaat" }, msa: { ar: "مَأْكُولات", ph: "ma2kuulaat" }, eg: { ar: "مأكولات", ph: "ma2kulaat" }, pl: "potrawy, dania", en: "foods, dishes", note: { pl: "Wzór مَفْعُول = przedmiot czynności (to, co się je), lm.", en: "The مَفْعُول pattern = object of the action (what is eaten), plural." } },
+      { role: "meal", wazn: { ar: "مَفْعَل", tr: "maf3al" }, msa: { ar: "مَأْكَل", ph: "ma2kal" }, eg: { ar: "مأكل", ph: "ma2kal" }, pl: "pokarm, pożywienie", en: "food, sustenance", note: { pl: "Wzór miejsca/źródła — to, z czego się je.", en: "Place/source pattern — that from which one eats." } },
+    ],
+  },
+  {
+    root: { ar: "د-ر-س", tr: "d-r-s" },
+    meaning: { pl: "nauka, studiowanie", en: "studying" },
+    coreIdea: { pl: "wszystko związane z uczeniem się i nauczaniem", en: "everything to do with studying and teaching" },
+    family: [
+      { role: "verb", wazn: { ar: "فَعَلَ", tr: "fa3ala" }, msa: { ar: "دَرَسَ", ph: "darasa" }, eg: { ar: "درس", ph: "daras" }, pl: "studiował, uczył się", en: "he studied", note: { pl: "I wzór = uczyć się. Uwaga: II wzór „darras” = nauczać.", en: "Form I = to study. Note: form II 'darras' = to teach." } },
+      { role: "noun", wazn: { ar: "فَعْل", tr: "fa3l" }, msa: { ar: "دَرْس", ph: "dars" }, eg: { ar: "درس", ph: "dars" }, pl: "lekcja", en: "lesson", note: { pl: "Ten sam wyraz w MSA i egipskim.", en: "The same word in MSA and Egyptian." } },
+      { role: "agent", wazn: { ar: "مُفَعِّل", tr: "mufa33il" }, msa: { ar: "مُدَرِّس", ph: "mudarris" }, eg: { ar: "مدرس", ph: "mudarris" }, pl: "nauczyciel", en: "teacher", note: { pl: "Wykonawca od II wzoru (nauczający). Wzór مُفَعِّل.", en: "Doer of form II (the one teaching). Pattern مُفَعِّل." } },
+      { role: "place", wazn: { ar: "مَفْعَلة", tr: "maf3ala" }, msa: { ar: "مَدْرَسة", ph: "madrasa" }, eg: { ar: "مدرسة", ph: "madrasa" }, pl: "szkoła", en: "school", note: { pl: "Wzór miejsca = miejsce nauki. Identyczne w obu.", en: "Place pattern = place of study. Identical in both." } },
+      { role: "student", wazn: { ar: "فاعِل", tr: "faa3il" }, msa: { ar: "دارِس", ph: "daaris" }, eg: { ar: "دارس", ph: "daaris" }, pl: "uczący się, student", en: "learner, student", note: { pl: "Imiesłów: ten, kto się uczy.", en: "Participle: the one who studies." } },
+    ],
+  },
+];
+
 const MSA_COMPARISON = {
   // 1. IDENTYCZNE — pisownia i wymowa praktycznie takie same w obu.
   same: [
@@ -6794,14 +7036,14 @@ function ReviewPanel({ word, onToggleFlag, onToggleVerified }) {
         onClick={() => onToggleVerified(true)}
       >
         <Check size={14} />
-        poprawna
+        {ui("poprawna")}
       </button>
       <button
         className="review-toggle-btn review-toggle-flag"
         onClick={() => onToggleFlag(true, "")}
       >
         <Flag size={14} />
-        do poprawki
+        {ui("do poprawki")}
       </button>
     </div>
   );
@@ -6810,10 +7052,12 @@ function ReviewPanel({ word, onToggleFlag, onToggleVerified }) {
 // ---------- Komponent: przycisk "nowy przykład" (generowany przez AI) ----------
 function EditExampleButton({ word, onSaveExample, className = "" }) {
   const ui = useUi();
+  const lang = useLang();
   const [editing, setEditing] = useState(false);
   const [ar, setAr] = useState(word.ex?.ar || "");
   const [ph, setPh] = useState(word.ex?.ph || "");
   const [pl, setPl] = useState(word.ex?.pl || "");
+  const [en, setEn] = useState(word.ex?.en || "");
 
   function startEdit(e) {
     e.preventDefault();
@@ -6821,15 +7065,21 @@ function EditExampleButton({ word, onSaveExample, className = "" }) {
     setAr(word.ex?.ar || "");
     setPh(word.ex?.ph || "");
     setPl(word.ex?.pl || "");
+    setEn(word.ex?.en || "");
     setEditing(true);
   }
 
   function handleSave(e) {
-  const ui = useUi();
     e.preventDefault();
     e.stopPropagation();
-    if (!ar.trim() || !pl.trim()) return;
-    onSaveExample({ ar: ar.trim(), ph: ph.trim(), pl: pl.trim() });
+    const t = (lang === "en" ? en : pl).trim();
+    if (!ar.trim() || !t) return;
+    // Pole tłumaczenia edytuje język interfejsu; drugi język zachowujemy.
+    // Jeśli któregoś brakuje, używamy wpisanego tekstu jako wspólnego fallbacku,
+    // żeby przykład nie pokazywał pustego/obcojęzycznego tłumaczenia.
+    const nextPl = lang === "en" ? (pl.trim() || t) : pl.trim();
+    const nextEn = lang === "en" ? en.trim() : (en.trim() || t);
+    onSaveExample({ ar: ar.trim(), ph: ph.trim(), pl: nextPl, en: nextEn });
     setEditing(false);
   }
 
@@ -6845,28 +7095,28 @@ function EditExampleButton({ word, onSaveExample, className = "" }) {
         />
         <input
           className="example-edit-input example-edit-input-mono"
-          placeholder="transkrypcja"
+          placeholder={ui("transkrypcja")}
           value={ph}
           onChange={(e) => setPh(e.target.value)}
         />
         <input
           className="example-edit-input"
           placeholder={ui("tłumaczenie")}
-          value={pl}
-          onChange={(e) => setPl(e.target.value)}
+          value={lang === "en" ? en : pl}
+          onChange={(e) => (lang === "en" ? setEn(e.target.value) : setPl(e.target.value))}
         />
         <div className="example-edit-actions">
           <button type="button" className="text-btn" onClick={() => setEditing(false)}>
-            anuluj
+            {lang === "en" ? "cancel" : "anuluj"}
           </button>
           <button
             type="button"
             className="example-edit-save"
             onClick={handleSave}
-            disabled={!ar.trim() || !pl.trim()}
+            disabled={!ar.trim() || !(lang === "en" ? en : pl).trim()}
           >
             <Check size={13} />
-            zapisz
+            {lang === "en" ? "save" : "zapisz"}
           </button>
         </div>
       </div>
@@ -6883,7 +7133,65 @@ function EditExampleButton({ word, onSaveExample, className = "" }) {
   );
 }
 
-function Flashcard({ word, flipped, onFlip, onToggleFlag, onToggleVerified, onSetKnown, onSaveExample, onEditCard }) {
+// Znajduje pełny obiekt czasownika po polskim bezokoliczniku (verbBase z fiszki).
+function findVerbByBase(base) {
+  if (!base) return null;
+  return VERBS.find((v) => v.pl === base) || null;
+}
+
+// Podgląd pełnej odmiany czasownika — rozwijany na fiszce.
+// Pokazuje wszystkie czasy (present/past/future) z formami osobowymi.
+function ConjugationPreview({ verb, highlightTense, highlightAr }) {
+  const lang = useLang();
+  const [open, setOpen] = useState(false);
+  if (!verb) return null;
+  const tenseOrder = ["present", "past", "future"];
+
+  return (
+    <div className="conj-preview" onClick={(e) => e.stopPropagation()}>
+      <button
+        type="button"
+        className="conj-toggle"
+        onClick={() => setOpen((o) => !o)}
+      >
+        {open
+          ? (lang === "en" ? "hide full conjugation" : "ukryj pełną odmianę")
+          : (lang === "en" ? "show full conjugation" : "pokaż pełną odmianę")}
+      </button>
+      {open && (
+        <div className="conj-tables">
+          {tenseOrder.map((tk) => {
+            const forms = verb.tenses[tk];
+            if (!forms) return null;
+            return (
+              <div className="conj-table" key={tk}>
+                <div className={`conj-tense-title ${tk === highlightTense ? "conj-tense-active" : ""}`}>
+                  {lang === "en" ? TENSE_LABELS_EN[tk] : TENSE_LABELS[tk]}
+                </div>
+                {forms.map((f, i) => {
+                  const pr = PRONOUNS.find((p) => p.key === f.pronoun);
+                  const isHi = highlightAr && f.ar === highlightAr && tk === highlightTense;
+                  return (
+                    <div className={`conj-row ${isHi ? "conj-row-hi" : ""}`} key={i}>
+                      <span className="conj-pron">{pr ? pr.ph : f.pronoun}</span>
+                      <span className="conj-ar">{f.ar}</span>
+                      <span className="conj-ph">{f.ph}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+          {verb.note && (
+            <p className="conj-note">{lang === "en" && verb.noteEn ? verb.noteEn : verb.note}</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Flashcard({ word, flipped, onFlip, onToggleFlag, onToggleVerified, onSetKnown, onSaveExample, onEditCard, onGoToRoot }) {
   const trx = useTr();
   const lang = useLang();
   const ui = useUi();
@@ -6936,6 +7244,26 @@ function Flashcard({ word, flipped, onFlip, onToggleFlag, onToggleVerified, onSe
             );
           })()}
           <EditExampleButton word={word} onSaveExample={onSaveExample} className="new-example-card" />
+          {onGoToRoot && (() => {
+            const ri = findRootIndexForWord(word);
+            if (ri < 0) return null;
+            const r = MSA_ROOTS[ri];
+            return (
+              <button
+                type="button"
+                className="card-root-link"
+                onClick={(e) => { e.stopPropagation(); onGoToRoot(ri); }}
+              >
+                <span className="card-root-link-ar">{r.root.ar}</span>
+                {lang === "en" ? "see root family" : "zobacz rodzinę rdzenia"}
+              </button>
+            );
+          })()}
+          {word.verbBase && (() => {
+            const v = findVerbByBase(word.verbBase);
+            if (!v) return null;
+            return <ConjugationPreview verb={v} highlightTense={word.verbTense} highlightAr={word.ar} />;
+          })()}
           <KnownTags value={word.known} onSetKnown={onSetKnown} />
           <ReviewPanel word={word} onToggleFlag={onToggleFlag} onToggleVerified={onToggleVerified} />
         </div>
@@ -6980,7 +7308,7 @@ function KnownBadge({ value }) {
 }
 
 // ---------- Widok: Fiszki ----------
-function FlashcardsView({ words, onToggleFlag, onToggleVerified, onSetKnown, onSaveExample, onEditCard, preserveOrder, emptyHint }) {
+function FlashcardsView({ words, onToggleFlag, onToggleVerified, onSetKnown, onSaveExample, onEditCard, onGoToRoot, preserveOrder, emptyHint }) {
   const lang = useLang();
   const ui = useUi();
   // Tryb kolejności: "shuffle" (losowo), "oldest" (od dodania), "newest" (od końca).
@@ -7071,14 +7399,14 @@ function FlashcardsView({ words, onToggleFlag, onToggleVerified, onSetKnown, onS
             onClick={() => changeSort("oldest")}
             title={ui("Od najstarszych (kolejność dodania)")}
           >
-            ↑ stare
+            ↑ {lang==="en"?"old":"stare"}
           </button>
           <button
             className={`flash-sort-btn ${sortMode === "newest" ? "flash-sort-active" : ""}`}
             onClick={() => changeSort("newest")}
-            title="Od najnowszych"
+            title={lang==="en"?"Newest first":"Od najnowszych"}
           >
-            ↓ nowe
+            ↓ {lang==="en"?"new":"nowe"}
           </button>
         </div>
       </div>
@@ -7092,14 +7420,15 @@ function FlashcardsView({ words, onToggleFlag, onToggleVerified, onSetKnown, onS
         onSetKnown={(value) => onSetKnown(current, value)}
         onSaveExample={(ex) => onSaveExample(current, ex)}
         onEditCard={() => onEditCard(current)}
+        onGoToRoot={onGoToRoot}
       />
 
       <div className="nav-row">
         <button className="nav-btn" onClick={prev}>
-          ← wstecz
+          ← {lang==="en"?"back":"wstecz"}
         </button>
         <button className="nav-btn nav-btn-primary" onClick={next}>
-          dalej →
+          {lang==="en"?"next":"dalej"} →
         </button>
       </div>
     </div>
@@ -7114,6 +7443,30 @@ function FlashcardsView({ words, onToggleFlag, onToggleVerified, onSetKnown, onS
 // UWAGA: dopasowujemy CAŁY token (ewentualnie po zdjęciu prefiksu gramatycznego).
 // Wcześniejsze „tok.includes(target)” dawało fałszywe trafienia: خد (weź) pasowało
 // do خدمات (usługi), więc przykład nie miał nic wspólnego ze słowem.
+// Wykrywa, do którego rdzenia (MSA_ROOTS) pasuje słowo — po dopasowaniu formy
+// arabskiej z rodziny rdzenia. Zwraca indeks rdzenia lub -1. Bezpieczne: tylko
+// odczyt, nie zmienia słowa ani wordId.
+function stripArabic(s) {
+  // usuń harakat i znaki diakrytyczne, zostaw same litery
+  return (s || "").replace(/[\u064B-\u0652\u0670\u0640]/g, "").trim();
+}
+function findRootIndexForWord(word) {
+  if (!word || !word.ar) return -1;
+  const wordForms = stripArabic(word.ar).split(/[\s\/,]+/).filter(Boolean);
+  for (let i = 0; i < MSA_ROOTS.length; i++) {
+    const r = MSA_ROOTS[i];
+    for (const f of r.family) {
+      const forms = [stripArabic(f.msa.ar), stripArabic(f.eg.ar)];
+      for (const form of forms) {
+        if (!form) continue;
+        // dopasowanie: któraś forma słowa równa się formie z rodziny
+        if (wordForms.some((w) => w === form)) return i;
+      }
+    }
+  }
+  return -1;
+}
+
 function findUsageExample(word) {
   if (!word || !word.ar) return null;
   const target = normalizeArabic(word.ar);
@@ -10612,6 +10965,599 @@ function ReadingsView() {
 }
 
 // ---------- Widok: Egipski a MSA (fuS7a) ----------
+// ---------- Widok: MSA — rdzenie i rodziny słów ----------
+const ROLE_LABELS = {
+  verb: { pl: "czasownik", en: "verb" },
+  noun: { pl: "rzeczownik", en: "noun" },
+  agent: { pl: "wykonawca", en: "doer" },
+  place: { pl: "miejsce", en: "place" },
+  plural: { pl: "liczba mnoga", en: "plural" },
+  food: { pl: "przedmiot", en: "object" },
+  meal: { pl: "źródło", en: "source" },
+  student: { pl: "wykonawca", en: "doer" },
+};
+
+// ---------- Widok: Lekcje MSA od podstaw ----------
+// Mini-ćwiczenie fiszkowe dla słów z lekcji MSA. Samodzielne, nie rusza
+// głównego postępu (to osobny rejestr — MSA z własną wymową).
+function MsaPractice({ examples, onClose }) {
+  const lang = useLang();
+  const [order] = useState(() => shuffle(examples.map((_, i) => i)));
+  const [pos, setPos] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [known, setKnown] = useState(0);
+
+  const ex = examples[order[pos]];
+  const isLast = pos + 1 >= order.length;
+
+  function next(gotIt) {
+    if (gotIt) setKnown((k) => k + 1);
+    if (isLast) { setPos(order.length); return; } // ekran wyniku
+    setPos((p) => p + 1);
+    setFlipped(false);
+  }
+
+  if (pos >= order.length) {
+    return (
+      <div className="msa-practice">
+        <div className="msa-practice-done">
+          <div className="msa-practice-score">{known} / {order.length}</div>
+          <p>{lang === "en" ? "Practice complete!" : "Ćwiczenie ukończone!"}</p>
+          <button className="nav-btn nav-btn-primary" onClick={onClose}>
+            {lang === "en" ? "done" : "gotowe"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="msa-practice">
+      <div className="msa-practice-bar">
+        <span className="msa-practice-count">{pos + 1} / {order.length}</span>
+        <button className="msa-practice-close" onClick={onClose}>✕</button>
+      </div>
+      <div className="msa-practice-card" onClick={() => setFlipped((f) => !f)}>
+        {!flipped ? (
+          <>
+            <span className="msa-practice-ar">{ex.ar}</span>
+            <span className="msa-practice-hint">{lang === "en" ? "tap to reveal" : "dotknij, by odsłonić"}</span>
+          </>
+        ) : (
+          <>
+            <span className="msa-practice-ar">{ex.ar}</span>
+            <span className="msa-practice-msa">{ex.msaPh} <span className="msal-tag">MSA</span></span>
+            <span className="msa-practice-eg">{ex.egPh} <span className="msal-tag msal-tag-eg">{lang === "en" ? "EGY" : "eg."}</span></span>
+            <span className="msa-practice-meaning">{lang === "en" ? ex.en : ex.pl}</span>
+          </>
+        )}
+      </div>
+      {flipped && (
+        <div className="msa-practice-actions">
+          <button className="nav-btn" onClick={() => next(false)}>
+            {lang === "en" ? "not yet" : "jeszcze nie"}
+          </button>
+          <button className="nav-btn nav-btn-primary" onClick={() => next(true)}>
+            {lang === "en" ? "got it" : "umiem"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------- Widok: tabela alfabetu (28 liter, 4 formy) ----------
+// Ćwiczenie: pokaż formę litery (w losowej pozycji), zgadnij którą to litera
+// spośród grupy podobnych. Nie rusza głównego postępu.
+function LetterQuiz({ onClose }) {
+  const lang = useLang();
+  const FORM_KEYS = ["iso", "ini", "med", "fin"];
+  const FORM_LABELS = {
+    iso: { pl: "forma izolowana", en: "isolated form" },
+    ini: { pl: "forma początkowa", en: "initial form" },
+    med: { pl: "forma środkowa", en: "medial form" },
+    fin: { pl: "forma końcowa", en: "final form" },
+  };
+
+  const [round, setRound] = useState(0);
+  const [score, setScore] = useState(0);
+  const [answered, setAnswered] = useState(null);
+  const TOTAL = 10;
+
+  // Generuj pytanie: losowa grupa, losowa litera z niej, losowa forma.
+  const question = useMemo(() => {
+    const grp = SIMILAR_GROUPS[Math.floor(Math.random() * SIMILAR_GROUPS.length)];
+    const letterChar = grp.letters[Math.floor(Math.random() * grp.letters.length)];
+    const letter = ARABIC_ALPHABET.find((l) => l.iso === letterChar);
+    const formKey = FORM_KEYS[Math.floor(Math.random() * FORM_KEYS.length)];
+    const options = shuffle([...grp.letters]);
+    return { grp, letter, formKey, options };
+  }, [round]);
+
+  if (round >= TOTAL) {
+    return (
+      <div className="lq">
+        <div className="lq-done">
+          <div className="lq-score-big">{score} / {TOTAL}</div>
+          <p>{lang === "en" ? "Nice work!" : "Dobra robota!"}</p>
+          <button className="nav-btn nav-btn-primary" onClick={onClose}>
+            {lang === "en" ? "done" : "gotowe"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const q = question;
+  const shownForm = q.letter[q.formKey];
+
+  function pick(letterChar) {
+    if (answered) return;
+    const correct = letterChar === q.letter.iso;
+    setAnswered({ picked: letterChar, correct });
+    if (correct) setScore((s) => s + 1);
+  }
+  function nextQ() {
+    setAnswered(null);
+    setRound((r) => r + 1);
+  }
+
+  return (
+    <div className="lq">
+      <div className="lq-bar">
+        <span className="lq-count">{round + 1} / {TOTAL}</span>
+        <button className="lq-close" onClick={onClose}>✕</button>
+      </div>
+
+      <div className="lq-prompt">
+        <span className="lq-form-label">{lang === "en" ? FORM_LABELS[q.formKey].en : FORM_LABELS[q.formKey].pl}</span>
+        <span className="lq-form-big">{shownForm}</span>
+        <span className="lq-question">{lang === "en" ? "which letter is this?" : "która to litera?"}</span>
+      </div>
+
+      <div className="lq-options">
+        {q.options.map((opt) => {
+          let cls = "lq-option";
+          if (answered) {
+            if (opt === q.letter.iso) cls += " lq-option-correct";
+            else if (opt === answered.picked) cls += " lq-option-wrong";
+          }
+          const optLetter = ARABIC_ALPHABET.find((l) => l.iso === opt);
+          return (
+            <button key={opt} className={cls} onClick={() => pick(opt)} disabled={!!answered}>
+              <span className="lq-option-letter">{opt}</span>
+              <span className="lq-option-name">{optLetter ? optLetter.name : ""}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {answered && (
+        <div className="lq-feedback">
+          <p className="lq-hint">{lang === "en" ? q.grp.hint.en : q.grp.hint.pl}</p>
+          <button className="nav-btn nav-btn-primary" onClick={nextQ}>
+            {round + 1 >= TOTAL ? (lang === "en" ? "see result" : "wynik") : (lang === "en" ? "next" : "dalej")} →
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AlphabetView() {
+  const lang = useLang();
+  const [openLetter, setOpenLetter] = useState(null);
+  const [quizzing, setQuizzing] = useState(false);
+
+  if (quizzing) {
+    return <LetterQuiz onClose={() => setQuizzing(false)} />;
+  }
+
+  return (
+    <div className="view-alphabet">
+      <p className="alpha-intro">
+        {lang === "en"
+          ? "The Arabic alphabet — all 28 letters. Each letter changes shape depending on its position in the word: isolated, initial, medial, final. Tap a letter to see all four forms."
+          : "Alfabet arabski — wszystkie 28 liter. Każda litera zmienia kształt zależnie od miejsca w wyrazie: izolowana, początkowa, środkowa, końcowa. Dotknij litery, by zobaczyć cztery formy."}
+      </p>
+
+      <div className="alpha-legend">
+        <span className="alpha-legend-item"><span className="alpha-dot alpha-dot-connect"></span>{lang === "en" ? "connects both sides" : "łączy się z obu stron"}</span>
+        <span className="alpha-legend-item"><span className="alpha-dot alpha-dot-noconnect"></span>{lang === "en" ? "doesn't connect to next" : "nie łączy z następną"}</span>
+      </div>
+
+      <details className="alpha-rule">
+        <summary>{lang === "en" ? "Why a letter is sometimes 'isolated' at the end of a word" : "Dlaczego litera bywa „izolowana” na końcu wyrazu"}</summary>
+        <p>
+          {lang === "en"
+            ? "A letter only takes its final or medial shape when it connects to the letter before it. After a non-connecting letter (ا د ذ ر ز و and hamza), a letter at the end of a word appears in its isolated form, and in the middle — in its initial form. Example: in فِراش (firaash) the ش comes after ا (non-connecting), so it's isolated ش, not final ـش."
+            : "Litera przyjmuje formę końcową lub środkową tylko wtedy, gdy łączy się z literą przed nią. Po literze niełączącej (ا د ذ ر ز و i hamza) litera na końcu wyrazu ma formę izolowaną, a w środku — początkową. Przykład: w فِراش (firaash) litera ش stoi po ا (niełączące), więc jest izolowana ش, nie końcowa ـش."}
+        </p>
+      </details>
+
+      <button className="alpha-quiz-btn" onClick={() => setQuizzing(true)}>
+        {lang === "en" ? "practice: tell similar letters apart" : "ćwicz: rozróżnij podobne litery"}
+      </button>
+
+      <div className="alpha-grid">
+        {ARABIC_ALPHABET.map((l) => (
+          <button
+            key={l.name}
+            className={`alpha-cell ${l.nonConnect ? "alpha-cell-nc" : ""} ${openLetter === l.name ? "alpha-cell-open" : ""}`}
+            onClick={() => setOpenLetter(openLetter === l.name ? null : l.name)}
+          >
+            <span className="alpha-cell-letter">{l.iso}</span>
+            <span className="alpha-cell-name">{l.name}</span>
+          </button>
+        ))}
+      </div>
+
+      {openLetter && (() => {
+        const l = ARABIC_ALPHABET.find((x) => x.name === openLetter);
+        // Określa REALNĄ formę litery w danym słowie na danej pozycji.
+        // W arabskim litera przyjmuje formę końcową/środkową tylko gdy łączy się
+        // z POPRZEDNIĄ literą. Jeśli poprzednia jest niełącząca (ا د ذ ر ز و + hamza),
+        // litera na końcu jest w formie IZOLOWANEJ, a w środku — POCZĄTKOWEJ.
+        function realForm(word, baseLetter, pos) {
+          const NON_CONNECT = "اأإآدذرزوءى";
+          const chars = [...word];
+          const idxs = [];
+          chars.forEach((c, i) => { if (c === baseLetter) idxs.push(i); });
+          let target = idxs[0];
+          if (pos === "fin") target = idxs[idxs.length - 1];
+          else if (pos === "med" && idxs.length > 1) target = idxs[Math.floor(idxs.length / 2)];
+          else if (pos === "iso") {
+            for (let k = idxs.length - 1; k >= 0; k--) {
+              const idx = idxs[k];
+              let pp = idx - 1;
+              while (pp >= 0 && chars[pp].charCodeAt(0) >= 0x064B && chars[pp].charCodeAt(0) <= 0x0652) pp--;
+              const pc = pp >= 0 ? chars[pp] : "";
+              let nn = idx + 1;
+              while (nn < chars.length && chars[nn].charCodeAt(0) >= 0x064B && chars[nn].charCodeAt(0) <= 0x0652) nn++;
+              const nc = nn < chars.length ? chars[nn] : "";
+              const cR = pc && !NON_CONNECT.includes(pc);
+              const cL = !NON_CONNECT.includes(baseLetter) && nc;
+              if (!cR && !cL) { target = idx; break; }
+            }
+          }
+          if (target === undefined) return pos;
+          let p = target - 1;
+          while (p >= 0 && chars[p].charCodeAt(0) >= 0x064B && chars[p].charCodeAt(0) <= 0x0652) p--;
+          const prevChar = p >= 0 ? chars[p] : "";
+          const connectsRight = prevChar && !NON_CONNECT.includes(prevChar);
+          if (pos === "fin" && !connectsRight) return "iso"; // końcowa bez łączenia = izolowana
+          if (pos === "med" && !connectsRight) return "ini"; // środkowa bez łączenia = początkowa
+          return pos;
+        }
+        const POS_LABELS = {
+          iso: { pl: "tu: izolowana", en: "here: isolated" },
+          ini: { pl: "tu: początkowa", en: "here: initial" },
+          med: { pl: "tu: środkowa", en: "here: medial" },
+          fin: { pl: "tu: końcowa", en: "here: final" },
+        };
+        const forms = [
+          { key: "iso", label: { pl: "izolowana", en: "isolated" }, val: l.iso, ex: l.ex ? l.ex.iso : null, pos: "iso" },
+          { key: "ini", label: { pl: "początkowa", en: "initial" }, val: l.ini, ex: l.ex ? l.ex.ini : null, pos: "ini" },
+          { key: "med", label: { pl: "środkowa", en: "medial" }, val: l.med, ex: l.ex ? l.ex.med : null, pos: "med" },
+          { key: "fin", label: { pl: "końcowa", en: "final" }, val: l.fin, ex: l.ex ? l.ex.fin : null, pos: "fin" },
+        ];
+        // Podświetla literę bazową w słowie (pierwsze wystąpienie właściwe dla pozycji).
+        function highlightWord(word, baseLetter, pos) {
+          const NON_CONNECT_H = "اأإآدذرزوءى";
+          const chars = [...word];
+          const idxs = [];
+          chars.forEach((c, i) => { if (c === baseLetter) idxs.push(i); });
+          let target = idxs[0];
+          if (pos === "fin") target = idxs[idxs.length - 1];
+          else if (pos === "med" && idxs.length > 1) target = idxs[Math.floor(idxs.length / 2)];
+          else if (pos === "iso") {
+            // Litera jest IZOLOWANA gdy nie łączy się ani w prawo, ani w lewo.
+            // Gdy jest wiele takich wystąpień, wybieramy OSTATNIE (najbardziej naturalne
+            // wizualnie — litera na końcu wyrazu).
+            for (let k = idxs.length - 1; k >= 0; k--) {
+              const idx = idxs[k];
+              let pp = idx - 1;
+              while (pp >= 0 && chars[pp].charCodeAt(0) >= 0x064B && chars[pp].charCodeAt(0) <= 0x0652) pp--;
+              const pc = pp >= 0 ? chars[pp] : "";
+              let nn = idx + 1;
+              while (nn < chars.length && chars[nn].charCodeAt(0) >= 0x064B && chars[nn].charCodeAt(0) <= 0x0652) nn++;
+              const nc = nn < chars.length ? chars[nn] : "";
+              const connectsRight = pc && !NON_CONNECT_H.includes(pc);
+              const connectsLeft = !NON_CONNECT_H.includes(baseLetter) && nc;
+              if (!connectsRight && !connectsLeft) { target = idx; break; }
+            }
+          }
+          if (target === undefined) return word;
+          // Dziel słowo na 3 części: przed literą, litera (z jej haraką), po literze.
+          // Nie rozbijamy każdego znaku — tylko jeden span — żeby zachować łączenie ligatur.
+          // Haraka tuż po literze (jeśli jest) dołączamy do podświetlonego fragmentu.
+          let end = target + 1;
+          while (end < chars.length && chars[end].charCodeAt(0) >= 0x064B && chars[end].charCodeAt(0) <= 0x0652) {
+            end++;
+          }
+          const before = chars.slice(0, target).join("");
+          const mid = chars.slice(target, end).join("");
+          const after = chars.slice(end).join("");
+          // Łączenie w arabskim zależy od liter niełączących (ا د ذ ر ز و + hamza).
+          // Taka litera NIE łączy się z następną. ZWJ dodajemy tylko tam, gdzie
+          // realne łączenie istnieje — inaczej wymusilibyśmy fałszywą ligaturę.
+          const NON_CONNECT = "اأإآدذرزوءى";
+          const prevChar = target > 0 ? chars[target - 1] : "";
+          const baseChar = baseLetter;
+          // ZWJ przed literą: tylko gdy poprzednia litera łączy się z następną
+          // (czyli poprzednia NIE jest niełącząca) i coś przed nią jest.
+          const prevConnects = prevChar && !NON_CONNECT.includes(prevChar);
+          const leftJoin = (before.length > 0 && prevConnects) ? "\u200D" : "";
+          // ZWJ po literze: tylko gdy sama litera bazowa się łączy (nie jest niełącząca)
+          // i coś po niej następuje.
+          const baseConnects = !NON_CONNECT.includes(baseChar);
+          const rightJoin = (after.length > 0 && baseConnects) ? "\u200D" : "";
+          return (
+            <>
+              {before}
+              <span className="alpha-hl">{leftJoin + mid + rightJoin}</span>
+              {after}
+            </>
+          );
+        }
+        return (
+          <div className="alpha-detail">
+            <div className="alpha-detail-head">
+              <span className="alpha-detail-name">{l.name}</span>
+              <span className="alpha-detail-sound">{lang === "en" ? l.sound.en : l.sound.pl}</span>
+            </div>
+            <div className="alpha-forms" dir="rtl">
+              {forms.map((f) => (
+                <div className="alpha-form" key={f.key}>
+                  <span className="alpha-form-val">{f.val}</span>
+                  <span className="alpha-form-label">{lang === "en" ? f.label.en : f.label.pl}</span>
+                  {f.ex && (
+                    <div className="alpha-form-ex">
+                      <span className="alpha-form-ex-word">{highlightWord(f.ex.w, l.iso, f.pos)}</span>
+                      {(() => {
+                        const rf = realForm(f.ex.w, l.iso, f.pos);
+                        if (rf !== f.pos) {
+                          return <span className="alpha-form-ex-note">{lang === "en" ? POS_LABELS[rf].en : POS_LABELS[rf].pl}</span>;
+                        }
+                        return null;
+                      })()}
+                      <span className="alpha-form-ex-ph" dir="ltr">{f.ex.ph}</span>
+                      <span className="alpha-form-ex-meaning" dir="ltr">{lang === "en" ? f.ex.en : f.ex.pl}</span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            {l.nonConnect && (
+              <p className="alpha-detail-note">
+                {lang === "en"
+                  ? "This letter never connects to the letter after it — the word 'breaks' here."
+                  : "Ta litera nigdy nie łączy się z następną — wyraz się tu „przerywa”."}
+              </p>
+            )}
+          </div>
+        );
+      })()}
+    </div>
+  );
+}
+
+function MsaLessonsView() {
+  const lang = useLang();
+  const [openLesson, setOpenLesson] = useState(null);
+  const [showTech, setShowTech] = useState({});
+  const [practicing, setPracticing] = useState(null); // examples[] gdy ćwiczymy
+
+  if (practicing) {
+    return <MsaPractice examples={practicing} onClose={() => setPracticing(null)} />;
+  }
+
+  return (
+    <div className="view-msalessons">
+      <p className="msal-intro">
+        {lang === "en"
+          ? "MSA from the ground up — built for reading. Each lesson shows how a letter or word works in literary Arabic, and how it maps to the Egyptian you already know."
+          : "MSA od podstaw — pod kątem czytania. Każda lekcja pokazuje, jak litera lub słowo działa w literackim arabskim i jak łączy się z egipskim, który już znasz."}
+      </p>
+
+      {MSA_MODULES.map((mod, modIdx) => (
+        <div className="msal-module" key={mod.id}>
+          <div className="msal-module-head">
+            <span className="msal-module-num">{modIdx + 1}</span>
+            <div>
+              <div className="msal-module-title">{lang === "en" ? mod.title.en : mod.title.pl}</div>
+              <div className="msal-module-desc">{lang === "en" ? mod.desc.en : mod.desc.pl}</div>
+            </div>
+          </div>
+
+          <div className="msal-lessons">
+            {mod.lessons.map((lesson) => {
+              const isOpen = openLesson === lesson.id;
+              const tech = showTech[lesson.id];
+              return (
+                <div className={`msal-lesson ${isOpen ? "msal-lesson-open" : ""}`} key={lesson.id}>
+                  <button
+                    className="msal-lesson-head"
+                    onClick={() => setOpenLesson(isOpen ? null : lesson.id)}
+                  >
+                    {lesson.letter && <span className="msal-lesson-letter">{lesson.letter}</span>}
+                    <span className="msal-lesson-title">{lang === "en" ? lesson.title.en : lesson.title.pl}</span>
+                    <span className="msal-lesson-chevron">{isOpen ? "−" : "+"}</span>
+                  </button>
+
+                  {isOpen && (
+                    <div className="msal-lesson-body">
+                      <p className="msal-simple">{lang === "en" ? lesson.simple.en : lesson.simple.pl}</p>
+
+                      {lesson.bridge && (
+                        <div className="msal-bridge">
+                          <span className="msal-bridge-tag">{lang === "en" ? "you already know this" : "to już znasz"}</span>
+                          <span className="msal-bridge-text">{lang === "en" ? lesson.bridge.en : lesson.bridge.pl}</span>
+                        </div>
+                      )}
+
+                      <button
+                        className="msal-tech-toggle"
+                        onClick={() => setShowTech((s) => ({ ...s, [lesson.id]: !s[lesson.id] }))}
+                      >
+                        {tech
+                          ? (lang === "en" ? "hide technical detail" : "ukryj szczegół techniczny")
+                          : (lang === "en" ? "technical detail" : "szczegół techniczny")}
+                      </button>
+                      {tech && (
+                        <p className="msal-tech">{lang === "en" ? lesson.tech.en : lesson.tech.pl}</p>
+                      )}
+
+                      <div className="msal-examples">
+                        <div className="msal-examples-label">
+                          {lang === "en" ? "examples (MSA vs Egyptian)" : "przykłady (MSA vs egipski)"}
+                        </div>
+                        {lesson.examples && lesson.examples.map((ex, i) => (
+                          <div className="msal-example" key={i}>
+                            <span className="msal-example-ar">{ex.ar}</span>
+                            <div className="msal-example-phs">
+                              <span className="msal-example-msa">{ex.msaPh}<span className="msal-tag">MSA</span></span>
+                              <span className="msal-example-eg">{ex.egPh}<span className="msal-tag msal-tag-eg">{lang === "en" ? "EGY" : "eg."}</span></span>
+                            </div>
+                            <span className="msal-example-meaning">{lang === "en" ? ex.en : ex.pl}</span>
+                          </div>
+                        ))}
+                        {lesson.words && lesson.words.map((w, i) => (
+                          <div className="msal-word" key={i}>
+                            <div className="msal-word-head">
+                              <span className="msal-word-ar">{w.ar}</span>
+                              <div className="msal-word-phs">
+                                <span className="msal-example-msa">{w.msaPh}<span className="msal-tag">MSA</span></span>
+                                <span className="msal-example-eg">{w.egPh}<span className="msal-tag msal-tag-eg">{lang === "en" ? "EGY" : "eg."}</span></span>
+                              </div>
+                              <span className="msal-word-meaning">{lang === "en" ? w.en : w.pl}</span>
+                            </div>
+                            <div className="msal-word-sentence">
+                              <span className="msal-sent-ar">{w.sMsa}</span>
+                              <div className="msal-sent-phs">
+                                <span className="msal-sent-msa">{w.sMsaPh}<span className="msal-tag">MSA</span></span>
+                                <span className="msal-sent-eg">{w.sEg}<span className="msal-tag msal-tag-eg">{lang === "en" ? "EGY" : "eg."}</span></span>
+                              </div>
+                              <span className="msal-sent-meaning">{lang === "en" ? w.sEn : w.sPl}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <button
+                        className="msal-practice-btn"
+                        onClick={() => setPracticing(lesson.examples || lesson.words)}
+                      >
+                        {lang === "en" ? "practice these words" : "ćwicz te słowa"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function RootsView({ initialRoot = 0 }) {
+  const lang = useLang();
+  const [openRoot, setOpenRoot] = useState(initialRoot);
+  const [showTech, setShowTech] = useState({});
+
+  useEffect(() => { setOpenRoot(initialRoot); }, [initialRoot]);
+
+  return (
+    <div className="view-roots">
+      <p className="roots-intro">
+        {lang === "en"
+          ? "The heart of Arabic: from one three-letter root, a whole family of words grows by patterns (awzān). The same root lives in MSA, Egyptian, and classical Arabic."
+          : "Serce arabskiego: z jednego trójliterowego rdzenia wyrasta cała rodzina słów według wzorów (أوزان). Ten sam rdzeń żyje w MSA, egipskim i arabskim klasycznym."}
+      </p>
+
+      <div className="roots-tabs">
+        {MSA_ROOTS.map((r, i) => (
+          <button
+            key={i}
+            className={`roots-tab ${openRoot === i ? "roots-tab-active" : ""}`}
+            onClick={() => setOpenRoot(i)}
+          >
+            <span className="roots-tab-ar">{r.root.ar}</span>
+            <span className="roots-tab-tr">{r.root.tr}</span>
+          </button>
+        ))}
+      </div>
+
+      {(() => {
+        const r = MSA_ROOTS[openRoot];
+        return (
+          <div className="root-panel">
+            <div className="root-head">
+              <span className="root-head-ar">{r.root.ar}</span>
+              <span className="root-head-tr">{r.root.tr}</span>
+              <span className="root-head-meaning">
+                {lang === "en" ? r.coreIdea.en : r.coreIdea.pl}
+              </span>
+            </div>
+
+            <div className="root-family">
+              {r.family.map((f, j) => {
+                const roleLabel = ROLE_LABELS[f.role] || { pl: f.role, en: f.role };
+                const key = openRoot + "-" + j;
+                const tech = showTech[key];
+                return (
+                  <div className="root-word" key={j}>
+                    <div className="root-word-role">
+                      {lang === "en" ? roleLabel.en : roleLabel.pl}
+                    </div>
+                    <div className="root-word-main">
+                      <div className="root-word-msa">
+                        <span className="root-word-ar">{f.msa.ar}</span>
+                        <span className="root-word-ph">{f.msa.ph}</span>
+                        <span className="root-word-tag">MSA</span>
+                      </div>
+                      <div className="root-word-eg">
+                        <span className="root-word-ar">{f.eg.ar}</span>
+                        <span className="root-word-ph">{f.eg.ph}</span>
+                        <span className="root-word-tag root-word-tag-eg">
+                          {lang === "en" ? "Egyptian" : "egipski"}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="root-word-meaning">
+                      {lang === "en" ? f.en : f.pl}
+                    </div>
+                    <button
+                      className="root-tech-toggle"
+                      onClick={() => setShowTech((s) => ({ ...s, [key]: !s[key] }))}
+                    >
+                      {tech
+                        ? (lang === "en" ? "hide details" : "ukryj szczegóły")
+                        : (lang === "en" ? "pattern & notes" : "wzór i uwagi")}
+                    </button>
+                    {tech && (
+                      <div className="root-tech">
+                        <div className="root-wazn">
+                          <span className="root-wazn-label">{lang === "en" ? "pattern (wazn):" : "wzór (wazn):"}</span>
+                          <span className="root-wazn-ar">{f.wazn.ar}</span>
+                          <span className="root-wazn-tr">{f.wazn.tr}</span>
+                        </div>
+                        <p className="root-note">{lang === "en" ? f.note.en : f.note.pl}</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
+    </div>
+  );
+}
+
 function MsaView() {
   const lang = useLang();
   const ui = useUi();
@@ -10942,6 +11888,9 @@ function catLabel(c, lang) {
 // Teksty interfejsu.
 // Słownik tłumaczeń interfejsu: polski tekst → angielski. Używany przez ui(pl).
 const UI_DICT = {
+  "transkrypcja": "transcription",
+  "poprawna": "correct",
+  "do poprawki": "needs fixing",
   "Szukaj: polski, transkrypcja lub arabski…": "Search: meaning, transcription or Arabic…",
   "polski (np. dom)": "meaning (e.g. house)",
   "arabski (np. بيت)": "Arabic (e.g. بيت)",
@@ -11185,6 +12134,9 @@ function appearanceCSS(appearance) {
 export default function App() {
   const [words, setWords] = useState(loadWords);
   const [tab, setTab] = useState("today");
+  // Docelowy rdzeń do otwarcia w widoku "rdzenie" (gdy ktoś kliknie link z fiszki).
+  const [rootTarget, setRootTarget] = useState(0);
+  const goToRoot = (idx) => { setRootTarget(idx); setTab("roots"); };
   const [activeCat, setActiveCat] = useState("all");
   const [stats, setStats] = useState(loadStats);
   // Cel dzienny (liczba odpowiedzi) — grywalizacja.
@@ -11535,6 +12487,9 @@ export default function App() {
           { key: "dialogues", label: "dialogi", labelEn: "dialogues", Icon: MessagesSquare },
           { key: "readings", label: "czytanki", labelEn: "readings", Icon: BookOpen },
           { key: "msa", label: "egipski/MSA", labelEn: "Egyptian/MSA", Icon: BookOpen },
+          { key: "roots", label: "rdzenie (MSA)", labelEn: "roots (MSA)", Icon: BookOpen },
+          { key: "alphabet", label: "alfabet", labelEn: "alphabet", Icon: BookOpen },
+          { key: "msalessons", label: "MSA od podstaw", labelEn: "MSA basics", Icon: GraduationCap },
           { key: "stats", label: "statystyki", labelEn: "stats", Icon: TrendingUp },
           { key: "list", label: "lista", labelEn: "word list", Icon: List },
         ].map(({ key, label, labelEn, Icon }) => (
@@ -11547,8 +12502,8 @@ export default function App() {
               setSrsSession(null);
             }}
           >
-            <Icon size={16} />
-            {lang === "en" && labelEn ? labelEn : label}
+            <span className="tab-icon"><Icon size={16} /></span>
+            <span className="tab-label">{lang === "en" && labelEn ? labelEn : label}</span>
           </button>
         ))}
       </nav>
@@ -11628,6 +12583,7 @@ export default function App() {
             onSetKnown={setKnown}
             onSaveExample={saveExample}
             onEditCard={setEditingCard}
+            onGoToRoot={goToRoot}
             preserveOrder={activeCat === "review"}
             emptyHint={
               activeCat === "known"
@@ -11658,6 +12614,9 @@ export default function App() {
         {tab === "dialogues" && <DialoguesView />}
         {tab === "readings" && <ReadingsView />}
         {tab === "msa" && <MsaView />}
+        {tab === "roots" && <RootsView initialRoot={rootTarget} />}
+        {tab === "alphabet" && <AlphabetView />}
+        {tab === "msalessons" && <MsaLessonsView />}
         {tab === "stats" && (
           <StatsView
             words={words}
@@ -11966,25 +12925,39 @@ const CSS = `
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 3px;
   border: none;
   background: transparent;
-  padding: 8px 4px;
+  padding: 8px 3px;
   border-radius: 10px;
   font-size: 10.5px;
   font-weight: 600;
   color: var(--muted);
   cursor: pointer;
   transition: background 0.18s, color 0.18s;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  text-align: center;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .tab-btn.tab-active {
   background: var(--teal);
   color: var(--paper);
+}
+.tab-icon {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.tab-label {
+  display: block;
+  width: 100%;
+  min-height: 24px;
 }
 
 .app-main {
@@ -12066,6 +13039,46 @@ const CSS = `
 }
 /* Tylna strona bywa dłuższa (przykład + oceny + panel) — wyrównaj do góry
    i pozwól przewijać, żeby elementy się nie nakładały. */
+
+
+/* ---- Podgląd odmiany na fiszce ---- */
+.conj-preview { align-self: stretch; margin-top: 4px; }
+.conj-toggle {
+  display: block; margin: 0 auto; padding: 6px 14px; border-radius: 999px;
+  border: 1px dashed rgba(255,255,255,0.4); background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.9); font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.conj-tables {
+  margin-top: 10px; display: flex; flex-direction: column; gap: 12px;
+  background: rgba(0,0,0,0.15); border-radius: 12px; padding: 12px;
+}
+.conj-table { display: flex; flex-direction: column; gap: 3px; }
+.conj-tense-title {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  color: rgba(255,255,255,0.55); margin-bottom: 3px;
+}
+.conj-tense-active { color: var(--amber, #e0a34e); }
+.conj-row {
+  display: grid; grid-template-columns: 62px 1fr auto; gap: 8px; align-items: baseline;
+  padding: 3px 6px; border-radius: 6px;
+}
+.conj-row-hi { background: rgba(224,163,78,0.22); }
+.conj-pron { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.55); }
+.conj-ar { font-family: var(--ar-font); font-size: 17px; color: #fff; direction: rtl; text-align: right; }
+.conj-ph { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: rgba(255,255,255,0.8); }
+.conj-note {
+  font-size: 11.5px; color: rgba(255,255,255,0.65); line-height: 1.5; margin: 4px 0 0;
+  border-top: 1px solid rgba(255,255,255,0.15); padding-top: 8px;
+}
+
+.card-root-link {
+  display: inline-flex; align-items: center; gap: 8px; align-self: center;
+  margin-top: 4px; padding: 6px 14px; border-radius: 999px;
+  border: 1px dashed rgba(255,255,255,0.4); background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.9); font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.card-root-link-ar { font-family: var(--ar-font); font-size: 15px; direction: rtl; }
+
 .card-back {
   justify-content: flex-start;
 }
@@ -12083,6 +13096,8 @@ const CSS = `
   transform: rotateY(180deg);
   border: 1px solid var(--teal);
   box-shadow: 0 8px 30px rgba(18,63,56,0.22), 0 2px 8px rgba(18,63,56,0.12);
+  justify-content: flex-start;
+  padding-bottom: 24px;
 }
 
 .card-eyebrow {
@@ -12756,6 +13771,13 @@ const CSS = `
   display: flex;
   gap: 8px;
   white-space: nowrap;
+}
+/* Na tyle karty treść bywa długa (przykład, odmiana, rdzeń) — panel oceny
+   płynie normalnie na końcu, zamiast nachodzić na treść jako element absolutny. */
+.card-back .review-toggle-row {
+  position: static;
+  transform: none;
+  margin-top: 8px;
 }
 
 .review-toggle-btn {
@@ -15071,6 +16093,302 @@ const CSS = `
   border-radius: 10px; padding: 12px 14px; font-size: 12.5px; color: #8a5a1e;
   line-height: 1.6; margin-bottom: 16px;
 }
+
+
+
+
+/* ---- Moduł 2: słowa ze zdaniami ---- */
+.msal-word {
+  display: flex; flex-direction: column; gap: 8px; padding: 12px;
+  background: var(--sand); border-radius: 12px;
+}
+.msal-word-head {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center;
+}
+.msal-word-ar { font-family: var(--ar-font); font-size: 26px; color: var(--ink); direction: rtl; white-space: nowrap; }
+.msal-word-phs { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.msal-word-meaning { font-size: 14px; color: var(--ink); font-weight: 700; text-align: right; }
+.msal-word-sentence {
+  display: flex; flex-direction: column; gap: 3px; padding: 10px;
+  background: var(--paper); border-radius: 9px; border-right: 3px solid var(--teal);
+}
+.msal-sent-ar { font-family: var(--ar-font); font-size: 19px; color: var(--teal-deep); direction: rtl; line-height: 1.5; }
+.msal-sent-phs { display: flex; flex-direction: column; gap: 1px; margin-top: 2px; }
+.msal-sent-msa { display: flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--terracotta); }
+.msal-sent-eg { display: flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+.msal-sent-meaning { font-size: 12.5px; color: var(--ink); margin-top: 3px; font-style: italic; }
+
+/* ---- Przycisk i ćwiczenie MSA ---- */
+.msal-practice-btn {
+  align-self: stretch; margin-top: 4px; padding: 10px; border-radius: 10px;
+  border: none; background: var(--teal); color: #fff; font-size: 13px;
+  font-weight: 600; cursor: pointer;
+}
+.msal-practice-btn:hover { opacity: 0.9; }
+.msa-practice { display: flex; flex-direction: column; gap: 16px; min-height: 420px; }
+.msa-practice-bar { display: flex; align-items: center; justify-content: space-between; }
+.msa-practice-count { font-size: 13px; color: var(--muted); font-weight: 600; }
+.msa-practice-close {
+  border: none; background: none; color: var(--muted); font-size: 18px; cursor: pointer;
+  width: 32px; height: 32px; border-radius: 999px;
+}
+.msa-practice-close:hover { background: var(--sand); }
+.msa-practice-card {
+  flex: 1; min-height: 300px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px;
+  background: var(--teal-deep); border-radius: 20px; padding: 32px 24px;
+  cursor: pointer; text-align: center;
+}
+.msa-practice-ar { font-family: var(--ar-font); font-size: 44px; color: #fff; direction: rtl; }
+.msa-practice-hint { font-size: 12px; color: rgba(255,255,255,0.6); }
+.msa-practice-msa { font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #fff; display: flex; align-items: center; gap: 8px; }
+.msa-practice-eg { font-family: 'JetBrains Mono', monospace; font-size: 15px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 8px; }
+.msa-practice-meaning { font-size: 20px; color: #fff; font-weight: 600; margin-top: 8px; }
+.msa-practice-actions { display: flex; gap: 12px; }
+.msa-practice-actions .nav-btn { flex: 1; }
+.msa-practice-done {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 16px; text-align: center;
+}
+.msa-practice-score { font-size: 40px; font-weight: 700; color: var(--teal-deep); }
+
+
+
+/* ---- Ćwiczenie: rozróżnianie podobnych liter ---- */
+.alpha-quiz-btn {
+  padding: 12px; border-radius: 12px; border: none; background: var(--teal);
+  color: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer;
+}
+.alpha-quiz-btn:hover { opacity: 0.9; }
+.lq { display: flex; flex-direction: column; gap: 16px; min-height: 440px; }
+.lq-bar { display: flex; align-items: center; justify-content: space-between; }
+.lq-count { font-size: 13px; color: var(--muted); font-weight: 600; }
+.lq-close { border: none; background: none; color: var(--muted); font-size: 18px; cursor: pointer; width: 32px; height: 32px; border-radius: 999px; }
+.lq-close:hover { background: var(--sand); }
+.lq-prompt {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 28px 20px; background: var(--teal-deep); border-radius: 18px;
+}
+.lq-form-label { font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; }
+.lq-form-big { font-family: var(--ar-font); font-size: 72px; color: #fff; line-height: 1.1; direction: rtl; }
+.lq-question { font-size: 13px; color: rgba(255,255,255,0.75); }
+.lq-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); gap: 10px; }
+.lq-option {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 14px 8px; border-radius: 12px; border: 1.5px solid var(--sand-deep);
+  background: var(--paper); cursor: pointer; transition: all 0.15s;
+}
+.lq-option:hover:not(:disabled) { border-color: var(--teal); }
+.lq-option-letter { font-family: var(--ar-font); font-size: 34px; color: var(--ink); line-height: 1; }
+.lq-option-name { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+.lq-option-correct { border-color: #2e7d52; background: rgba(46,125,82,0.12); }
+.lq-option-wrong { border-color: #c0562e; background: rgba(192,86,46,0.1); }
+.lq-feedback { display: flex; flex-direction: column; gap: 12px; }
+.lq-hint {
+  font-size: 12.5px; color: var(--ink); line-height: 1.5; margin: 0;
+  padding: 12px; background: var(--sand); border-radius: 10px;
+}
+.lq-done { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; }
+.lq-score-big { font-size: 42px; font-weight: 700; color: var(--teal-deep); }
+
+/* ---- Tabela alfabetu ---- */
+.view-alphabet { display: flex; flex-direction: column; gap: 14px; }
+.alpha-intro { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; }
+.alpha-legend { display: flex; gap: 16px; flex-wrap: wrap; }
+.alpha-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); }
+.alpha-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.alpha-dot-connect { background: var(--teal); }
+.alpha-dot-noconnect { background: var(--terracotta); }
+.alpha-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+}
+.alpha-cell {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 12px 4px; border-radius: 12px; border: 1.5px solid var(--sand-deep);
+  background: var(--paper); cursor: pointer; min-width: 0;
+}
+.alpha-cell-nc { border-color: rgba(198,110,74,0.4); }
+.alpha-cell-open { border-color: var(--teal); background: var(--sand); }
+.alpha-cell-letter { font-family: var(--ar-font); font-size: 30px; color: var(--ink); line-height: 1; }
+.alpha-cell-name { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+.alpha-detail {
+  display: flex; flex-direction: column; gap: 12px; padding: 16px;
+  background: var(--sand); border-radius: 14px;
+}
+.alpha-detail-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.alpha-detail-name { font-size: 16px; font-weight: 700; color: var(--ink); font-family: 'JetBrains Mono', monospace; }
+.alpha-detail-sound { font-size: 13px; color: var(--terracotta); font-weight: 600; }
+.alpha-forms { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.alpha-form {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 12px 3px; background: var(--paper); border-radius: 10px; min-width: 0;
+}
+.alpha-form-val { font-family: var(--ar-font); font-size: 28px; color: var(--teal-deep); line-height: 1; direction: rtl; }
+.alpha-form-label {
+  font-size: 8.5px; color: var(--muted); text-transform: uppercase;
+  letter-spacing: 0.3px; text-align: center; line-height: 1.15;
+}
+
+.alpha-form-ex-note {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase;
+  color: var(--terracotta); text-align: center; line-height: 1.1;
+  padding: 1px 4px; background: rgba(198,110,74,0.1); border-radius: 4px;
+}
+.alpha-rule {
+  font-size: 12px; color: var(--muted); background: var(--sand);
+  border-radius: 10px; padding: 10px 12px;
+}
+.alpha-rule summary {
+  cursor: pointer; font-weight: 600; color: var(--ink); font-size: 12.5px;
+  list-style: revert;
+}
+.alpha-rule p { margin: 8px 0 0; line-height: 1.55; font-size: 12px; }
+
+.alpha-form-ex {
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  margin-top: 4px; padding-top: 6px; border-top: 1px dashed var(--sand-deep); width: 100%;
+}
+.alpha-form-ex-word { font-family: var(--ar-font); font-size: 18px; color: var(--ink); direction: rtl; line-height: 1.3; }
+.alpha-hl { color: var(--terracotta); }
+.alpha-form-ex-ph { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--terracotta); }
+.alpha-form-ex-meaning { font-size: 9px; color: var(--muted); text-align: center; line-height: 1.2; }
+.alpha-detail-note {
+  font-size: 12px; color: var(--terracotta); margin: 0; line-height: 1.5;
+  padding: 8px 10px; background: rgba(198,110,74,0.08); border-radius: 8px;
+}
+
+/* ---- Lekcje MSA od podstaw ---- */
+.view-msalessons { display: flex; flex-direction: column; gap: 16px; }
+.msal-intro { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; }
+.msal-module { display: flex; flex-direction: column; gap: 12px; }
+.msal-module-head { display: flex; align-items: center; gap: 12px; }
+.msal-module-num {
+  width: 32px; height: 32px; border-radius: 999px; background: var(--teal);
+  color: #fff; font-weight: 700; font-size: 15px; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+}
+.msal-module-title { font-size: 15px; font-weight: 700; color: var(--ink); }
+.msal-module-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+.msal-lessons { display: flex; flex-direction: column; gap: 8px; }
+.msal-lesson { border: 1.5px solid var(--sand-deep); border-radius: 12px; background: var(--paper); overflow: hidden; }
+.msal-lesson-open { border-color: var(--teal); }
+.msal-lesson-head {
+  width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+  background: none; border: none; cursor: pointer; text-align: left;
+}
+.msal-lesson-letter {
+  font-family: var(--ar-font); font-size: 28px; color: var(--teal-deep);
+  width: 40px; text-align: center; flex-shrink: 0; direction: rtl;
+}
+.msal-lesson-title { flex: 1; font-size: 14px; font-weight: 600; color: var(--ink); min-width: 0; }
+.msal-lesson-chevron { font-size: 20px; color: var(--muted); font-weight: 300; }
+.msal-lesson-body {
+  padding: 0 14px 14px; display: flex; flex-direction: column; gap: 12px;
+  border-top: 1px solid var(--sand); padding-top: 12px;
+}
+.msal-simple { font-size: 13.5px; color: var(--ink); line-height: 1.55; margin: 0; }
+.msal-bridge {
+  display: flex; flex-direction: column; gap: 4px; padding: 10px 12px;
+  background: #eef3ee; border-radius: 10px; border-left: 3px solid var(--teal);
+}
+.msal-bridge-tag {
+  font-size: 9.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--teal);
+}
+.msal-bridge-text { font-size: 13px; color: var(--ink); line-height: 1.5; }
+.msal-tech-toggle {
+  align-self: flex-start; border: none; background: none; color: var(--teal);
+  font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0;
+}
+.msal-tech {
+  font-size: 12.5px; color: var(--muted); line-height: 1.55; margin: 0;
+  padding: 10px 12px; background: var(--sand); border-radius: 10px;
+}
+.msal-examples { display: flex; flex-direction: column; gap: 8px; }
+.msal-examples-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--terracotta);
+}
+.msal-example {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center;
+  padding: 8px 10px; border-radius: 9px; background: var(--sand); min-width: 0;
+}
+.msal-example-ar {
+  font-family: var(--ar-font); font-size: 22px; color: var(--ink); direction: rtl;
+  white-space: nowrap;
+}
+.msal-example-phs { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.msal-example-msa, .msal-example-eg {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+}
+.msal-example-msa { color: var(--teal-deep); }
+.msal-example-eg { color: var(--muted); }
+.msal-tag {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.5px; padding: 1px 4px;
+  border-radius: 4px; background: var(--teal); color: #fff;
+}
+.msal-tag-eg { background: var(--sand-deep); color: var(--ink); }
+.msal-example-meaning { font-size: 12.5px; color: var(--ink); font-weight: 600; text-align: right; }
+
+/* ---- MSA: rdzenie ---- */
+.view-roots { display: flex; flex-direction: column; gap: 14px; }
+.roots-intro { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; }
+.roots-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.roots-tab {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 10px 16px; border: 1.5px solid var(--sand-deep); border-radius: 12px;
+  background: var(--paper); cursor: pointer; min-width: 0;
+}
+.roots-tab-active { border-color: var(--teal); background: var(--teal); }
+.roots-tab-active .roots-tab-ar,
+.roots-tab-active .roots-tab-tr { color: #fff; }
+.roots-tab-ar { font-family: var(--ar-font); font-size: 20px; color: var(--ink); direction: rtl; }
+.roots-tab-tr { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+.root-panel { display: flex; flex-direction: column; gap: 12px; }
+.root-head {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 16px; background: var(--sand); border-radius: 14px;
+}
+.root-head-ar { font-family: var(--ar-font); font-size: 32px; color: var(--teal-deep); direction: rtl; }
+.root-head-tr { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--terracotta); letter-spacing: 2px; }
+.root-head-meaning { font-size: 13px; color: var(--muted); text-align: center; margin-top: 2px; }
+.root-family { display: flex; flex-direction: column; gap: 10px; }
+.root-word {
+  border: 1.5px solid var(--sand-deep); border-radius: 12px; padding: 12px;
+  background: var(--paper); display: flex; flex-direction: column; gap: 8px;
+}
+.root-word-role {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--terracotta);
+}
+.root-word-main { display: flex; gap: 10px; flex-wrap: wrap; }
+.root-word-msa, .root-word-eg {
+  display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0;
+  padding: 8px 10px; border-radius: 9px; background: var(--sand);
+}
+.root-word-eg { background: #eef3ee; }
+.root-word-ar { font-family: var(--ar-font); font-size: 20px; color: var(--ink); direction: rtl; }
+.root-word-ph { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--terracotta); }
+.root-word-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--muted); margin-top: 2px;
+}
+.root-word-tag-eg { color: var(--teal); }
+.root-word-meaning { font-size: 14px; color: var(--ink); font-weight: 600; }
+.root-tech-toggle {
+  align-self: flex-start; border: none; background: none; color: var(--teal);
+  font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0;
+}
+.root-tech {
+  border-top: 1px dashed var(--sand-deep); padding-top: 8px; display: flex;
+  flex-direction: column; gap: 6px;
+}
+.root-wazn { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.root-wazn-label { font-size: 11px; color: var(--muted); }
+.root-wazn-ar { font-family: var(--ar-font); font-size: 18px; color: var(--teal-deep); direction: rtl; }
+.root-wazn-tr { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--terracotta); }
+.root-note { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin: 0; }
+
 .msa-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
 .msa-tab {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
