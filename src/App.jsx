@@ -5888,7 +5888,51 @@ const MSA_MODULE_2 = {
   ],
 };
 
-const MSA_MODULES = [MSA_MODULE_1, MSA_MODULE_2];
+const MSA_MODULE_3 = {
+  id: "syntax",
+  title: { pl: "Składnia zdania", en: "Sentence syntax" },
+  desc: { pl: "Jak słowa układają się w zdania MSA — z rozbiorem na części zdania.", en: "How words form MSA sentences — with a breakdown into sentence parts." },
+  lessons: [
+    {
+      id: "nominal",
+      title: { pl: "Zdanie imienne vs czasownikowe", en: "Nominal vs verbal sentence" },
+      simple: { pl: "Arabskie zdanie zaczyna się albo od rzeczownika (zdanie imienne — opisuje stan), albo od czasownika (zdanie czasownikowe — opisuje czynność). To podstawowy podział składni.", en: "An Arabic sentence starts either with a noun (nominal — describes a state) or a verb (verbal — describes an action). This is the basic split of syntax." },
+      tech: { pl: "Zdanie imienne (jumla ismiyya) = podmiot (mubtada') + orzecznik (khabar), bez czasownika „być” w czasie teraźniejszym. Zdanie czasownikowe (jumla fiʿliyya) zaczyna się od czasownika. W MSA orzecznik zdania imiennego jest w mianowniku (-un).", en: "Nominal sentence (jumla ismiyya) = subject (mubtada') + predicate (khabar), with no verb 'to be' in the present. Verbal sentence (jumla fiʿliyya) starts with a verb. In MSA the predicate of a nominal sentence is in the nominative (-un)." },
+      note: { pl: "Egipski działa tak samo — brak „być” w teraźniejszości. „el-beet kbeer” = dom (jest) duży.", en: "Egyptian works the same — no 'to be' in the present. 'el-beet kbeer' = the house (is) big." },
+      sentences: [
+        { type: { pl: "zdanie imienne", en: "nominal" }, segs: [ {ar:"الْبَيْتُ", ph:"al-baytu", role:"subject"}, {ar:"كَبيرٌ", ph:"kabīrun", role:"predicate"} ], pl: "Dom jest duży.", en: "The house is big." },
+        { type: { pl: "zdanie imienne", en: "nominal" }, segs: [ {ar:"الطّالِبُ", ph:"aṭ-ṭālibu", role:"subject"}, {ar:"مُجْتَهِدٌ", ph:"mujtahidun", role:"predicate"} ], pl: "Uczeń jest pilny.", en: "The student is diligent." },
+        { type: { pl: "zdanie czasownikowe", en: "verbal" }, segs: [ {ar:"كَتَبَ", ph:"kataba", role:"verb"}, {ar:"الْوَلَدُ", ph:"al-waladu", role:"subject"}, {ar:"الدَّرْسَ", ph:"ad-darsa", role:"object"} ], pl: "Chłopiec napisał lekcję.", en: "The boy wrote the lesson." },
+      ],
+    },
+    {
+      id: "vso",
+      title: { pl: "Szyk zdania: czasownik na początku", en: "Word order: verb first" },
+      simple: { pl: "W klasycznym zdaniu czasownikowym MSA czasownik stoi PRZED podmiotem (VSO: czasownik–podmiot–dopełnienie). To inaczej niż po polsku i inaczej niż w codziennym egipskim.", en: "In a classic MSA verbal sentence the verb comes BEFORE the subject (VSO: verb–subject–object). This differs from English and from everyday Egyptian." },
+      tech: { pl: "W szyku VSO czasownik na początku pozostaje w liczbie pojedynczej niezależnie od liczby podmiotu (np. „kataba l-awlādu” = napisali chłopcy, dosł. „napisał chłopcy”). Egipski preferuje szyk SVO (podmiot–czasownik), bliższy polskiemu.", en: "In VSO the initial verb stays singular regardless of the subject's number (e.g. 'kataba l-awlādu' = the boys wrote, lit. 'wrote the-boys'). Egyptian prefers SVO (subject–verb), closer to English." },
+      note: { pl: "WAŻNA różnica: MSA „ذَهَبَ الرَّجُلُ” (poszedł mężczyzna), egipski „الراجل راح” (mężczyzna poszedł). Kolejność odwrócona!", en: "KEY difference: MSA 'dhahaba r-rajulu' (went the-man), Egyptian 'er-rāgil rāḥ' (the-man went). Order reversed!" },
+      sentences: [
+        { type: { pl: "VSO", en: "VSO" }, segs: [ {ar:"ذَهَبَ", ph:"dhahaba", role:"verb"}, {ar:"الرَّجُلُ", ph:"ar-rajulu", role:"subject"}, {ar:"إِلَى السّوقِ", ph:"ilā s-sūqi", role:"adverbial"} ], pl: "Mężczyzna poszedł na targ.", en: "The man went to the market." },
+        { type: { pl: "VSO", en: "VSO" }, segs: [ {ar:"قَرَأَتْ", ph:"qara'at", role:"verb"}, {ar:"الْبِنْتُ", ph:"al-bintu", role:"subject"}, {ar:"الْكِتابَ", ph:"al-kitāba", role:"object"} ], pl: "Dziewczyna przeczytała książkę.", en: "The girl read the book." },
+        { type: { pl: "VSO", en: "VSO" }, segs: [ {ar:"يَشْرَبُ", ph:"yashrabu", role:"verb"}, {ar:"الْأَطْفالُ", ph:"al-aṭfālu", role:"subject"}, {ar:"الْحَليبَ", ph:"al-ḥalība", role:"object"} ], pl: "Dzieci piją mleko.", en: "The children drink milk." },
+      ],
+    },
+    {
+      id: "idafa",
+      title: { pl: "Iḍāfa — konstrukcja dopełniaczowa", en: "Iḍāfa — the genitive construction" },
+      simple: { pl: "Iḍāfa łączy dwa rzeczowniki: „X (czegoś)”. Pierwszy rzeczownik NIE ma rodzajnika, drugi jest w dopełniaczu. To jak polskie „drzwi domu” — bez „od”, samo zestawienie.", en: "Iḍāfa links two nouns: 'X of Y'. The first noun takes NO article, the second is in the genitive. Like 'the door of the house' — just juxtaposition." },
+      tech: { pl: "W iḍāfie pierwszy człon (al-muḍāf) traci rodzajnik i tanwīn; drugi człon (al-muḍāf ilayhi) jest w dopełniaczu (-i / -in). Cała konstrukcja jest określona, jeśli drugi człon jest określony. To najczęstsza konstrukcja w prasie.", en: "In iḍāfa the first term (al-muḍāf) loses its article and tanwīn; the second term (al-muḍāf ilayhi) is in the genitive (-i / -in). The whole is definite if the second term is definite. It's the most common construction in press." },
+      note: { pl: "Egipski używa iḍāfy tak samo („bāb el-beet” = drzwi domu), ale też „bitā3”. MSA używa tylko iḍāfy.", en: "Egyptian uses iḍāfa too ('bāb el-beet' = door of the house), but also 'bitā3'. MSA uses only iḍāfa." },
+      sentences: [
+        { type: { pl: "iḍāfa", en: "iḍāfa" }, segs: [ {ar:"بابُ", ph:"bābu", role:"mudaf"}, {ar:"الْبَيْتِ", ph:"al-bayti", role:"mudafilayhi"} ], pl: "drzwi domu", en: "the door of the house" },
+        { type: { pl: "iḍāfa", en: "iḍāfa" }, segs: [ {ar:"كِتابُ", ph:"kitābu", role:"mudaf"}, {ar:"الطّالِبِ", ph:"aṭ-ṭālibi", role:"mudafilayhi"} ], pl: "książka ucznia", en: "the student's book" },
+        { type: { pl: "iḍāfa", en: "iḍāfa" }, segs: [ {ar:"مِفْتاحُ", ph:"miftāḥu", role:"mudaf"}, {ar:"السَّيّارةِ", ph:"as-sayyārati", role:"mudafilayhi"} ], pl: "kluczyk do samochodu", en: "the car key" },
+      ],
+    },
+  ],
+};
+
+const MSA_MODULES = [MSA_MODULE_1, MSA_MODULE_2, MSA_MODULE_3];
 
 const MSA_ROOTS = [
   {
@@ -6667,7 +6711,15 @@ function sentencesForDialogue(dialogue) {
 const STORAGE_KEY = "ar-eg-words";
 // Osobny klawisz przechowuje same statystyki postępu (correctCount itd.) per słówko,
 // odporny na zmiany zestawu — dzięki temu aktualizacja bazy nie zeruje wyników.
-const PROGRESS_KEY = "ar-eg-progress-v1";
+const PROGRESS_KEY_BASE = "ar-eg-progress-v1";
+
+// Aktywny kurs (egyptian / msa / quran). Postęp, statystyki i cel są zapisywane
+// osobno dla każdego kursu — z sufiksem kursu w kluczu. Ustawiane przy wyborze kursu.
+let ACTIVE_COURSE = (() => {
+  try { return localStorage.getItem("ar-eg-course-v1") || "egyptian"; } catch { return "egyptian"; }
+})();
+function setActiveCourseKey(c) { ACTIVE_COURSE = c || "egyptian"; }
+function progressKey() { return `${PROGRESS_KEY_BASE}-${ACTIVE_COURSE}`; }
 
 // Pełna, aktualna baza słówek (zawsze najnowsza, z wszystkimi dodatkami).
 // ---------- 100 przydatnych zwrotów: brakujące (dodane z listy) ----------
@@ -6746,7 +6798,7 @@ function wordId(w) {
 
 function loadProgress() {
   try {
-    const raw = localStorage.getItem(PROGRESS_KEY);
+    const raw = localStorage.getItem(progressKey());
     if (raw) return JSON.parse(raw); // { id: {correctCount, wrongCount, verified, flagged, ex} }
   } catch (e) {}
   return {};
@@ -6834,7 +6886,7 @@ function saveProgress(words) {
         };
       }
     }
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(prog));
+    localStorage.setItem(progressKey(), JSON.stringify(prog));
     try {
       const meta = { count: Object.keys(prog).length, at: new Date().toISOString() };
       localStorage.setItem("ar-eg-progress-meta", JSON.stringify(meta));
@@ -7891,7 +7943,7 @@ function ListView({ words, setWords, activeCat, onToggleFlag, onToggleVerified, 
 
   function resetToSeed() {
     try {
-      localStorage.removeItem(PROGRESS_KEY);
+      localStorage.removeItem(progressKey());
     } catch (e) {}
     setWords(freshDeck());
   }
@@ -9745,7 +9797,8 @@ function GapView() {
 }
 
 // ---------- Śledzenie dni nauki (streak) ----------
-const STATS_KEY = "ar-eg-stats-v1";
+const STATS_KEY_BASE = "ar-eg-stats-v1";
+function statsKey() { return `${STATS_KEY_BASE}-${ACTIVE_COURSE}`; }
 
 // Lokalna data w formacie YYYY-MM-DD (bez strefy UTC, żeby "dziś" było lokalne).
 function todayKey(d = new Date()) {
@@ -9757,7 +9810,7 @@ function todayKey(d = new Date()) {
 
 function loadStats() {
   try {
-    const raw = localStorage.getItem(STATS_KEY);
+    const raw = localStorage.getItem(statsKey());
     if (raw) return JSON.parse(raw);
   } catch (e) {}
   return { days: {} }; // { "2026-07-03": liczba odpowiedzi }
@@ -9765,7 +9818,7 @@ function loadStats() {
 
 function saveStats(stats) {
   try {
-    localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+    localStorage.setItem(statsKey(), JSON.stringify(stats));
   } catch (e) {}
 }
 
@@ -9787,7 +9840,7 @@ function storageWorks() {
 // Pomaga odróżnić: „pamięć jest czyszczona" (0) od „błąd wyświetlania" (>0).
 function storageDiagnostic(lang) {
   try {
-    const raw = localStorage.getItem(PROGRESS_KEY);
+    const raw = localStorage.getItem(progressKey());
     if (!raw) return lang==="en" ? "In memory: no saved progress." : "W pamięci: brak zapisanego postępu.";
     const prog = JSON.parse(raw);
     const ids = Object.keys(prog);
@@ -9881,8 +9934,8 @@ function applyBackup(backup, currentWords) {
   // Zapisz od razu do localStorage (żeby przetrwało kolejne odświeżenie).
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedWords));
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(prog));
-    if (backup.stats) localStorage.setItem(STATS_KEY, JSON.stringify(backup.stats));
+    localStorage.setItem(progressKey(), JSON.stringify(prog));
+    if (backup.stats) localStorage.setItem(statsKey(), JSON.stringify(backup.stats));
   } catch (e) {}
   return { words: mergedWords, stats: backup.stats || { days: {} } };
 }
@@ -9895,12 +9948,13 @@ function markStudiedToday(stats) {
 }
 
 // ---------- Cel dzienny ----------
-const GOAL_KEY = "ar-eg-goal-v1";
+const GOAL_KEY_BASE = "ar-eg-goal-v1";
+function goalKey() { return `${GOAL_KEY_BASE}-${ACTIVE_COURSE}`; }
 const GOAL_OPTIONS = [10, 20, 30, 50];
 
 function loadGoal() {
   try {
-    const raw = localStorage.getItem(GOAL_KEY);
+    const raw = localStorage.getItem(goalKey());
     const n = raw ? parseInt(raw, 10) : 20;
     return GOAL_OPTIONS.includes(n) ? n : 20;
   } catch (e) {
@@ -9910,7 +9964,7 @@ function loadGoal() {
 
 function saveGoal(n) {
   try {
-    localStorage.setItem(GOAL_KEY, String(n));
+    localStorage.setItem(goalKey(), String(n));
   } catch (e) {}
 }
 
@@ -11144,6 +11198,98 @@ function LetterQuiz({ onClose }) {
   );
 }
 
+// ---------- Widok: kurs koraniczny (podstawowe formuły) ----------
+// ---------- Widok: Koran od podstaw (cytaty z rozbiorem 3-rejestrowym) ----------
+function QuranVersesView() {
+  const lang = useLang();
+  const [openWord, setOpenWord] = useState(null); // "verseId-wordIdx"
+  return (
+    <div className="view-qverses">
+      <p className="qv-intro">
+        {lang === "en"
+          ? "Learn Arabic through short, well-known Quranic verses. Each word is shown in three registers — Classical (Quranic), MSA (standard), and Egyptian (dialect) — so you see how one word lives across the whole language."
+          : "Ucz się arabskiego przez krótkie, znane wersety Koranu. Każde słowo pokazane w trzech rejestrach — klasyczny (koraniczny), MSA (standardowy) i egipski (dialekt) — byś zobaczył, jak jedno słowo żyje w całym języku."}
+      </p>
+      {QURAN_VERSES.map((v) => (
+        <div className="qv-verse" key={v.id}>
+          <div className="qv-verse-head">
+            <span className="qv-ref">{lang === "en" ? v.ref.en : v.ref.pl}</span>
+          </div>
+          <div className="qv-verse-ar">{v.ar}</div>
+          <div className="qv-verse-ph">{v.ph}</div>
+          <div className="qv-verse-tr">{lang === "en" ? v.en : v.pl}</div>
+
+          <div className="qv-words">
+            <div className="qv-words-label">{lang === "en" ? "word by word" : "słowo po słowie"}</div>
+            {v.words.map((w, i) => {
+              const key = v.id + "-" + i;
+              const open = openWord === key;
+              return (
+                <div className="qv-word" key={i}>
+                  <button className="qv-word-head" onClick={() => setOpenWord(open ? null : key)}>
+                    <span className="qv-word-cl">{w.cl}</span>
+                    <span className="qv-word-meaning">{lang === "en" ? w.en : w.pl}</span>
+                    <span className="qv-word-chevron">{open ? "−" : "+"}</span>
+                  </button>
+                  {open && (
+                    <div className="qv-word-body">
+                      <div className="qv-registers">
+                        <div className="qv-reg qv-reg-cl">
+                          <span className="qv-reg-label">{lang === "en" ? "Classical" : "klasyczny"}</span>
+                          <span className="qv-reg-ar">{w.cl}</span>
+                          <span className="qv-reg-ph">{w.clPh}</span>
+                        </div>
+                        <div className="qv-reg qv-reg-msa">
+                          <span className="qv-reg-label">MSA</span>
+                          <span className="qv-reg-ar">{w.msa}</span>
+                          <span className="qv-reg-ph">{w.msaPh}</span>
+                        </div>
+                        <div className="qv-reg qv-reg-eg">
+                          <span className="qv-reg-label">{lang === "en" ? "Egyptian" : "egipski"}</span>
+                          <span className="qv-reg-ar">{w.eg}</span>
+                          <span className="qv-reg-ph">{w.egPh}</span>
+                        </div>
+                      </div>
+                      <p className="qv-word-note">{lang === "en" ? w.note.en : w.note.pl}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function QuranBasicsView() {
+  const lang = useLang();
+  return (
+    <div className="view-quran">
+      <p className="quran-intro">
+        {lang === "en"
+          ? "Classical Arabic through familiar formulas. Each one is broken into its root — and linked to words you already know from Egyptian. This course is a first step, not yet a full path."
+          : "Arabski klasyczny przez znane formuły. Każda rozłożona na rdzeń — i spięta ze słowami, które już znasz z egipskiego. To pierwszy krok, jeszcze nie pełna ścieżka."}
+      </p>
+      {QURAN_BASICS.map((f, i) => (
+        <div className="quran-card" key={i}>
+          <div className="quran-card-ar">{f.ar}</div>
+          <div className="quran-card-ph">{f.ph}</div>
+          <div className="quran-card-meaning">{lang === "en" ? f.en : f.pl}</div>
+          <p className="quran-card-note">{lang === "en" ? f.note.en : f.note.pl}</p>
+          <div className="quran-card-root">
+            <span className="quran-root-label">{lang === "en" ? "root" : "rdzeń"}</span>
+            <span className="quran-root-ar">{f.root.ar}</span>
+            <span className="quran-root-tr">{f.root.tr}</span>
+          </div>
+          <p className="quran-root-link">{f.root.link}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function AlphabetView() {
   const lang = useLang();
   const [openLetter, setOpenLetter] = useState(null);
@@ -11342,6 +11488,17 @@ function AlphabetView() {
   );
 }
 
+// Role składniowe dla rozbioru zdań (Moduł 3) — etykieta + kolor.
+const SYNTAX_ROLES = {
+  subject: { pl: "podmiot", en: "subject", color: "#2e7d52" },
+  predicate: { pl: "orzecznik", en: "predicate", color: "#c66e4a" },
+  verb: { pl: "czasownik", en: "verb", color: "#b8860b" },
+  object: { pl: "dopełnienie", en: "object", color: "#7a5cb8" },
+  adverbial: { pl: "okolicznik", en: "adverbial", color: "#4a90a4" },
+  mudaf: { pl: "muḍāf (1. człon)", en: "muḍāf (1st term)", color: "#2e7d52" },
+  mudafilayhi: { pl: "muḍāf ilayhi (2. człon)", en: "muḍāf ilayhi (2nd term)", color: "#c66e4a" },
+};
+
 function MsaLessonsView() {
   const lang = useLang();
   const [openLesson, setOpenLesson] = useState(null);
@@ -11409,9 +11566,16 @@ function MsaLessonsView() {
                       )}
 
                       <div className="msal-examples">
-                        <div className="msal-examples-label">
-                          {lang === "en" ? "examples (MSA vs Egyptian)" : "przykłady (MSA vs egipski)"}
-                        </div>
+                        {(lesson.examples || lesson.words) && (
+                          <div className="msal-examples-label">
+                            {lang === "en" ? "examples (MSA vs Egyptian)" : "przykłady (MSA vs egipski)"}
+                          </div>
+                        )}
+                        {lesson.sentences && (
+                          <div className="msal-examples-label">
+                            {lang === "en" ? "sentence breakdown" : "rozbiór zdań"}
+                          </div>
+                        )}
                         {lesson.examples && lesson.examples.map((ex, i) => (
                           <div className="msal-example" key={i}>
                             <span className="msal-example-ar">{ex.ar}</span>
@@ -11442,14 +11606,41 @@ function MsaLessonsView() {
                             </div>
                           </div>
                         ))}
+                        {lesson.sentences && lesson.sentences.map((s, i) => (
+                          <div className="msal-synt" key={i}>
+                            <span className="msal-synt-type">{lang === "en" ? s.type.en : s.type.pl}</span>
+                            <div className="msal-synt-line" dir="rtl">
+                              {s.segs.map((seg, j) => {
+                                const role = SYNTAX_ROLES[seg.role] || { pl: seg.role, en: seg.role, color: "#666" };
+                                return (
+                                  <span className="msal-seg" key={j} style={{ borderColor: role.color }}>
+                                    <span className="msal-seg-ar" style={{ color: role.color }}>{seg.ar}</span>
+                                    <span className="msal-seg-ph">{seg.ph}</span>
+                                    <span className="msal-seg-role" style={{ color: role.color }}>{lang === "en" ? role.en : role.pl}</span>
+                                  </span>
+                                );
+                              })}
+                            </div>
+                            <span className="msal-synt-tr">{lang === "en" ? s.en : s.pl}</span>
+                          </div>
+                        ))}
                       </div>
 
-                      <button
-                        className="msal-practice-btn"
-                        onClick={() => setPracticing(lesson.examples || lesson.words)}
-                      >
-                        {lang === "en" ? "practice these words" : "ćwicz te słowa"}
-                      </button>
+                      {lesson.note && (
+                        <div className="msal-synt-note">
+                          <span className="msal-bridge-tag">{lang === "en" ? "MSA vs Egyptian" : "MSA vs egipski"}</span>
+                          <span>{lang === "en" ? lesson.note.en : lesson.note.pl}</span>
+                        </div>
+                      )}
+
+                      {(lesson.examples || lesson.words) && (
+                        <button
+                          className="msal-practice-btn"
+                          onClick={() => setPracticing(lesson.examples || lesson.words)}
+                        >
+                          {lang === "en" ? "practice these words" : "ćwicz te słowa"}
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
@@ -12131,8 +12322,118 @@ function appearanceCSS(appearance) {
 }
 
 // ---------- App ----------
+// ---------- Kurs koraniczny: podstawowe formuły (minimalny, nierozbudowywany) ----------
+// ---------- Koran od podstaw: cytaty z rozbiorem 3-rejestrowym ----------
+// Krótkie znane wersety, słowo po słowie w trzech rejestrach:
+// klasyczny (koraniczny) / MSA (standardowy) / egipski (dialekt).
+const QURAN_VERSES = [
+  {
+    id: "fatiha1",
+    ref: { pl: "Al-Fatiha 1:1", en: "Al-Fatiha 1:1" },
+    ar: "بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحيمِ",
+    ph: "bismi llāhi r-raḥmāni r-raḥīm",
+    pl: "W imię Boga Miłosiernego, Litościwego",
+    en: "In the name of God, the Most Gracious, the Most Merciful",
+    words: [
+      { cl: "بِسْمِ", clPh: "bismi", msa: "باسم", msaPh: "bi-ism", eg: "بسم", egPh: "besm", pl: "w imię", en: "in the name of", note: { pl: "„bi” (w) + „ism” (imię). W codziennym egipskim „besm-illah” mówi się przed jedzeniem czy pracą.", en: "'bi' (in) + 'ism' (name). In everyday Egyptian 'besm-illah' is said before eating or working." } },
+      { cl: "اللَّهِ", clPh: "llāhi", msa: "الله", msaPh: "allāh", eg: "الله", egPh: "allah", pl: "Boga", en: "of God", note: { pl: "To samo słowo we wszystkich rejestrach. Końcówka -i to dopełniacz (klasyczny i'rāb).", en: "The same word in all registers. The -i ending is the genitive (classical i'rāb)." } },
+      { cl: "الرَّحْمٰنِ", clPh: "r-raḥmāni", msa: "الرحمن", msaPh: "ar-raḥmān", eg: "الرحمن", egPh: "er-raḥman", pl: "Miłosiernego", en: "the Most Gracious", note: { pl: "Rdzeń ر-ح-م (miłosierdzie). Pokrewne „raḥma” (litość) i imię „Abdel-Rahman”.", en: "Root ر-ح-م (mercy). Related to 'raḥma' (compassion) and the name 'Abdel-Rahman'." } },
+      { cl: "الرَّحيمِ", clPh: "r-raḥīm", msa: "الرحيم", msaPh: "ar-raḥīm", eg: "الرحيم", egPh: "er-raḥīm", pl: "Litościwego", en: "the Most Merciful", note: { pl: "Ten sam rdzeń ر-ح-م, inny wzór (fa'īl). „raḥmān” i „raḥīm” to dwa aspekty miłosierdzia.", en: "Same root ر-ح-م, different pattern (fa'īl). 'raḥmān' and 'raḥīm' are two aspects of mercy." } },
+    ],
+  },
+  {
+    id: "ikhlas1",
+    ref: { pl: "Al-Ichlas 112:1", en: "Al-Ikhlas 112:1" },
+    ar: "قُلْ هُوَ اللَّهُ أَحَدٌ",
+    ph: "qul huwa llāhu aḥad",
+    pl: "Powiedz: On, Bóg, jest Jeden",
+    en: "Say: He is God, the One",
+    words: [
+      { cl: "قُلْ", clPh: "qul", msa: "قل", msaPh: "qul", eg: "قول", egPh: "'ūl", pl: "powiedz", en: "say", note: { pl: "Rozkaźnik od rdzenia ق-و-ل (mówić). W egipskim „'ūl” (z hamzą zamiast qāf) — to samo słowo!", en: "Imperative of root ق-و-ل (to say). In Egyptian ''ūl' (hamza instead of qāf) — the same word!" } },
+      { cl: "هُوَ", clPh: "huwa", msa: "هو", msaPh: "huwa", eg: "هو", egPh: "huwwa", pl: "on", en: "he", note: { pl: "Zaimek „on”. Klasyczny/MSA „huwa”, egipski „huwwa” (podwojone w). Prawie identyczne.", en: "Pronoun 'he'. Classical/MSA 'huwa', Egyptian 'huwwa' (doubled w). Almost identical." } },
+      { cl: "اللَّهُ", clPh: "llāhu", msa: "الله", msaPh: "allāh", eg: "الله", egPh: "allah", pl: "Bóg", en: "God", note: { pl: "Końcówka -u to mianownik (podmiot). W egipskim końcówki przypadków znikają.", en: "The -u ending is the nominative (subject). In Egyptian case endings disappear." } },
+      { cl: "أَحَدٌ", clPh: "aḥad", msa: "أحد", msaPh: "aḥad", eg: "واحد", egPh: "wāḥid", pl: "jeden", en: "one", note: { pl: "„aḥad” (jeden, jedyny) — klasyczne. W codziennym egipskim liczbę „jeden” mówi się „wāḥid” (rdzeń و-ح-د).", en: "'aḥad' (one, unique) — classical. In everyday Egyptian 'one' is 'wāḥid' (root و-ح-د)." } },
+    ],
+  },
+];
+
+const QURAN_BASICS = [
+  {
+    ar: "بِسْمِ اللَّه", ph: "bismi llāh", pl: "W imię Boga", en: "In the name of God",
+    note: { pl: "Najczęstsza formuła, rozpoczyna niemal każde działanie. „bi” (w) + „ism” (imię) + „Allāh” (Bóg) — to iḍāfa: „imię Boga”.", en: "The most common formula, begins almost every action. 'bi' (in) + 'ism' (name) + 'Allāh' (God) — an iḍāfa: 'the name of God'." },
+    root: { ar: "س-م-و", tr: "s-m-w", link: "ism (imię) — ten sam rdzeń co „ismuka?” (jak masz na imię?) w egipskim" },
+  },
+  {
+    ar: "الْحَمْدُ لِلَّه", ph: "al-ḥamdu li-llāh", pl: "Chwała Bogu", en: "Praise be to God",
+    note: { pl: "Wyraża wdzięczność — używane też potocznie („el-ḥamdu li-llāh” = dzięki Bogu, wszystko dobrze). „ḥamd” (chwała) + „li” (dla) + „llāh”.", en: "Expresses gratitude — also used colloquially ('el-ḥamdu li-llāh' = thank God, all's well). 'ḥamd' (praise) + 'li' (for) + 'llāh'." },
+    root: { ar: "ح-م-د", tr: "ḥ-m-d", link: "ḥamd (chwała) — stąd imię Muḥammad („godny chwały”)" },
+  },
+  {
+    ar: "إِنْ شاءَ اللَّه", ph: "in shā'a llāh", pl: "Jeśli Bóg zechce", en: "God willing",
+    note: { pl: "Mówione przy planach na przyszłość. Bardzo częste też w egipskim („inshallah”). „in” (jeśli) + „shā'a” (zechciał) + „llāh”.", en: "Said about future plans. Very common in Egyptian too ('inshallah'). 'in' (if) + 'shā'a' (willed) + 'llāh'." },
+    root: { ar: "ش-ي-أ", tr: "sh-y-2", link: "shā'a (chcieć) — pokrewne „shay'” (rzecz), którą znasz z alfabetu" },
+  },
+  {
+    ar: "اللَّهُ أَكْبَر", ph: "allāhu akbar", pl: "Bóg jest największy", en: "God is greatest",
+    note: { pl: "„akbar” to stopień najwyższy od „kabīr” (duży) — który znasz z egipskiego! „Allāh” + „akbar” (największy).", en: "'akbar' is the superlative of 'kabīr' (big) — which you know from Egyptian! 'Allāh' + 'akbar' (greatest)." },
+    root: { ar: "ك-ب-ر", tr: "k-b-r", link: "kabīr (duży) → akbar (największy) — ten sam rdzeń co codzienne „kbeer”" },
+  },
+];
+
+// ---------- Definicja kursów i przypisania zakładek ----------
+// Każdy kurs to osobna ścieżka nauki. Zakładki ułożone od najprostszej do trudniejszej,
+// żeby ktoś zaczynający od zera wiedział, w jakiej kolejności iść.
+const COURSES = {
+  egyptian: {
+    id: "egyptian",
+    icon: "ع",
+    title: { pl: "Egipski (dialekt)", en: "Egyptian (dialect)" },
+    subtitle: { pl: "Język mówiony — codzienne rozmowy w Egipcie", en: "The spoken language — everyday conversation in Egypt" },
+    desc: { pl: "Praktyczne słownictwo i zwroty do mówienia. Fiszki, quizy, dialogi i czytanki.", en: "Practical vocabulary and phrases for speaking. Flashcards, quizzes, dialogues and readings." },
+    color: "#2e7d52",
+    start: { pl: "Zacznij od „na dziś” lub fiszek — poznaj podstawowe słowa. Potem quiz i dialogi.", en: "Start with 'today' or flashcards — learn basic words. Then quiz and dialogues." },
+    tabs: ["today", "flash", "quiz", "match", "gaps", "write", "verbs", "nouns", "questions", "grammar", "sentences", "dialogues", "readings", "lessons", "stats", "list"],
+  },
+  msa: {
+    id: "msa",
+    icon: "ف",
+    title: { pl: "MSA (literacki)", en: "MSA (literary)" },
+    subtitle: { pl: "Arabski standardowy — prasa, książki, oficjalny", en: "Standard Arabic — press, books, formal" },
+    desc: { pl: "Od alfabetu przez fonetykę i słownictwo po składnię zdania. Kurs czytania od podstaw.", en: "From the alphabet through phonetics and vocabulary to sentence syntax. A reading course from scratch." },
+    color: "#c66e4a",
+    start: { pl: "Zacznij od alfabetu (litery i ich formy). Potem „MSA od podstaw” — moduły 1, 2, 3 po kolei.", en: "Start with the alphabet (letters and their forms). Then 'MSA basics' — modules 1, 2, 3 in order." },
+    tabs: ["alphabet", "msalessons", "roots", "msa"],
+  },
+  quran: {
+    id: "quran",
+    icon: "ق",
+    title: { pl: "Koraniczny (klasyczny)", en: "Quranic (classical)" },
+    subtitle: { pl: "Arabski klasyczny — język Koranu", en: "Classical Arabic — the language of the Quran" },
+    desc: { pl: "Pierwsze kroki w arabskim klasycznym: znane formuły, rozłożone na rdzenie, spięte z tym, co już znasz.", en: "First steps in classical Arabic: familiar formulas, broken into roots, linked to what you already know." },
+    color: "#7a5cb8",
+    start: { pl: "Ten kurs dopiero powstaje. Zacznij od podstawowych formuł i zobacz, jak ich rdzenie żyją w codziennym języku.", en: "This course is just beginning. Start with basic formulas and see how their roots live in everyday language." },
+    tabs: ["quranbasics", "quranverses"],
+  },
+};
+
 export default function App() {
   const [words, setWords] = useState(loadWords);
+  // Wybrany kurs: null = ekran startowy z wyborem, "egyptian" / "msa" / "quran".
+  // Zapisywany osobno (nie rusza postępu), by aplikacja wracała do ostatniego kursu.
+  const [course, setCourseState] = useState(() => {
+    try { return localStorage.getItem("ar-eg-course-v1") || null; } catch { return null; }
+  });
+  const setCourse = (c) => {
+    setCourseState(c);
+    try { if (c) localStorage.setItem("ar-eg-course-v1", c); else localStorage.removeItem("ar-eg-course-v1"); } catch {}
+    if (c) {
+      // Przełącz aktywny kurs i przeładuj jego osobny postęp, statystyki i cel.
+      setActiveCourseKey(c);
+      setWords(loadWords());   // ponownie wczytaj słowa z postępem nowego kursu
+      setStats(loadStats());
+      setGoalState(loadGoal());
+    }
+  };
   const [tab, setTab] = useState("today");
   // Docelowy rdzeń do otwarcia w widoku "rdzenie" (gdy ktoś kliknie link z fiszki).
   const [rootTarget, setRootTarget] = useState(0);
@@ -12440,6 +12741,45 @@ export default function App() {
   const showCategoryPicker = tab === "flash" || tab === "quiz" || tab === "list";
   const showAddButton = tab === "flash" || tab === "list";
 
+  // Ekran startowy: wybór kursu. Gdy żaden kurs nie jest wybrany, pokazujemy karty.
+  if (!course) {
+    return (
+      <LangContext.Provider value={lang}>
+        <div className="app-root">
+          <style>{CSS}</style>
+          <style>{appearanceCSS(appearance)}</style>
+          <div className="course-select">
+            <div className="course-select-head">
+              <div className="header-glyph" aria-hidden="true">ع</div>
+              <h1>3aamiya</h1>
+              <p>{lang === "en" ? "Choose your course to begin" : "Wybierz kurs, by zacząć"}</p>
+            </div>
+            <div className="course-cards">
+              {Object.values(COURSES).map((c) => (
+                <button
+                  key={c.id}
+                  className="course-card"
+                  style={{ borderColor: c.color }}
+                  onClick={() => { setCourse(c.id); setTab(c.tabs[0]); setSrsSession(null); }}
+                >
+                  <span className="course-card-icon" style={{ background: c.color }}>{c.icon}</span>
+                  <span className="course-card-body">
+                    <span className="course-card-title">{lang === "en" ? c.title.en : c.title.pl}</span>
+                    <span className="course-card-subtitle">{lang === "en" ? c.subtitle.en : c.subtitle.pl}</span>
+                    <span className="course-card-desc">{lang === "en" ? c.desc.en : c.desc.pl}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+            <button className="course-lang-toggle" onClick={() => setLang(lang === "en" ? "pl" : "en")}>
+              {lang === "en" ? "🇵🇱 polski" : "🇬🇧 English"}
+            </button>
+          </div>
+        </div>
+      </LangContext.Provider>
+    );
+  }
+
   return (
     <LangContext.Provider value={lang}>
     <div className="app-root">
@@ -12470,29 +12810,44 @@ export default function App() {
         )}
       </header>
 
+      <div className="course-bar" style={{ borderColor: COURSES[course].color }}>
+        <button className="course-back" onClick={() => setCourse(null)}>
+          ← {lang === "en" ? "courses" : "kursy"}
+        </button>
+        <span className="course-bar-title" style={{ color: COURSES[course].color }}>
+          {lang === "en" ? COURSES[course].title.en : COURSES[course].title.pl}
+        </span>
+      </div>
+
       <nav className="tab-bar">
-        {[
-          { key: "today", label: "na dziś", labelEn: "today", Icon: TrendingUp },
-          { key: "lessons", label: "lekcje", labelEn: "lessons", Icon: GraduationCap },
-          { key: "flash", label: "fiszki", labelEn: "flashcards", Icon: BookOpen },
-          { key: "quiz", label: "quiz", labelEn: "quiz", Icon: ListChecks },
-          { key: "verbs", label: "czasowniki", labelEn: "verbs", Icon: RotateCw },
-          { key: "nouns", label: "rzeczowniki", labelEn: "nouns", Icon: Hash },
-          { key: "questions", label: "zaimki", labelEn: "pronouns", Icon: HelpCircle },
-          { key: "grammar", label: "gramatyka", labelEn: "grammar", Icon: Puzzle },
-          { key: "sentences", label: "zdania", labelEn: "sentences", Icon: MessageSquare },
-          { key: "gaps", label: "luki", labelEn: "gaps", Icon: PenLine },
-          { key: "match", label: "pary", labelEn: "pairs", Icon: Shuffle },
-          { key: "write", label: "pisanie", labelEn: "writing", Icon: Pencil },
-          { key: "dialogues", label: "dialogi", labelEn: "dialogues", Icon: MessagesSquare },
-          { key: "readings", label: "czytanki", labelEn: "readings", Icon: BookOpen },
-          { key: "msa", label: "egipski/MSA", labelEn: "Egyptian/MSA", Icon: BookOpen },
-          { key: "roots", label: "rdzenie (MSA)", labelEn: "roots (MSA)", Icon: BookOpen },
-          { key: "alphabet", label: "alfabet", labelEn: "alphabet", Icon: BookOpen },
-          { key: "msalessons", label: "MSA od podstaw", labelEn: "MSA basics", Icon: GraduationCap },
-          { key: "stats", label: "statystyki", labelEn: "stats", Icon: TrendingUp },
-          { key: "list", label: "lista", labelEn: "word list", Icon: List },
-        ].map(({ key, label, labelEn, Icon }) => (
+        {(() => {
+          const ALL_TABS = [
+            { key: "today", label: "na dziś", labelEn: "today", Icon: TrendingUp },
+            { key: "lessons", label: "lekcje", labelEn: "lessons", Icon: GraduationCap },
+            { key: "flash", label: "fiszki", labelEn: "flashcards", Icon: BookOpen },
+            { key: "quiz", label: "quiz", labelEn: "quiz", Icon: ListChecks },
+            { key: "verbs", label: "czasowniki", labelEn: "verbs", Icon: RotateCw },
+            { key: "nouns", label: "rzeczowniki", labelEn: "nouns", Icon: Hash },
+            { key: "questions", label: "zaimki", labelEn: "pronouns", Icon: HelpCircle },
+            { key: "grammar", label: "gramatyka", labelEn: "grammar", Icon: Puzzle },
+            { key: "sentences", label: "zdania", labelEn: "sentences", Icon: MessageSquare },
+            { key: "gaps", label: "luki", labelEn: "gaps", Icon: PenLine },
+            { key: "match", label: "pary", labelEn: "pairs", Icon: Shuffle },
+            { key: "write", label: "pisanie", labelEn: "writing", Icon: Pencil },
+            { key: "dialogues", label: "dialogi", labelEn: "dialogues", Icon: MessagesSquare },
+            { key: "readings", label: "czytanki", labelEn: "readings", Icon: BookOpen },
+            { key: "msa", label: "egipski/MSA", labelEn: "Egyptian/MSA", Icon: BookOpen },
+            { key: "roots", label: "rdzenie", labelEn: "roots", Icon: BookOpen },
+            { key: "alphabet", label: "alfabet", labelEn: "alphabet", Icon: BookOpen },
+            { key: "msalessons", label: "MSA od podstaw", labelEn: "MSA basics", Icon: GraduationCap },
+            { key: "quranbasics", label: "podstawy", labelEn: "basics", Icon: BookOpen },
+            { key: "quranverses", label: "Koran od podstaw", labelEn: "Quran basics", Icon: GraduationCap },
+            { key: "stats", label: "statystyki", labelEn: "stats", Icon: TrendingUp },
+            { key: "list", label: "lista", labelEn: "word list", Icon: List },
+          ];
+          const tabMap = Object.fromEntries(ALL_TABS.map((t) => [t.key, t]));
+          const courseTabs = COURSES[course].tabs.map((k) => tabMap[k]).filter(Boolean);
+          return courseTabs.map(({ key, label, labelEn, Icon }) => (
           <button
             key={key}
             className={`tab-btn ${tab === key ? "tab-active" : ""}`}
@@ -12505,7 +12860,8 @@ export default function App() {
             <span className="tab-icon"><Icon size={16} /></span>
             <span className="tab-label">{lang === "en" && labelEn ? labelEn : label}</span>
           </button>
-        ))}
+          ));
+        })()}
       </nav>
 
       <div className="progress-panel">
@@ -12616,6 +12972,8 @@ export default function App() {
         {tab === "msa" && <MsaView />}
         {tab === "roots" && <RootsView initialRoot={rootTarget} />}
         {tab === "alphabet" && <AlphabetView />}
+        {tab === "quranbasics" && <QuranBasicsView />}
+        {tab === "quranverses" && <QuranVersesView />}
         {tab === "msalessons" && <MsaLessonsView />}
         {tab === "stats" && (
           <StatsView
@@ -16097,6 +16455,35 @@ const CSS = `
 
 
 
+
+/* ---- Moduł 3: rozbiór zdań ---- */
+.msal-synt {
+  display: flex; flex-direction: column; gap: 8px; padding: 12px;
+  background: var(--sand); border-radius: 12px;
+}
+.msal-synt-type {
+  align-self: flex-start; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--muted); padding: 2px 8px;
+  background: var(--paper); border-radius: 6px;
+}
+.msal-synt-line {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start;
+}
+.msal-seg {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 8px 10px; border-radius: 10px; border: 1.5px solid; background: var(--paper);
+  min-width: 0;
+}
+.msal-seg-ar { font-family: var(--ar-font); font-size: 22px; direction: rtl; line-height: 1.3; }
+.msal-seg-ph { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+.msal-seg-role { font-size: 8.5px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; text-align: center; line-height: 1.1; }
+.msal-synt-tr { font-size: 13px; color: var(--ink); font-style: italic; margin-top: 2px; }
+.msal-synt-note {
+  display: flex; flex-direction: column; gap: 4px; padding: 10px 12px;
+  background: #eef3ee; border-radius: 10px; border-left: 3px solid var(--terracotta);
+  font-size: 12.5px; color: var(--ink); line-height: 1.5;
+}
+
 /* ---- Moduł 2: słowa ze zdaniami ---- */
 .msal-word {
   display: flex; flex-direction: column; gap: 8px; padding: 12px;
@@ -16190,6 +16577,96 @@ const CSS = `
 }
 .lq-done { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; }
 .lq-score-big { font-size: 42px; font-weight: 700; color: var(--teal-deep); }
+
+
+/* ---- Ekran wyboru kursu ---- */
+.course-select { max-width: 480px; margin: 0 auto; padding: 32px 20px; display: flex; flex-direction: column; gap: 24px; min-height: 100vh; justify-content: center; }
+.course-select-head { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.course-select-head .header-glyph { width: 64px; height: 64px; font-size: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: var(--teal); color: #fff; font-family: var(--ar-font); }
+.course-select-head h1 { font-size: 28px; margin: 8px 0 0; color: var(--ink); }
+.course-select-head p { font-size: 14px; color: var(--muted); margin: 0; }
+.course-cards { display: flex; flex-direction: column; gap: 14px; }
+.course-card {
+  display: flex; align-items: flex-start; gap: 14px; padding: 18px;
+  border: 2px solid; border-radius: 16px; background: var(--paper); cursor: pointer;
+  text-align: left; transition: transform 0.12s, box-shadow 0.12s;
+}
+.course-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+.course-card-icon {
+  width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ar-font); font-size: 26px; color: #fff;
+}
+.course-card-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.course-card-title { font-size: 17px; font-weight: 700; color: var(--ink); }
+.course-card-subtitle { font-size: 12.5px; color: var(--terracotta); font-weight: 600; }
+.course-card-desc { font-size: 12.5px; color: var(--muted); line-height: 1.45; margin-top: 4px; }
+.course-lang-toggle {
+  align-self: center; padding: 8px 16px; border: 1.5px solid var(--sand-deep);
+  border-radius: 999px; background: var(--paper); color: var(--ink); font-size: 13px;
+  font-weight: 600; cursor: pointer;
+}
+
+/* ---- Pasek kursu (nad zakładkami) ---- */
+.course-bar {
+  max-width: 480px; margin: 0 auto 12px; width: 100%; box-sizing: border-box;
+  display: flex; align-items: center; gap: 12px; padding: 8px 10px;
+  border-left: 3px solid; background: var(--paper); border-radius: 10px;
+}
+.course-back {
+  border: none; background: var(--sand); color: var(--ink); font-size: 13px;
+  font-weight: 600; cursor: pointer; padding: 6px 12px; border-radius: 8px; white-space: nowrap;
+}
+.course-back:hover { background: var(--sand-deep); }
+.course-bar-title { font-size: 14px; font-weight: 700; }
+
+
+/* ---- Koran od podstaw: cytaty z rozbiorem ---- */
+.view-qverses { display: flex; flex-direction: column; gap: 18px; }
+.qv-intro { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; }
+.qv-verse { display: flex; flex-direction: column; gap: 8px; padding: 18px; background: var(--sand); border-radius: 16px; }
+.qv-verse-head { display: flex; justify-content: center; }
+.qv-ref { font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #7a5cb8; padding: 3px 10px; background: rgba(122,92,184,0.1); border-radius: 6px; }
+.qv-verse-ar { font-family: var(--ar-font); font-size: 30px; color: var(--teal-deep); direction: rtl; text-align: center; line-height: 1.7; }
+.qv-verse-ph { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--terracotta); text-align: center; }
+.qv-verse-tr { font-size: 14px; color: var(--ink); text-align: center; font-style: italic; }
+.qv-words { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.qv-words-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+.qv-word { background: var(--paper); border-radius: 10px; overflow: hidden; }
+.qv-word-head { width: 100%; display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 10px 12px; background: none; border: none; cursor: pointer; text-align: left; }
+.qv-word-cl { font-family: var(--ar-font); font-size: 22px; color: var(--ink); direction: rtl; }
+.qv-word-meaning { font-size: 13px; color: var(--ink); font-weight: 600; }
+.qv-word-chevron { font-size: 18px; color: var(--muted); }
+.qv-word-body { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 10px; }
+.qv-registers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.qv-reg { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border-radius: 9px; }
+.qv-reg-cl { background: rgba(46,125,82,0.1); }
+.qv-reg-msa { background: rgba(198,110,74,0.1); }
+.qv-reg-eg { background: rgba(122,92,184,0.1); }
+.qv-reg-label { font-size: 8px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); }
+.qv-reg-ar { font-family: var(--ar-font); font-size: 19px; color: var(--ink); direction: rtl; }
+.qv-reg-ph { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--terracotta); text-align: center; }
+.qv-word-note { font-size: 12px; color: var(--muted); line-height: 1.55; margin: 0; padding: 8px 10px; background: var(--sand); border-radius: 8px; }
+
+/* ---- Widok koraniczny ---- */
+.view-quran { display: flex; flex-direction: column; gap: 16px; }
+.quran-intro { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; }
+.quran-card {
+  display: flex; flex-direction: column; gap: 8px; padding: 18px;
+  background: var(--sand); border-radius: 16px; align-items: center; text-align: center;
+}
+.quran-card-ar { font-family: var(--ar-font); font-size: 34px; color: var(--teal-deep); direction: rtl; line-height: 1.4; }
+.quran-card-ph { font-family: 'JetBrains Mono', monospace; font-size: 15px; color: var(--terracotta); }
+.quran-card-meaning { font-size: 16px; font-weight: 700; color: var(--ink); }
+.quran-card-note { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin: 4px 0 0; }
+.quran-card-root {
+  display: flex; align-items: center; gap: 8px; margin-top: 6px; padding: 8px 14px;
+  background: var(--paper); border-radius: 999px;
+}
+.quran-root-label { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+.quran-root-ar { font-family: var(--ar-font); font-size: 18px; color: var(--teal-deep); direction: rtl; }
+.quran-root-tr { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--terracotta); }
+.quran-root-link { font-size: 11.5px; color: var(--ink); line-height: 1.5; margin: 0; font-style: italic; }
 
 /* ---- Tabela alfabetu ---- */
 .view-alphabet { display: flex; flex-direction: column; gap: 14px; }
