@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef, createContext, useContext } from "react";
-import { Plus, Palette, GraduationCap, Trash2, Shuffle, BookOpen, ListChecks, X, Check, RotateCw, Upload, Flag, Pencil, Hash, HelpCircle, Puzzle, MessageSquare, MessagesSquare, List, PenLine, TrendingUp } from "lucide-react";
+import { Plus, Palette, GraduationCap, Trash2, Shuffle, BookOpen, ListChecks, X, Check, RotateCw, Upload, Flag, Pencil, Hash, HelpCircle, Puzzle, MessageSquare, MessagesSquare, List, PenLine, TrendingUp, Sparkles } from "lucide-react";
 
 // ---------- Domyślny zestaw słówek (50 fraz, na podst. "50 Essential Egyptian Arabic Phrases") ----------
 const SEED_WORDS = [
@@ -1939,8 +1939,13 @@ const CATEGORIES = [
   { key: "other", label: "Inne / dodane przez Ciebie", labelEn: "Other / added by you", emoji: "✨" },
 ];
 
+// Kategorie zależne od aktywnego kursu (MSA ma własną bazę i własne kategorie).
+function activeCategories() {
+  return ACTIVE_COURSE === "msa" ? MSA_CATEGORIES : CATEGORIES;
+}
+
 function categoryLabel(key, lang) {
-  const c = CATEGORIES.find((c) => c.key === key);
+  const c = activeCategories().find((c) => c.key === key);
   const fallback = lang === "en" ? "✨ Other / added by you" : "✨ Inne / dodane przez Ciebie";
   return c ? `${c.emoji} ${lang === "en" && c.labelEn ? c.labelEn : c.label}` : fallback;
 }
@@ -5755,6 +5760,9 @@ const EG_PATH = [
       { type: "word", ar: "إِزَّيَّك؟", ph: "ezzayyak?", pl: "jak się masz? (do mężczyzny)", en: "how are you? (to a man)" },
       { type: "word", ar: "إِزَّيِّك؟", ph: "ezzayyik?", pl: "jak się masz? (do kobiety)", en: "how are you? (to a woman)" },
       { type: "tip", pl: "Egipski rozróżnia płeć rozmówcy! „-ak” do mężczyzny, „-ik” do kobiety. To wróci wielokrotnie.", en: "Egyptian distinguishes the listener's gender! '-ak' to a man, '-ik' to a woman. This recurs often." },
+      { type: "sentence", ar: "أَهْلاً، إِزَّيَّك؟", ph: "ahlan, ezzayyak?", pl: "Cześć, jak się masz?", en: "Hi, how are you?" },
+      { type: "sentence", ar: "الحَمْدُ لله، كُوَيِّس", ph: "el-ḥamdu lellah, kwayyes", pl: "Dzięki Bogu, dobrze.", en: "Thank God, good." },
+      { type: "exercise", prompt: "Witasz się z kobietą. Co powiesz?", promptEn: "You're greeting a woman. What do you say?", options: [ { ar: "إِزَّيَّك؟", ph: "ezzayyak?", label: "do mężczyzny", labelEn: "to a man" }, { ar: "إِزَّيِّك؟", ph: "ezzayyik?", label: "do kobiety", labelEn: "to a woman", ok: true } ], why: "Końcówka -ik jest dla kobiety, -ak dla mężczyzny. To rozróżnienie wraca w całym egipskim.", whyEn: "The -ik ending is for a woman, -ak for a man. This distinction recurs throughout Egyptian." }
     ],
     fiszki: { cat: "basics", pl: "Poćwicz powitania na fiszkach", en: "Practice greetings on flashcards" },
   },
@@ -5769,7 +5777,10 @@ const EG_PATH = [
       { type: "word", ar: "هُوَّ", ph: "howwa", pl: "on", en: "he" },
       { type: "word", ar: "هِيَّ", ph: "heyya", pl: "ona", en: "she" },
       { type: "tip", pl: "Znowu płeć: „enta/enti”. W egipskim nie ma „ono” — wszystko jest rodzaju męskiego lub żeńskiego.", en: "Gender again: 'enta/enti'. Egyptian has no 'it' — everything is masculine or feminine." },
+      { type: "sentence", ar: "أَنا بولَنْدي وهُوَّ مَصْري", ph: "ana bolandi we howwa maṣri", pl: "Ja jestem Polakiem, a on Egipcjaninem.", en: "I'm Polish and he's Egyptian." },
+      { type: "exercise", prompt: "Które słowo znaczy: ona?", promptEn: "Which word means 'she'?", options: [ { ar: "هُوَّ", ph: "howwa", label: "on", labelEn: "he" }, { ar: "هِيَّ", ph: "heyya", label: "ona", labelEn: "she", ok: true }, { ar: "إِنْتِ", ph: "enti", label: "ty (ż.)", labelEn: "you (f)" } ], why: "هِيَّ (heyya) = ona. Uwaga, żeby nie mylić z إِنْتِ (enti) = ty do kobiety.", whyEn: "هِيَّ (heyya) = she. Careful not to confuse with إِنْتِ (enti) = you to a woman." }
     ],
+    fiszki: { cat: "basics", pl: "Poćwicz zaimki i podstawy", en: "Practice pronouns and basics" },
   },
   {
     id: "e3", num: 3, kind: "practice", title: { pl: "Jak masz na imię?", en: "What's your name?" },
@@ -5780,7 +5791,10 @@ const EG_PATH = [
       { type: "phrase", ar: "إِسْمِك إيه؟", ph: "esmik eeh?", pl: "jak masz na imię? (do kobiety)", en: "what's your name? (to a woman)" },
       { type: "phrase", ar: "أَنا اسْمي...", ph: "ana esmi...", pl: "mam na imię...", en: "my name is..." },
       { type: "tip", pl: "„eeh” = co. „esmak eeh” dosłownie: „imię-twoje co?”. Zauważ znów -ak/-ik.", en: "'eeh' = what. 'esmak eeh' literally: 'name-your what?'. Note -ak/-ik again." },
+      { type: "sentence", ar: "إِسْمي جْجورج، وإِنْتَ؟", ph: "esmi Grzegorz, we enta?", pl: "Mam na imię Grzegorz, a ty?", en: "My name is Grzegorz, and you?" },
+      { type: "exercise", prompt: "Pytasz mężczyznę o imię. Co powiesz?", promptEn: "You ask a man his name. What do you say?", options: [ { ar: "إِسْمَك إيه؟", ph: "esmak eeh?", ok: true }, { ar: "إِسْمِك إيه؟", ph: "esmik eeh?" } ], why: "esmak (z -ak) do mężczyzny, esmik (z -ik) do kobiety.", whyEn: "esmak (-ak) to a man, esmik (-ik) to a woman." }
     ],
+    fiszki: { cat: "basics", pl: "Poćwicz przedstawianie się", en: "Practice introductions" },
   },
   {
     id: "e4", num: 4, kind: "grammar", title: { pl: "Zdanie bez „być”", en: "A sentence with no 'to be'" },
@@ -5790,7 +5804,9 @@ const EG_PATH = [
       { type: "sentence", ar: "أَنا مِصْري", ph: "ana maṣri", pl: "Jestem Egipcjaninem.", en: "I am Egyptian." },
       { type: "sentence", ar: "إِنْتَ كُوَيِّس؟", ph: "enta kwayyes?", pl: "Dobrze się masz? (dosł. ty dobry?)", en: "Are you well? (lit. you good?)" },
       { type: "tip", pl: "Po prostu zestawiasz słowa. Bez odpowiednika „jestem/jesteś”.", en: "You just place words together. No equivalent of 'am/are'." },
+      { type: "exercise", prompt: "Jak powiedzieć: jestem zmęczony?", promptEn: "How to say 'I am tired'?", options: [ { ar: "أَنا تَعْبان", ph: "ana ta3baan", label: "ja zmęczony", labelEn: "I tired", ok: true }, { ar: "أَنا بَكون تَعْبان", ph: "ana bakuun ta3baan", label: "ja jestem zmęczony", labelEn: "I am tired" } ], why: "Bez „być” — po prostu „ana ta3baan”. Dodawanie czasownika brzmi nienaturalnie.", whyEn: "No 'to be' — just 'ana ta3baan'. Adding a verb sounds unnatural." }
     ],
+    fiszki: { cat: "adjectives", pl: "Poćwicz przymiotniki", en: "Practice adjectives" },
   },
   {
     id: "e5", num: 5, kind: "practice", title: { pl: "Dziękuję i proszę", en: "Thank you and please" },
@@ -5802,6 +5818,8 @@ const EG_PATH = [
       { type: "word", ar: "عَفْواً", ph: "3afwan", pl: "proszę bardzo / nie ma za co", en: "you're welcome" },
       { type: "word", ar: "آسِف", ph: "aasef", pl: "przepraszam (mówi mężczyzna)", en: "sorry (said by a man)" },
       { type: "tip", pl: "„3” w transkrypcji to dźwięk „ ع ” (ayn) — gardłowy, charakterystyczny dla arabskiego.", en: "'3' in transcription is the sound 'ع' (ayn) — a throaty sound typical of Arabic." },
+      { type: "sentence", ar: "شُكْراً جَزيلاً", ph: "shokran gazilan", pl: "Bardzo dziękuję.", en: "Thank you very much." },
+      { type: "exercise", prompt: "Ktoś ci podziękował. Co odpowiesz?", promptEn: "Someone thanked you. What do you reply?", options: [ { ar: "عَفْواً", ph: "3afwan", label: "nie ma za co", labelEn: "you're welcome", ok: true }, { ar: "شُكْراً", ph: "shokran", label: "dziękuję", labelEn: "thank you" } ], why: "3afwan to standardowa odpowiedź na podziękowanie.", whyEn: "3afwan is the standard reply to thanks." }
     ],
     fiszki: { cat: "basics", pl: "Poćwicz zwroty grzecznościowe", en: "Practice polite phrases" },
   },
@@ -5813,7 +5831,10 @@ const EG_PATH = [
       { type: "word", ar: "البيت", ph: "el-beet", pl: "ten dom", en: "the house" },
       { type: "word", ar: "الوَلَد", ph: "el-walad", pl: "ten chłopiec", en: "the boy" },
       { type: "tip", pl: "Przed niektórymi literami „el-” zlewa się: „el-shams” → „esh-shams” (słońce). Usłyszysz to naturalnie.", en: "Before some letters 'el-' assimilates: 'el-shams' → 'esh-shams' (the sun). You'll hear it naturally." },
+      { type: "sentence", ar: "البيت دَه كِبير", ph: "el-beet da kebiir", pl: "Ten dom jest duży.", en: "This house is big." },
+      { type: "exercise", prompt: "Jak powiedzieć: ta książka?", promptEn: "How to say 'the book'?", options: [ { ar: "كِتاب", ph: "ketaab", label: "jakaś książka", labelEn: "a book" }, { ar: "الكِتاب", ph: "el-ketaab", label: "ta książka", labelEn: "the book", ok: true } ], why: "el- z przodu = określoność, tak jak MSA al-.", whyEn: "el- in front = definiteness, just like MSA al-." }
     ],
+    fiszki: { cat: "life", pl: "Poćwicz słowa codzienne", en: "Practice everyday words" },
   },
   {
     id: "e7", num: 7, kind: "practice", title: { pl: "Liczby 1-5", en: "Numbers 1-5" },
@@ -5825,6 +5846,8 @@ const EG_PATH = [
       { type: "word", ar: "تَلاتة", ph: "talaata", pl: "trzy", en: "three" },
       { type: "word", ar: "أَرْبَعة", ph: "arba3a", pl: "cztery", en: "four" },
       { type: "word", ar: "خَمْسة", ph: "khamsa", pl: "pięć", en: "five" },
+      { type: "sentence", ar: "عَنْدي تَلات كُتُب", ph: "3andi talat kotob", pl: "Mam trzy książki.", en: "I have three books." },
+      { type: "exercise", prompt: "Ile to: خَمْسة?", promptEn: "How much is خَمْسة?", options: [ { ar: "3", label: "trzy", labelEn: "three" }, { ar: "5", label: "pięć", labelEn: "five", ok: true }, { ar: "7", label: "siedem", labelEn: "seven" } ], why: "khamsa = pięć. Zapamiętaj przez „chamsin” — pięćdziesiąt.", whyEn: "khamsa = five." }
     ],
     fiszki: { cat: "numbers_time", pl: "Poćwicz liczby na fiszkach", en: "Practice numbers on flashcards" },
   },
@@ -5837,6 +5860,689 @@ const EG_PATH = [
       { type: "word", ar: "عَنْدَك", ph: "3andak", pl: "masz (do mężczyzny)", en: "you have (m)" },
       { type: "sentence", ar: "عَنْدي عَرَبِيّة", ph: "3andi 3arabeyya", pl: "Mam samochód.", en: "I have a car." },
       { type: "tip", pl: "Przeczenie: „ma-3andiish” (nie mam) — dodajesz „ma-...-sh” wokół słowa. To egipski wzór przeczenia.", en: "Negation: 'ma-3andiish' (I don't have) — you add 'ma-...-sh' around the word. That's the Egyptian negation pattern." },
+      { type: "exercise", prompt: "Jak powiedzieć: nie mam?", promptEn: "How to say 'I don't have'?", options: [ { ar: "مَعَنْديش", ph: "ma3andiish", ok: true }, { ar: "مُش عَنْدي", ph: "mush 3andi" } ], why: "„3andi” zachowuje się jak czasownik, więc otaczamy: ma-...-sh.", whyEn: "'3andi' behaves like a verb, so we wrap it: ma-...-sh." }
+    ],
+    fiszki: { cat: "grammar", pl: "Poćwicz konstrukcje", en: "Practice constructions" },
+  },
+  {
+    id: "e9", num: 9, kind: "grammar", title: { pl: "Czasownik: robię to teraz (bi-)", en: "Verb: I'm doing it now (bi-)" },
+    goal: { pl: "Powiedz, co robisz w tej chwili i zwykle.", en: "Say what you're doing now and usually." },
+    blocks: [
+      { type: "text", pl: "To serce mówionego egipskiego. Doklejasz „bi-” na początku czasownika i masz czas teraźniejszy — dla czynności trwających i powtarzalnych.", en: "This is the heart of spoken Egyptian. You attach 'bi-' to the front of a verb and you get the present tense — for ongoing and habitual actions." },
+      { type: "word", ar: "بَشْرَب", ph: "bashrab", pl: "piję", en: "I drink / I'm drinking" },
+      { type: "word", ar: "بَتِشْرَب", ph: "beteshrab", pl: "pijesz (m.)", en: "you drink (m)" },
+      { type: "word", ar: "بِيِشْرَب", ph: "biyeshrab", pl: "on pije", en: "he drinks" },
+      { type: "word", ar: "بِنِشْرَب", ph: "beneshrab", pl: "pijemy", en: "we drink" },
+      { type: "sentence", ar: "بَشْرَب قَهْوة", ph: "bashrab 'ahwa", pl: "Piję kawę.", en: "I drink coffee." },
+      { type: "tip", pl: "Przedrostek osoby: ba- (ja), bete- (ty m.), bete-...-i (ty ż.), biye- (on), bete- (ona), bene- (my), bete-...-u (wy), biye-...-u (oni).", en: "Person prefix: ba- (I), bete- (you m), bete-...-i (you f), biye- (he), bete- (she), bene- (we), bete-...-u (you pl), biye-...-u (they)." },
+      { type: "exercise", prompt: "Chcesz powiedzieć: on pije. Którą formę wybierzesz?", promptEn: "You want to say 'he drinks'. Which form?", options: [ { ar: "بَشْرَب", ph: "bashrab", label: "piję", labelEn: "I drink" }, { ar: "بِيِشْرَب", ph: "biyeshrab", label: "on pije", labelEn: "he drinks", ok: true }, { ar: "بِنِشْرَب", ph: "beneshrab", label: "pijemy", labelEn: "we drink" } ], why: "Przedrostek biye- oznacza trzecią osobę męską (on).", whyEn: "The prefix biye- marks third person masculine (he)." }
+    ],
+    fiszki: { cat: "daily_verbs", pl: "Poćwicz czasowniki na fiszkach", en: "Practice verbs on flashcards" },
+  },
+  {
+    id: "e10", num: 10, kind: "practice", title: { pl: "W kawiarni", en: "At the café" },
+    goal: { pl: "Zamów coś do picia.", en: "Order something to drink." },
+    blocks: [
+      { type: "text", pl: "Teraz użyjesz „bi-” w praktyce. Kawiarnia to najczęstsze miejsce spotkań w Egipcie.", en: "Now you'll use 'bi-' in practice. The café is the most common meeting place in Egypt." },
+      { type: "phrase", ar: "مُمْكِن قَهْوة؟", ph: "momken 'ahwa?", pl: "Poproszę kawę? (dosł. można kawę?)", en: "Could I have a coffee? (lit. possible coffee?)" },
+      { type: "phrase", ar: "عايِز شاي", ph: "3aayez shaay", pl: "Chcę herbatę (mówi mężczyzna)", en: "I want tea (said by a man)" },
+      { type: "phrase", ar: "عايْزة شاي", ph: "3ayza shaay", pl: "Chcę herbatę (mówi kobieta)", en: "I want tea (said by a woman)" },
+      { type: "phrase", ar: "الحِساب لَو سَمَحْت", ph: "el-ḥesaab law samaḥt", pl: "Rachunek proszę", en: "The bill, please" },
+      { type: "tip", pl: "„momken” (można?) to najbardziej uniwersalne słowo do proszenia o cokolwiek. Uprzejme i zawsze pasuje.", en: "'momken' (may I?) is the most universal word for requesting anything. Polite and always fits." },
+      { type: "sentence", ar: "بَحِبّ القَهْوة", ph: "baḥebb el-'ahwa", pl: "Lubię kawę.", en: "I like coffee." },
+      { type: "exercise", prompt: "Chcesz uprzejmie poprosić o herbatę. Co powiesz?", promptEn: "You want to politely ask for tea. What do you say?", options: [ { ar: "مُمْكِن شاي؟", ph: "momken shaay?", label: "poproszę herbatę", labelEn: "may I have tea", ok: true }, { ar: "شاي!", ph: "shaay!", label: "herbata!", labelEn: "tea!" } ], why: "„momken” zmienia żądanie w uprzejmą prośbę — działa wszędzie.", whyEn: "'momken' turns a demand into a polite request — works everywhere." }
+    ],
+    fiszki: { cat: "food_shopping", pl: "Poćwicz jedzenie i napoje", en: "Practice food and drinks" },
+  },
+  {
+    id: "e11", num: 11, kind: "grammar", title: { pl: "Przeczenie: ma-...-sh", en: "Negation: ma-...-sh" },
+    goal: { pl: "Powiedz, że czegoś nie robisz.", en: "Say that you don't do something." },
+    blocks: [
+      { type: "text", pl: "Egipski otacza czasownik z dwóch stron: „ma-” z przodu i „-sh” z tyłu. Jak francuskie „ne...pas”.", en: "Egyptian wraps the verb from both sides: 'ma-' in front and '-sh' behind. Like French 'ne...pas'." },
+      { type: "word", ar: "مَبَشْرَبْش", ph: "mabashrabsh", pl: "nie piję", en: "I don't drink" },
+      { type: "word", ar: "مَعَنْديش", ph: "ma3andiish", pl: "nie mam", en: "I don't have" },
+      { type: "sentence", ar: "مَبَحِبّيش الشّاي", ph: "mabaḥebbiish esh-shaay", pl: "Nie lubię herbaty.", en: "I don't like tea." },
+      { type: "text", pl: "Ale uwaga: przy rzeczownikach i przymiotnikach używasz „mush” (nie), bez otaczania.", en: "But note: with nouns and adjectives you use 'mush' (not), without wrapping." },
+      { type: "sentence", ar: "أَنا مُش مَصْري", ph: "ana mush maṣri", pl: "Nie jestem Egipcjaninem.", en: "I'm not Egyptian." },
+      { type: "tip", pl: "Prosta zasada: czasownik → ma-...-sh; wszystko inne → mush.", en: "Simple rule: verb → ma-...-sh; everything else → mush." },
+      { type: "exercise", prompt: "Jak powiedzieć: nie jestem zmęczony?", promptEn: "How to say 'I'm not tired'?", options: [ { ar: "أَنا مُش تَعْبان", ph: "ana mush ta3baan", ok: true }, { ar: "أَنا مَتَعْبانْش", ph: "ana mata3baansh" } ], why: "„ta3baan” to przymiotnik, więc mush. Otaczanie ma-...-sh jest tylko dla czasowników.", whyEn: "'ta3baan' is an adjective, so mush. The ma-...-sh wrap is only for verbs." }
+    ],
+    fiszki: { cat: "grammar", pl: "Poćwicz przeczenia", en: "Practice negation" },
+  },
+  {
+    id: "e12", num: 12, kind: "practice", title: { pl: "Pytania: co, gdzie, kiedy", en: "Questions: what, where, when" },
+    goal: { pl: "Zadaj podstawowe pytania.", en: "Ask the basic questions." },
+    blocks: [
+      { type: "text", pl: "Znasz już „eeh” (co) z lekcji o imieniu. Oto komplet pytajników — z nimi rozmowa rusza.", en: "You already know 'eeh' (what) from the name lesson. Here's the full set — with these, conversation starts moving." },
+      { type: "word", ar: "إيه", ph: "eeh", pl: "co", en: "what" },
+      { type: "word", ar: "فين", ph: "feen", pl: "gdzie", en: "where" },
+      { type: "word", ar: "إِمْتى", ph: "emta", pl: "kiedy", en: "when" },
+      { type: "word", ar: "ليه", ph: "leeh", pl: "dlaczego", en: "why" },
+      { type: "word", ar: "مين", ph: "meen", pl: "kto", en: "who" },
+      { type: "word", ar: "إِزّاي", ph: "ezzaay", pl: "jak", en: "how" },
+      { type: "word", ar: "كام", ph: "kaam", pl: "ile", en: "how many/much" },
+      { type: "sentence", ar: "إِنْتَ رايِح فين؟", ph: "enta raayeḥ feen?", pl: "Dokąd idziesz?", en: "Where are you going?" },
+      { type: "tip", pl: "WAŻNE: w egipskim pytajnik idzie zwykle NA KOŃCU, nie na początku jak po polsku. „rayeḥ feen?” = idziesz gdzie?", en: "IMPORTANT: in Egyptian the question word usually goes at the END, not the beginning. 'rayeḥ feen?' = going where?" },
+      { type: "exercise", prompt: "Pytasz: gdzie jest dworzec? Gdzie postawisz słowo „feen\"?", promptEn: "You ask 'where is the station?'. Where does 'feen' go?", options: [ { ar: "فين المَحَطّة؟", ph: "feen el-maḥaṭṭa?", label: "na początku", labelEn: "at the start", ok: true }, { ar: "المَحَطّة فين؟", ph: "el-maḥaṭṭa feen?", label: "na końcu", labelEn: "at the end", ok: true } ], why: "Obie wersje są poprawne! „feen” może iść z przodu lub na końcu — Egipcjanie używają obu.", whyEn: "Both are correct! 'feen' can go first or last — Egyptians use both." }
+    ],
+    fiszki: { cat: "questions", pl: "Poćwicz pytajniki", en: "Practice question words" },
+  },
+  {
+    id: "e13", num: 13, kind: "grammar", title: { pl: "Liczby 6-20 i ceny", en: "Numbers 6-20 and prices" },
+    goal: { pl: "Zrozum ceny i podaj liczbę.", en: "Understand prices and give a number." },
+    blocks: [
+      { type: "text", pl: "Masz już 1-5. Oto reszta podstawy — niezbędna na targu i przy płaceniu.", en: "You have 1-5 already. Here's the rest of the basics — essential at the market and when paying." },
+      { type: "word", ar: "سِتّة", ph: "setta", pl: "sześć", en: "six" },
+      { type: "word", ar: "سَبْعة", ph: "sab3a", pl: "siedem", en: "seven" },
+      { type: "word", ar: "تَمانْية", ph: "tamanya", pl: "osiem", en: "eight" },
+      { type: "word", ar: "تِسْعة", ph: "tes3a", pl: "dziewięć", en: "nine" },
+      { type: "word", ar: "عَشَرة", ph: "3ashara", pl: "dziesięć", en: "ten" },
+      { type: "word", ar: "عِشْرين", ph: "3eshriin", pl: "dwadzieścia", en: "twenty" },
+      { type: "sentence", ar: "بِكام دَه؟", ph: "bekaam da?", pl: "Ile to kosztuje?", en: "How much is this?" },
+      { type: "tip", pl: "„be-” + „kaam” = za ile. Odpowiedź: „be-3ashara geneeh” = za dziesięć funtów.", en: "'be-' + 'kaam' = for how much. Answer: 'be-3ashara geneeh' = for ten pounds." },
+      { type: "exercise", prompt: "Sprzedawca mówi: „be-3ashara geneeh\". Ile to?", promptEn: "The seller says 'be-3ashara geneeh'. How much?", options: [ { ar: "10", label: "dziesięć funtów", labelEn: "ten pounds", ok: true }, { ar: "20", label: "dwadzieścia funtów", labelEn: "twenty pounds" } ], why: "3ashara = dziesięć. „be-” z przodu znaczy „za”.", whyEn: "3ashara = ten. 'be-' in front means 'for'." }
+    ],
+    fiszki: { cat: "numbers_time", pl: "Poćwicz liczby", en: "Practice numbers" },
+  },
+  {
+    id: "e14", num: 14, kind: "practice", title: { pl: "Na targu", en: "At the market" },
+    goal: { pl: "Kup coś i potarguj się.", en: "Buy something and haggle." },
+    blocks: [
+      { type: "text", pl: "Targowanie to w Egipcie normalna część zakupów — na bazarze oczekuje się go. Oto zestaw zwrotów.", en: "Haggling is a normal part of shopping in Egypt — at the bazaar it's expected. Here's the phrase set." },
+      { type: "phrase", ar: "بِكام دَه؟", ph: "bekaam da?", pl: "Ile to kosztuje?", en: "How much is this?" },
+      { type: "phrase", ar: "غالي أَوي", ph: "ghaali awi", pl: "Bardzo drogo", en: "Very expensive" },
+      { type: "phrase", ar: "آخِر كَلام؟", ph: "aakher kalaam?", pl: "Ostateczna cena? (dosł. ostatnie słowo?)", en: "Final price? (lit. last word?)" },
+      { type: "phrase", ar: "مُمْكِن تَخْفيض؟", ph: "momken takhfiiḍ?", pl: "Można taniej?", en: "Can you lower it?" },
+      { type: "phrase", ar: "خُد بالَك", ph: "khod baalak", pl: "Uważaj (przydatne wszędzie)", en: "Watch out / take care" },
+      { type: "tip", pl: "„awi” (bardzo) idzie PO przymiotniku: „ghaali awi”, „kwayyes awi” (bardzo dobrze).", en: "'awi' (very) comes AFTER the adjective: 'ghaali awi', 'kwayyes awi' (very good)." },
+      { type: "sentence", ar: "دَه غالي أَوي، مُمْكِن تَخْفيض؟", ph: "da ghaali awi, momken takhfiiḍ?", pl: "To bardzo drogie, można taniej?", en: "That's very expensive, can you lower it?" },
+      { type: "exercise", prompt: "Sprzedawca podał cenę. Chcesz się targować. Co powiesz?", promptEn: "The seller gave a price. You want to haggle. What do you say?", options: [ { ar: "غالي أَوي", ph: "ghaali awi", label: "bardzo drogo", labelEn: "very expensive", ok: true }, { ar: "شُكْراً", ph: "shokran", label: "dziękuję", labelEn: "thank you" } ], why: "„ghaali awi” otwiera targowanie — to normalna i oczekiwana część zakupów na bazarze.", whyEn: "'ghaali awi' opens the haggling — a normal and expected part of bazaar shopping." }
+    ],
+    fiszki: { cat: "food_shopping", pl: "Poćwicz zakupy", en: "Practice shopping" },
+  },
+  {
+    id: "e15", num: 15, kind: "grammar", title: { pl: "Czas przeszły", en: "The past tense" },
+    goal: { pl: "Opowiedz, co się wydarzyło.", en: "Tell what happened." },
+    blocks: [
+      { type: "text", pl: "Czas przeszły jest prostszy niż teraźniejszy — nie ma „bi-”, tylko końcówki doklejane z tyłu.", en: "The past tense is simpler than the present — no 'bi-', just endings attached at the back." },
+      { type: "word", ar: "شِرِبْت", ph: "sherebt", pl: "wypiłem/wypiłam", en: "I drank" },
+      { type: "word", ar: "شِرِبْت", ph: "sherebt", pl: "wypiłeś", en: "you drank (m)" },
+      { type: "word", ar: "شِرِب", ph: "shereb", pl: "on wypił", en: "he drank" },
+      { type: "word", ar: "شِرْبِت", ph: "sherbet", pl: "ona wypiła", en: "she drank" },
+      { type: "word", ar: "شِرِبْنا", ph: "sherebna", pl: "wypiliśmy", en: "we drank" },
+      { type: "sentence", ar: "رُحْت السّوق إِمْبارِح", ph: "roḥt es-soo' embaareḥ", pl: "Poszedłem wczoraj na targ.", en: "I went to the market yesterday." },
+      { type: "tip", pl: "„ja” i „ty (m.)” brzmią tak samo (-t) — kontekst rozróżnia. Przeczenie: ma-sherebtesh (nie wypiłem).", en: "'I' and 'you (m)' sound the same (-t) — context distinguishes. Negation: ma-sherebtesh (I didn't drink)." },
+      { type: "exercise", prompt: "Która forma znaczy: ona wypiła?", promptEn: "Which form means 'she drank'?", options: [ { ar: "شِرِب", ph: "shereb", label: "on wypił", labelEn: "he drank" }, { ar: "شِرْبِت", ph: "sherbet", label: "ona wypiła", labelEn: "she drank", ok: true } ], why: "Końcówka -et oznacza trzecią osobę żeńską w czasie przeszłym.", whyEn: "The -et ending marks third person feminine in the past." }
+    ],
+    fiszki: { cat: "daily_verbs", pl: "Poćwicz czasowniki", en: "Practice verbs" },
+  },
+  {
+    id: "e16", num: 16, kind: "practice", title: { pl: "Kierunki i taksówka", en: "Directions and taxi" },
+    goal: { pl: "Dojedź tam, gdzie chcesz.", en: "Get where you want to go." },
+    blocks: [
+      { type: "text", pl: "Podstawa poruszania się po Kairze. Taksówkarz zrozumie te słowa od razu.", en: "The basics of getting around Cairo. A taxi driver will understand these immediately." },
+      { type: "phrase", ar: "عَلى طول", ph: "3ala ṭool", pl: "prosto", en: "straight ahead" },
+      { type: "phrase", ar: "يِمين", ph: "yemiin", pl: "w prawo", en: "right" },
+      { type: "phrase", ar: "شِمال", ph: "shemaal", pl: "w lewo", en: "left" },
+      { type: "phrase", ar: "هِنا كِوَيِّس", ph: "hena kwayyes", pl: "tutaj dobrze (żeby się zatrzymał)", en: "here is fine (to stop)" },
+      { type: "phrase", ar: "فين المَحَطّة؟", ph: "feen el-maḥaṭṭa?", pl: "Gdzie jest dworzec?", en: "Where is the station?" },
+      { type: "tip", pl: "Zauważ: „maḥaṭṭa” to to samo słowo, które widziałeś na szyldach w module „z ulicy”! MSA i egipski dzielą je.", en: "Note: 'maḥaṭṭa' is the same word you saw on signs in the 'street signs' module! MSA and Egyptian share it." },
+      { type: "sentence", ar: "أَنا رايِح المَطار", ph: "ana raayeḥ el-maṭaar", pl: "Jadę na lotnisko.", en: "I'm going to the airport." },
+      { type: "exercise", prompt: "Taksówkarz ma skręcić w prawo. Co powiesz?", promptEn: "The taxi driver should turn right. What do you say?", options: [ { ar: "يِمين", ph: "yemiin", label: "w prawo", labelEn: "right", ok: true }, { ar: "شِمال", ph: "shemaal", label: "w lewo", labelEn: "left" }, { ar: "عَلى طول", ph: "3ala ṭool", label: "prosto", labelEn: "straight" } ], why: "yemiin = prawo (jak „yad yemiin” — prawa ręka). shemaal = lewo.", whyEn: "yemiin = right (as in 'yad yemiin' — right hand). shemaal = left." }
+    ],
+    fiszki: { cat: "directions", pl: "Poćwicz kierunki", en: "Practice directions" },
+  },
+  { id: "e17", num: 17, kind: "grammar", title: { pl: "Czas przyszły (ha-)", en: "Future tense (ha-)" }, goal: { pl: "Powiedz, co zrobisz.", en: "Say what you will do." }, blocks: [ { type: "text", pl: "Przyszłość tworzy się jeszcze prościej niż teraźniejszość: bierzesz formę z „bi-”, wymieniasz „bi-” na „ha-”.", en: "The future is even simpler than the present: take the 'bi-' form and swap 'bi-' for 'ha-'." }, { type: "word", ar: "هَرُوح", ph: "haruuḥ", pl: "pójdę", en: "I will go" }, { type: "word", ar: "هَتِرُوح", ph: "hateruuḥ", pl: "pójdziesz", en: "you will go" }, { type: "word", ar: "هَيِرُوح", ph: "hayeruuḥ", pl: "on pójdzie", en: "he will go" }, { type: "sentence", ar: "هَرُوح السّوق بُكْرة", ph: "haruuḥ es-soo' bokra", pl: "Pójdę jutro na targ.", en: "I'll go to the market tomorrow." }, { type: "sentence", ar: "هَنِشْرَب قَهْوة", ph: "haneshrab 'ahwa", pl: "Napijemy się kawy.", en: "We'll drink coffee." }, { type: "tip", pl: "Trzy czasy, trzy przedrostki: bi- (teraz), ha- (potem), nic (przeszły ma końcówki).", en: "Three tenses, three prefixes: bi- (now), ha- (later), none (past uses endings)." }, { type: "exercise", prompt: "Chcesz powiedzieć: on kupi. Którą formę wybierzesz?", promptEn: "You want to say 'he will buy'. Which form?", options: [ { ar: "بِيِشْتِري", ph: "biyeshteri", label: "on kupuje", labelEn: "he buys" }, { ar: "هَيِشْتِري", ph: "hayeshteri", label: "on kupi", labelEn: "he will buy", ok: true } ], why: "Przedrostek ha- oznacza przyszłość, bi- teraźniejszość.", whyEn: "The prefix ha- marks the future, bi- the present." } ], fiszki: { cat: "daily_verbs", pl: "Poćwicz czasowniki", en: "Practice verbs" } },
+  { id: "e18", num: 18, kind: "practice", title: { pl: "Umawianie się", en: "Making plans" }, goal: { pl: "Umów się z kimś na spotkanie.", en: "Arrange to meet someone." }, blocks: [ { type: "text", pl: "Teraz użyjesz czasu przyszłego do czegoś praktycznego — umówienia się.", en: "Now you'll use the future for something practical — making a plan." }, { type: "phrase", ar: "نِتْقابِل إِمْتى؟", ph: "net'aabel emta?", pl: "Kiedy się spotkamy?", en: "When shall we meet?" }, { type: "phrase", ar: "بُكْرة الصُّبْح", ph: "bokra eṣ-ṣobḥ", pl: "jutro rano", en: "tomorrow morning" }, { type: "phrase", ar: "بَعْد الضُّهْر", ph: "baʿd eḍ-ḍohr", pl: "po południu", en: "in the afternoon" }, { type: "phrase", ar: "تَمام، مَاشي", ph: "tamaam, maashi", pl: "W porządku, umowa stoi.", en: "Fine, deal." }, { type: "sentence", ar: "هَشُوفَك بُكْرة", ph: "hashuufak bokra", pl: "Zobaczymy się jutro.", en: "See you tomorrow." }, { type: "tip", pl: "„maashi” dosłownie znaczy „idące” — używane jak polskie „no dobra, może być”.", en: "'maashi' literally means 'walking' — used like 'alright, works for me'." }, { type: "exercise", prompt: "Ktoś proponuje spotkanie. Zgadzasz się. Co powiesz?", promptEn: "Someone suggests meeting. You agree. What do you say?", options: [ { ar: "مَاشي", ph: "maashi", label: "w porządku", labelEn: "alright", ok: true }, { ar: "مَعْلِش", ph: "maʿlesh", label: "trudno", labelEn: "never mind" } ], why: "„maashi” to zgoda. „maʿlesh” to pocieszenie albo przeprosiny.", whyEn: "'maashi' is agreement. 'maʿlesh' is consolation or apology." } ], fiszki: { cat: "numbers_time", pl: "Poćwicz czas", en: "Practice time" } },
+  { id: "e19", num: 19, kind: "grammar", title: { pl: "Moje, twoje — zaimki dzierżawcze", en: "Mine, yours — possessives" }, goal: { pl: "Powiedz, do kogo coś należy.", en: "Say who something belongs to." }, blocks: [ { type: "text", pl: "W arabskim nie ma osobnego słowa „mój” — doklejasz końcówkę do rzeczownika.", en: "Arabic has no separate word for 'my' — you attach an ending to the noun." }, { type: "word", ar: "كِتابي", ph: "ketaabi", pl: "moja książka", en: "my book" }, { type: "word", ar: "كِتابَك", ph: "ketaabak", pl: "twoja książka (do m.)", en: "your book (m)" }, { type: "word", ar: "كِتابِك", ph: "ketaabek", pl: "twoja książka (do ż.)", en: "your book (f)" }, { type: "word", ar: "كِتابُه", ph: "ketaaboh", pl: "jego książka", en: "his book" }, { type: "word", ar: "كِتابْها", ph: "ketaabha", pl: "jej książka", en: "her book" }, { type: "sentence", ar: "دَه بيتي", ph: "da beeti", pl: "To mój dom.", en: "This is my house." }, { type: "tip", pl: "Te same końcówki znasz już z „3andi” (mam) i „esmak” (twoje imię). Jeden system!", en: "You already know these endings from '3andi' (I have) and 'esmak' (your name). One system!" }, { type: "exercise", prompt: "Mówisz do kobiety o jej domu. Co powiesz?", promptEn: "You're speaking to a woman about her house. What do you say?", options: [ { ar: "بيتَك", ph: "beetak", label: "do mężczyzny", labelEn: "to a man" }, { ar: "بيتِك", ph: "beetek", label: "do kobiety", labelEn: "to a woman", ok: true } ], why: "Końcówka -ek dla kobiety, -ak dla mężczyzny — jak w „ezzayyak/ezzayyek”.", whyEn: "The -ek ending for a woman, -ak for a man — as in 'ezzayyak/ezzayyek'." } ] },
+  { id: "e20", num: 20, kind: "practice", title: { pl: "Rodzina i ludzie", en: "Family and people" }, goal: { pl: "Opowiedz o swojej rodzinie.", en: "Talk about your family." }, blocks: [ { type: "text", pl: "Rodzina to pierwszy temat, o który zapyta Cię każdy Egipcjanin. Warto być gotowym.", en: "Family is the first topic any Egyptian will ask you about. Worth being ready." }, { type: "word", ar: "أَب", ph: "ab", pl: "ojciec", en: "father" }, { type: "word", ar: "أُمّ", ph: "omm", pl: "matka", en: "mother" }, { type: "word", ar: "أَخ", ph: "akh", pl: "brat", en: "brother" }, { type: "word", ar: "أُخْت", ph: "okht", pl: "siostra", en: "sister" }, { type: "word", ar: "جَوْز", ph: "gooz", pl: "mąż", en: "husband" }, { type: "word", ar: "مِرات", ph: "meraat", pl: "żona", en: "wife" }, { type: "sentence", ar: "عَنْدي أَخ وأُخْت", ph: "3andi akh we okht", pl: "Mam brata i siostrę.", en: "I have a brother and a sister." }, { type: "tip", pl: "Z zaimkiem: أَبويا (abuuya) = mój ojciec, أُمّي (ommi) = moja matka. Formy nieregularne, warto zapamiętać.", en: "With a pronoun: أَبويا (abuuya) = my father, أُمّي (ommi) = my mother. Irregular forms worth memorizing." }, { type: "exercise", prompt: "Jak powiedzieć: mam dwie siostry?", promptEn: "How to say 'I have two sisters'?", options: [ { ar: "عَنْدي أُخْتين", ph: "3andi okhteen", ok: true }, { ar: "عَنْدي أُخْت اِتْنين", ph: "3andi okht etneen" } ], why: "Liczba podwójna: końcówka -een. Nie mówi się „siostra dwa”.", whyEn: "The dual: ending -een. You don't say 'sister two'." } ], fiszki: { cat: "family", pl: "Poćwicz słownictwo rodzinne", en: "Practice family words" } },
+  { id: "e21", num: 21, kind: "grammar", title: { pl: "Porównania: większy, najlepszy", en: "Comparisons: bigger, best" }, goal: { pl: "Porównaj dwie rzeczy.", en: "Compare two things." }, blocks: [ { type: "text", pl: "Stopień wyższy tworzy się jednym wzorem: أَفْعَل (af3al). Ten sam dla wszystkich przymiotników.", en: "The comparative uses one pattern: أَفْعَل (af3al). The same for all adjectives." }, { type: "word", ar: "كِبير", ph: "kebiir", pl: "duży", en: "big" }, { type: "word", ar: "أَكْبَر", ph: "akbar", pl: "większy", en: "bigger" }, { type: "word", ar: "كُوَيِّس", ph: "kwayyes", pl: "dobry", en: "good" }, { type: "word", ar: "أَحْسَن", ph: "aḥsan", pl: "lepszy", en: "better" }, { type: "sentence", ar: "دَه أَكْبَر مِن دَه", ph: "da akbar men da", pl: "Ten jest większy od tego.", en: "This one is bigger than that one." }, { type: "tip", pl: "„min” (od) wprowadza porównanie. Znasz to słowo z MSA — تَمام, ten sam sens.", en: "'min' (than/from) introduces the comparison. You know this word from MSA — same sense." }, { type: "exercise", prompt: "Jak powiedzieć: to jest lepsze?", promptEn: "How to say 'this is better'?", options: [ { ar: "دَه أَحْسَن", ph: "da aḥsan", ok: true }, { ar: "دَه كُوَيِّس أَكْتَر", ph: "da kwayyes aktar" } ], why: "Stopień wyższy to jedno słowo we wzorze أَفْعَل, nie „dobry bardziej”.", whyEn: "The comparative is one word in the أَفْعَل pattern, not 'good more'." } ], fiszki: { cat: "adjectives", pl: "Poćwicz przymiotniki", en: "Practice adjectives" } },
+  { id: "e22", num: 22, kind: "practice", title: { pl: "U lekarza", en: "At the doctor" }, goal: { pl: "Powiedz, co Ci dolega.", en: "Say what's wrong." }, blocks: [ { type: "text", pl: "Sytuacja, w której chcesz umieć się dogadać. Podstawowe zwroty wystarczą.", en: "A situation where you really want to communicate. Basic phrases are enough." }, { type: "phrase", ar: "أَنا تَعْبان", ph: "ana ta3baan", pl: "Źle się czuję (m.)", en: "I feel unwell (m)" }, { type: "phrase", ar: "أَنا تَعْبانة", ph: "ana ta3baana", pl: "Źle się czuję (ż.)", en: "I feel unwell (f)" }, { type: "phrase", ar: "عَنْدي صُداع", ph: "3andi ṣodaa3", pl: "Boli mnie głowa", en: "I have a headache" }, { type: "phrase", ar: "بَطْني بِتْوَجَّعْني", ph: "baṭni betwagga3ni", pl: "Boli mnie brzuch", en: "My stomach hurts" }, { type: "phrase", ar: "فين الصَّيْدَلِيّة؟", ph: "feen eṣ-ṣaydaleyya?", pl: "Gdzie jest apteka?", en: "Where is the pharmacy?" }, { type: "sentence", ar: "أَنا تَعْبان مِن إِمْبارِح", ph: "ana ta3baan men embaareḥ", pl: "Źle się czuję od wczoraj.", en: "I've felt unwell since yesterday." }, { type: "tip", pl: "„ṣaydaleyya” (apteka) to to samo słowo, które widziałeś w module „z ulicy” po MSA!", en: "'ṣaydaleyya' (pharmacy) is the same word you saw in the MSA street signs module!" }, { type: "exercise", prompt: "Boli Cię głowa. Co powiesz?", promptEn: "You have a headache. What do you say?", options: [ { ar: "عَنْدي صُداع", ph: "3andi ṣodaa3", ok: true }, { ar: "عَنْدي دَوا", ph: "3andi dawa", label: "mam lekarstwo", labelEn: "I have medicine" } ], why: "„3andi” + dolegliwość to standardowy sposób mówienia o objawach.", whyEn: "'3andi' + ailment is the standard way to describe symptoms." } ], fiszki: { cat: "health", pl: "Poćwicz słownictwo zdrowotne", en: "Practice health words" } },
+  { id: "e23", num: 23, kind: "grammar", title: { pl: "Rozkaz i prośba", en: "Commands and requests" }, goal: { pl: "Poproś kogoś, żeby coś zrobił.", en: "Ask someone to do something." }, blocks: [ { type: "text", pl: "Tryb rozkazujący tworzy się przez zdjęcie przedrostka z formy „ty”.", en: "The imperative is formed by removing the prefix from the 'you' form." }, { type: "word", ar: "اِسْتَنّى", ph: "estanna", pl: "poczekaj", en: "wait" }, { type: "word", ar: "تَعالى", ph: "ta3aala", pl: "chodź", en: "come" }, { type: "word", ar: "بُصّ", ph: "boṣṣ", pl: "patrz", en: "look" }, { type: "word", ar: "خُد", ph: "khod", pl: "weź", en: "take" }, { type: "sentence", ar: "اِسْتَنّى شْوَيّة", ph: "estanna shwayya", pl: "Poczekaj chwilę.", en: "Wait a moment." }, { type: "tip", pl: "Rozkaz brzmi ostro. Dodaj „law samaḥt” (proszę) albo użyj „momken” — grzeczniej.", en: "A bare command sounds blunt. Add 'law samaḥt' (please) or use 'momken' — politer." }, { type: "exercise", prompt: "Chcesz uprzejmie poprosić kogoś, żeby poczekał. Co powiesz?", promptEn: "You want to politely ask someone to wait. What do you say?", options: [ { ar: "اِسْتَنّى!", ph: "estanna!", label: "sam rozkaz", labelEn: "bare command" }, { ar: "مُمْكِن تِسْتَنّى؟", ph: "momken testanna?", label: "z momken", labelEn: "with momken", ok: true } ], why: "„momken” zamienia rozkaz w prośbę — zawsze bezpieczniejsze.", whyEn: "'momken' turns a command into a request — always safer." } ] },
+  { id: "e24", num: 24, kind: "practice", title: { pl: "Opowiedz o swoim dniu", en: "Describe your day" }, goal: { pl: "Połącz wszystko: przeszłość, teraźniejszość, przyszłość.", en: "Put it together: past, present, future." }, blocks: [ { type: "text", pl: "Ostatnia lekcja etapu. Wykorzystasz wszystkie trzy czasy naraz — tak wygląda prawdziwa rozmowa.", en: "The last lesson of this stage. You'll use all three tenses at once — that's what real conversation looks like." }, { type: "sentence", ar: "الصُّبْح شِرِبْت قَهْوة", ph: "eṣ-ṣobḥ sherebt 'ahwa", pl: "Rano wypiłem kawę.", en: "In the morning I drank coffee." }, { type: "sentence", ar: "دِلْوَقْتي بَشْتَغَل", ph: "delwa'ti bashtaghal", pl: "Teraz pracuję.", en: "Right now I'm working." }, { type: "sentence", ar: "بَعْدين هَرُوح البيت", ph: "ba3deen haruuḥ el-beet", pl: "Potem pójdę do domu.", en: "Later I'll go home." }, { type: "phrase", ar: "كُلّ يوم", ph: "koll yoom", pl: "codziennie", en: "every day" }, { type: "phrase", ar: "أَحْياناً", ph: "aḥyaanan", pl: "czasami", en: "sometimes" }, { type: "tip", pl: "Trzy czasy w trzech zdaniach: sherebt (było), bashtaghal (jest), haruuḥ (będzie).", en: "Three tenses in three sentences: sherebt (was), bashtaghal (is), haruuḥ (will be)." }, { type: "exercise", prompt: "Które zdanie mówi o przyszłości?", promptEn: "Which sentence is about the future?", options: [ { ar: "شِرِبْت قَهْوة", ph: "sherebt 'ahwa", label: "wypiłem kawę", labelEn: "I drank coffee" }, { ar: "هَرُوح البيت", ph: "haruuḥ el-beet", label: "pójdę do domu", labelEn: "I'll go home", ok: true } ], why: "Przedrostek ha- to znak przyszłości. Końcówka -t to przeszłość.", whyEn: "The ha- prefix marks the future. The -t ending marks the past." } ], fiszki: { cat: "daily_verbs", pl: "Poćwicz czasowniki codzienne", en: "Practice daily verbs" } },
+  { id: "e25", num: 25, kind: "grammar", title: { pl: "Zdanie podrzędne: że, żeby", en: "Subordinate clauses: that, so that" }, goal: { pl: "Powiedz, co myślisz i czego chcesz.", en: "Say what you think and what you want." }, blocks: [ { type: "text", pl: "Do tej pory budowałeś proste zdania. Teraz połączysz je w złożone — to próg B1.", en: "So far you've built simple sentences. Now you'll join them into complex ones — that's the B1 threshold." }, { type: "word", ar: "إِنّ", ph: "enn", pl: "że", en: "that" }, { type: "word", ar: "عَشان", ph: "3ashaan", pl: "żeby; ponieważ", en: "so that; because" }, { type: "sentence", ar: "أَنا فاكِر إِنُّه كُوَيِّس", ph: "ana faaker ennoh kwayyes", pl: "Myślę, że to dobre.", en: "I think it's good." }, { type: "sentence", ar: "جِيت عَشان أَشُوفَك", ph: "geet 3ashaan ashuufak", pl: "Przyszedłem, żeby cię zobaczyć.", en: "I came to see you." }, { type: "tip", pl: "Po „3ashaan” czasownik BEZ „bi-”: „3ashaan ashuuf”, nie „3ashaan bashuuf”.", en: "After '3ashaan' the verb takes NO 'bi-': '3ashaan ashuuf', not '3ashaan bashuuf'." }, { type: "exercise", prompt: "Jak powiedzieć: przyszedłem, żeby kupić chleb?", promptEn: "How to say 'I came to buy bread'?", options: [ { ar: "جِيت عَشان أَشْتِري عيش", ph: "geet 3ashaan ashteri 3eesh", ok: true }, { ar: "جِيت عَشان بَشْتِري عيش", ph: "geet 3ashaan bashteri 3eesh" } ], why: "Po 3ashaan czasownik traci bi-. To stała zasada.", whyEn: "After 3ashaan the verb drops bi-. A fixed rule." } ] },
+  { id: "e26", num: 26, kind: "practice", title: { pl: "Wyrażanie opinii", en: "Expressing opinions" }, goal: { pl: "Powiedz, co sądzisz — i uzasadnij.", en: "Say what you think — and back it up." }, blocks: [ { type: "text", pl: "Na poziomie B1 nie wystarczy opisywać. Trzeba umieć ocenić i uzasadnić.", en: "At B1 describing isn't enough. You need to evaluate and justify." }, { type: "phrase", ar: "في رَأْيي", ph: "fi ra'yi", pl: "moim zdaniem", en: "in my opinion" }, { type: "phrase", ar: "أَنا شايِف إِنّ", ph: "ana shaayef enn", pl: "uważam, że (dosł. widzę, że)", en: "I reckon that" }, { type: "phrase", ar: "مِش مُتَّفِق", ph: "mesh mottafe'", pl: "nie zgadzam się", en: "I don't agree" }, { type: "phrase", ar: "عَنْدَك حَقّ", ph: "3andak ḥa''", pl: "masz rację", en: "you're right" }, { type: "sentence", ar: "في رَأْيي دَه أَحْسَن حَلّ", ph: "fi ra'yi da aḥsan ḥall", pl: "Moim zdaniem to najlepsze rozwiązanie.", en: "In my opinion that's the best solution." }, { type: "tip", pl: "„3andak ḥa''” znasz już z modułu kolokacji — MSA mówi „3alā ḥaqq”.", en: "'3andak ḥa''' you know from the collocations module — MSA says '3alā ḥaqq'." }, { type: "exercise", prompt: "Chcesz uprzejmie się nie zgodzić. Co powiesz?", promptEn: "You want to politely disagree. What do you say?", options: [ { ar: "مِش مُتَّفِق", ph: "mesh mottafe'", label: "nie zgadzam się", labelEn: "I disagree", ok: true }, { ar: "عَنْدَك حَقّ", ph: "3andak ḥa''", label: "masz rację", labelEn: "you're right" } ], why: "„mesh mottafe'” = nie zgadzam się. Przeczenie przez „mesh”, bo to przymiotnik.", whyEn: "'mesh mottafe'' = I disagree. Negation with 'mesh' because it's an adjective." } ], fiszki: { cat: "grammar", pl: "Poćwicz konstrukcje", en: "Practice constructions" } },
+  { id: "e27", num: 27, kind: "grammar", title: { pl: "Gdyby... to (tryb warunkowy)", en: "If... then (conditionals)" }, goal: { pl: "Mów o tym, co możliwe i niemożliwe.", en: "Talk about the possible and the impossible." }, blocks: [ { type: "text", pl: "Dwa rodzaje warunku: realny (jeśli będzie deszcz) i nierealny (gdybym był bogaty).", en: "Two kinds of condition: real (if it rains) and unreal (if I were rich)." }, { type: "word", ar: "لَو", ph: "law", pl: "jeśli, gdyby", en: "if" }, { type: "word", ar: "إِذا", ph: "eza", pl: "jeśli (bardziej formalne)", en: "if (more formal)" }, { type: "sentence", ar: "لَو عَنْدي فُلوس هَسافِر", ph: "law 3andi feluus hasaafer", pl: "Gdybym miał pieniądze, pojechałbym.", en: "If I had money, I'd travel." }, { type: "sentence", ar: "لَو تِيجي بُكْرة هَكون مَبْسوط", ph: "law tiigi bokra hakuun mabsuuṭ", pl: "Jeśli przyjdziesz jutro, będę zadowolony.", en: "If you come tomorrow, I'll be happy." }, { type: "tip", pl: "W drugiej części zdania zwykle „ha-” (przyszły). Pierwsza część często w przeszłym, mimo sensu przyszłego.", en: "The second clause usually takes 'ha-' (future). The first is often past in form despite future meaning." }, { type: "exercise", prompt: "Które słowo wprowadza warunek?", promptEn: "Which word introduces a condition?", options: [ { ar: "لَو", ph: "law", label: "jeśli, gdyby", labelEn: "if", ok: true }, { ar: "عَشان", ph: "3ashaan", label: "żeby", labelEn: "so that" } ], why: "„law” = jeśli/gdyby. „3ashaan” = żeby/ponieważ — inny sens.", whyEn: "'law' = if. '3ashaan' = so that/because — different meaning." } ] },
+  { id: "e28", num: 28, kind: "practice", title: { pl: "Opowiadanie historii", en: "Telling a story" }, goal: { pl: "Opowiedz, co się wydarzyło — z porządkiem.", en: "Recount what happened — in order." }, blocks: [ { type: "text", pl: "Opowiadanie wymaga porządkowania zdarzeń. Te słowa robią z listy zdań prawdziwą historię.", en: "Narrating requires ordering events. These words turn a list of sentences into a real story." }, { type: "phrase", ar: "الأَوِّل", ph: "el-awwel", pl: "najpierw", en: "first" }, { type: "phrase", ar: "بَعْدين", ph: "ba3deen", pl: "potem", en: "then" }, { type: "phrase", ar: "فَجْأة", ph: "fag'a", pl: "nagle", en: "suddenly" }, { type: "phrase", ar: "في الآخِر", ph: "fi l-aakher", pl: "na końcu", en: "in the end" }, { type: "phrase", ar: "المُهِمّ", ph: "el-mohemm", pl: "w każdym razie (dosł. ważne)", en: "anyway" }, { type: "sentence", ar: "الأَوِّل رُحْت السّوق، بَعْدين قابِلْت صاحْبي", ph: "el-awwel roḥt es-soo', ba3deen 'aabelt ṣaḥbi", pl: "Najpierw poszedłem na targ, potem spotkałem kolegę.", en: "First I went to the market, then I met my friend." }, { type: "tip", pl: "„el-mohemm” to ulubione słowo Egipcjan przy opowiadaniu — wraca do głównego wątku po dygresji.", en: "'el-mohemm' is Egyptians' favourite storytelling word — it returns to the main thread after a digression." }, { type: "exercise", prompt: "Opowiadasz historię. Jak zaznaczysz coś niespodziewanego?", promptEn: "You're telling a story. How do you mark something unexpected?", options: [ { ar: "فَجْأة", ph: "fag'a", label: "nagle", labelEn: "suddenly", ok: true }, { ar: "بَعْدين", ph: "ba3deen", label: "potem", labelEn: "then" } ], why: "„fag'a” sygnalizuje zwrot akcji. „ba3deen” to zwykłe następstwo.", whyEn: "'fag'a' signals a twist. 'ba3deen' is plain sequence." } ], fiszki: { cat: "numbers_time", pl: "Poćwicz określenia czasu", en: "Practice time expressions" } },
+  { id: "e29", num: 29, kind: "grammar", title: { pl: "Strona bierna i bezosobowość", en: "Passive and impersonal" }, goal: { pl: "Powiedz, że coś się stało — bez wskazywania kto.", en: "Say something happened — without naming who." }, blocks: [ { type: "text", pl: "W egipskim strona bierna tworzy się przedrostkiem it-. Bardzo częste w mowie.", en: "In Egyptian the passive uses the prefix it-. Very common in speech." }, { type: "word", ar: "كَتَب", ph: "katab", pl: "napisał", en: "he wrote" }, { type: "word", ar: "اِتْكَتَب", ph: "etkatab", pl: "został napisany", en: "it was written" }, { type: "word", ar: "فَتَح", ph: "fataḥ", pl: "otworzył", en: "he opened" }, { type: "word", ar: "اِتْفَتَح", ph: "etfataḥ", pl: "został otwarty", en: "it was opened" }, { type: "sentence", ar: "المَحَلّ اِتْفَتَح إِمْبارِح", ph: "el-maḥall etfataḥ embaareḥ", pl: "Sklep został otwarty wczoraj.", en: "The shop was opened yesterday." }, { type: "tip", pl: "Porównaj z MSA: tam strona bierna zmienia samogłoski (kutiba), w egipskim dokleja it-.", en: "Compare with MSA: there the passive changes vowels (kutiba), Egyptian prefixes it-." }, { type: "exercise", prompt: "Jak powiedzieć: został otwarty?", promptEn: "How to say 'it was opened'?", options: [ { ar: "فَتَح", ph: "fataḥ", label: "otworzył", labelEn: "he opened" }, { ar: "اِتْفَتَح", ph: "etfataḥ", label: "został otwarty", labelEn: "it was opened", ok: true } ], why: "Przedrostek it- tworzy stronę bierną w egipskim.", whyEn: "The it- prefix forms the passive in Egyptian." } ] },
+  { id: "e30", num: 30, kind: "practice", title: { pl: "W pracy i w urzędzie", en: "At work and the office" }, goal: { pl: "Załatw sprawę formalną.", en: "Handle a formal matter." }, blocks: [ { type: "text", pl: "Rejestr pośredni: nie ulica, ale i nie MSA. Tak mówi się w biurze.", en: "A middle register: not the street, but not MSA either. This is how people speak in an office." }, { type: "phrase", ar: "عَنْدي مَوْعِد", ph: "3andi maw3ed", pl: "mam umówione spotkanie", en: "I have an appointment" }, { type: "phrase", ar: "مُمْكِن أَتْكَلِّم مَع...", ph: "momken atkallem ma3", pl: "czy mogę rozmawiać z...", en: "may I speak with..." }, { type: "phrase", ar: "مُحْتاج وَرَق إيه؟", ph: "moḥtaag wara' eeh?", pl: "jakich dokumentów potrzebuję?", en: "what documents do I need?" }, { type: "phrase", ar: "إِمْضي هِنا", ph: "emḍi hena", pl: "podpisz tutaj", en: "sign here" }, { type: "sentence", ar: "عَنْدي مَوْعِد السّاعة تَلاتة", ph: "3andi maw3ed es-saa3a talaata", pl: "Mam spotkanie o trzeciej.", en: "I have an appointment at three." }, { type: "tip", pl: "„wara'” dosłownie „papier” — w praktyce znaczy dokumenty, papiery urzędowe.", en: "'wara'' literally 'paper' — in practice it means documents, official papers." }, { type: "exercise", prompt: "Pytasz o wymagane dokumenty. Co powiesz?", promptEn: "You're asking about required documents. What do you say?", options: [ { ar: "مُحْتاج وَرَق إيه؟", ph: "moḥtaag wara' eeh?", ok: true }, { ar: "فين الوَرَق؟", ph: "feen el-wara'?", label: "gdzie są papiery?", labelEn: "where are the papers?" } ], why: "„moḥtaag ... eeh?” = czego potrzebuję? Pytajnik na końcu, jak zwykle w egipskim.", whyEn: "'moḥtaag ... eeh?' = what do I need? Question word last, as usual in Egyptian." } ], fiszki: { cat: "jobs", pl: "Poćwicz słownictwo zawodowe", en: "Practice work vocabulary" } },
+  { id: "e31", num: 31, kind: "grammar", title: { pl: "Niuanse: uprzejmość i dystans", en: "Nuance: politeness and distance" }, goal: { pl: "Dobierz ton do sytuacji.", en: "Match your tone to the situation." }, blocks: [ { type: "text", pl: "Na B1 liczy się nie tylko co mówisz, ale jak. Egipski ma bogaty system uprzejmości.", en: "At B1 it matters not only what you say but how. Egyptian has a rich politeness system." }, { type: "phrase", ar: "لَو سَمَحْت", ph: "law samaḥt", pl: "proszę (przy prośbie)", en: "please (when asking)" }, { type: "phrase", ar: "مِن فَضْلَك", ph: "men faḍlak", pl: "proszę (nieco formalniej)", en: "please (slightly more formal)" }, { type: "phrase", ar: "حَضْرِتَك", ph: "ḥaḍretak", pl: "pan/pani (grzecznościowo zamiast „ty”)", en: "sir/madam (polite 'you')" }, { type: "phrase", ar: "تِسْلَم إيدَك", ph: "teslam eedak", pl: "dziękuję (dosł. niech twoja ręka będzie zdrowa)", en: "thank you (lit. may your hand be well)" }, { type: "sentence", ar: "حَضْرِتَك عايِز إيه؟", ph: "ḥaḍretak 3aayez eeh?", pl: "Czego pan sobie życzy?", en: "What would you like, sir?" }, { type: "tip", pl: "„ḥaḍretak” zamiast „enta” to najprostszy sposób na okazanie szacunku — używaj wobec starszych i urzędników.", en: "'ḥaḍretak' instead of 'enta' is the simplest way to show respect — use it with elders and officials." }, { type: "exercise", prompt: "Zwracasz się do starszego urzędnika. Którego słowa użyjesz?", promptEn: "You're addressing an older official. Which word?", options: [ { ar: "إِنْتَ", ph: "enta", label: "ty", labelEn: "you" }, { ar: "حَضْرِتَك", ph: "ḥaḍretak", label: "pan", labelEn: "sir", ok: true } ], why: "„ḥaḍretak” to forma grzecznościowa. „enta” wobec starszego zabrzmi zbyt bezpośrednio.", whyEn: "'ḥaḍretak' is the polite form. 'enta' to an elder sounds too direct." } ] },
+  { id: "e32", num: 32, kind: "practice", title: { pl: "Swobodna rozmowa", en: "Free conversation" }, goal: { pl: "Podtrzymaj rozmowę na dowolny temat.", en: "Keep a conversation going on any topic." }, blocks: [ { type: "text", pl: "Ostatnia lekcja. Na B1 chodzi o płynność — umiejętność podtrzymania rozmowy, nawet gdy brakuje słowa.", en: "The final lesson. B1 is about fluency — keeping a conversation alive even when a word escapes you." }, { type: "phrase", ar: "يَعْني إيه...؟", ph: "ya3ni eeh...?", pl: "co znaczy...?", en: "what does ... mean?" }, { type: "phrase", ar: "مُمْكِن تِعيد؟", ph: "momken te3iid?", pl: "możesz powtórzyć?", en: "can you repeat?" }, { type: "phrase", ar: "مِش فاهِم قَوي", ph: "mesh faahem 'awi", pl: "niezbyt rozumiem", en: "I don't quite understand" }, { type: "phrase", ar: "إِزّاي أَقول...؟", ph: "ezzaay a'uul...?", pl: "jak powiedzieć...?", en: "how do I say...?" }, { type: "sentence", ar: "مُمْكِن تِتْكَلِّم بِشْوَيْش؟", ph: "momken tetkallem beshweesh?", pl: "Czy możesz mówić wolniej?", en: "Could you speak more slowly?" }, { type: "tip", pl: "Te zwroty są ważniejsze niż setka słów — pozwalają uczyć się w trakcie rozmowy, zamiast ją przerywać.", en: "These phrases matter more than a hundred words — they let you learn mid-conversation instead of stopping it." }, { type: "exercise", prompt: "Nie zrozumiałeś słowa. Jak zapytasz o znaczenie?", promptEn: "You didn't catch a word. How do you ask its meaning?", options: [ { ar: "يَعْني إيه؟", ph: "ya3ni eeh?", ok: true }, { ar: "إِزّاي أَقول؟", ph: "ezzaay a'uul?", label: "jak powiedzieć?", labelEn: "how do I say?" } ], why: "„ya3ni eeh?” pyta o znaczenie usłyszanego słowa. „ezzaay a'uul?” — gdy sam szukasz słowa.", whyEn: "'ya3ni eeh?' asks the meaning of a word you heard. 'ezzaay a'uul?' — when you're searching for a word yourself." } ], fiszki: { cat: "basics", pl: "Poćwicz zwroty konwersacyjne", en: "Practice conversational phrases" } }
+];
+
+// ---------- Kolokacje (mosty MSA ↔ egipski) ----------
+const COLLOCATIONS = [
+  {
+    group: { pl: "Codzienna rozmowa", en: "Everyday talk" },
+    items: [
+      { concept: { pl: "mieć rację", en: "to be right" },
+        msa: { ar: "عَلى حَقّ", ph: "ʿalā ḥaqq" },
+        eg: { ar: "مَعاه حَقّ", ph: "maʿāh ḥa'' " },
+        note: { pl: "Dosłownie „na prawdzie” / „z nim prawda”. Nie mówi się „ma rację” przez czasownik.", en: "Literally 'on the truth' / 'with him is truth'. You don't use a verb for 'to be right'." } },
+      { concept: { pl: "nie ma problemu", en: "no problem" },
+        msa: { ar: "لا مُشْكِلة", ph: "lā mushkila" },
+        eg: { ar: "مَفيش مُشْكِلة", ph: "mafīsh moshkela" },
+        note: { pl: "MSA używa لا, egipski مَفيش (nie ma). Ta różnica wraca wszędzie.", en: "MSA uses لا, Egyptian مَفيش (there isn't). This difference recurs everywhere." } },
+      { concept: { pl: "nie szkodzi / w porządku", en: "never mind / it's fine" },
+        msa: { ar: "لا بَأْسَ", ph: "lā ba'sa" },
+        eg: { ar: "مَعْلِش", ph: "maʿlesh" },
+        note: { pl: "„maʿlesh” to jedno z najważniejszych słów w Egipcie — pociecha, przeprosiny i „trudno” naraz.", en: "'maʿlesh' is one of the most important words in Egypt — consolation, apology and 'oh well' all at once." } },
+      { concept: { pl: "oczywiście", en: "of course" },
+        msa: { ar: "بِالطَّبْع", ph: "bi-ṭ-ṭabʿ" },
+        eg: { ar: "طَبْعاً", ph: "ṭabʿan" },
+        note: { pl: "Ten sam rdzeń ط-ب-ع, inny wzór. Egipski krótszy.", en: "Same root ط-ب-ع, different pattern. Egyptian is shorter." } },
+    ],
+  },
+  {
+    group: { pl: "Pytania i prośby", en: "Questions and requests" },
+    items: [
+      { concept: { pl: "zadać pytanie", en: "to ask a question" },
+        msa: { ar: "طَرَحَ سُؤالاً", ph: "ṭaraḥa su'ālan" },
+        eg: { ar: "سَأَل سُؤال", ph: "sa'al so'āl" },
+        note: { pl: "MSA używa „rzucić pytanie” (طَرَحَ), egipski po prostu „zapytać pytanie”.", en: "MSA uses 'to throw a question' (ṭaraḥa), Egyptian simply 'to ask a question'." } },
+      { concept: { pl: "czy mogę...?", en: "may I...?" },
+        msa: { ar: "هَلْ يُمْكِنُني", ph: "hal yumkinunī" },
+        eg: { ar: "مُمْكِن", ph: "momken" },
+        note: { pl: "Egipskie „momken” to jedno słowo do wszystkiego. MSA rozbudowane.", en: "Egyptian 'momken' is one word for everything. MSA is more elaborate." } },
+      { concept: { pl: "co się stało?", en: "what happened?" },
+        msa: { ar: "ماذا حَدَثَ", ph: "mādhā ḥadatha" },
+        eg: { ar: "حَصَل إيه", ph: "ḥaṣal eeh" },
+        note: { pl: "Zupełnie inne czasowniki (حَدَثَ vs حَصَل) i szyk — pytajnik na końcu w egipskim.", en: "Completely different verbs (ḥadatha vs ḥaṣal) and order — question word last in Egyptian." } },
+    ],
+  },
+  {
+    group: { pl: "Czas i plany", en: "Time and plans" },
+    items: [
+      { concept: { pl: "teraz", en: "now" },
+        msa: { ar: "الآن", ph: "al-ān" },
+        eg: { ar: "دِلْوَقْتي", ph: "delwa'ti" },
+        note: { pl: "Klasyczny przykład: zupełnie inne słowa na to samo. Egipskie „delwa'ti” pochodzi od „dal el-wa't” (ta chwila).", en: "A classic example: entirely different words for the same thing. Egyptian 'delwa'ti' comes from 'dal el-wa't' (this moment)." } },
+      { concept: { pl: "jak zwykle", en: "as usual" },
+        msa: { ar: "كَالعادة", ph: "ka-l-ʿāda" },
+        eg: { ar: "زَيّ العادة", ph: "zayy el-ʿāda" },
+        note: { pl: "MSA używa przedrostka كَـ (jak), egipski osobnego słowa زَيّ.", en: "MSA uses the prefix كَـ (like), Egyptian a separate word زَيّ." } },
+      { concept: { pl: "za chwilę", en: "in a moment" },
+        msa: { ar: "بَعْدَ قَليل", ph: "baʿda qalīl" },
+        eg: { ar: "كَمان شْوَيّة", ph: "kamān shwayya" },
+        note: { pl: "Inne słowa, ta sama myśl. „shwayya” (trochę) to jedno z pierwszych egipskich słów.", en: "Different words, same thought. 'shwayya' (a little) is one of the first Egyptian words." } },
+    ],
+  },
+  {
+    group: { pl: "Prasa i teksty formalne", en: "Press and formal texts" },
+    items: [
+      { concept: { pl: "według źródeł", en: "according to sources" },
+        msa: { ar: "وَفْقاً لِمَصادِر", ph: "wafqan li-maṣādir" },
+        eg: { ar: "على حَسَب مَصادِر", ph: "ʿala ḥasab maṣāder" },
+        note: { pl: "Zwrot z każdej depeszy prasowej. W egipskim brzmi potocznie.", en: "A phrase from every news dispatch. In Egyptian it sounds colloquial." } },
+      { concept: { pl: "w związku z tym", en: "in this regard" },
+        msa: { ar: "في هٰذا الصَّدَد", ph: "fī hādhā ṣ-ṣadad" },
+        eg: { ar: "بِخُصوص كِدَه", ph: "bekhoṣūṣ keda" },
+        note: { pl: "MSA formalne, spotkasz w artykułach. Egipski w rozmowie o sprawach.", en: "MSA is formal, you'll meet it in articles. Egyptian in conversation about matters." } },
+      { concept: { pl: "podjąć decyzję", en: "to make a decision" },
+        msa: { ar: "اِتَّخَذَ قَراراً", ph: "ittakhadha qarāran" },
+        eg: { ar: "أَخَد قَرار", ph: "akhad 'arār" },
+        note: { pl: "Ten sam rdzeń أ-خ-ذ (brać), ale MSA używa wzoru VIII (اِتَّخَذَ), egipski prostego.", en: "Same root أ-خ-ذ (to take), but MSA uses form VIII (ittakhadha), Egyptian the simple one." } },
+    ],
+  },
+];
+
+// ---------- Formuły religijne w codziennym użyciu ----------
+const QURAN_FORMULAS = [
+  { group: { pl: "Słyszysz to codziennie", en: "You hear this every day" }, items: [ { ar: "إِنْ شاءَ اللَّه", ph: "in shā' allāh", pl: "jeśli Bóg zechce", en: "God willing", usage: { pl: "Mówione przy KAŻDYM planie na przyszłość. „Spotkamy się jutro, inshallah”. Bez tego zdanie brzmi niekompletnie.", en: "Said with EVERY future plan. 'We'll meet tomorrow, inshallah'. Without it a sentence sounds incomplete." }, lit: { pl: "Dosłownie: jeśli zechciał Bóg. Czasownik شاءَ w czasie przeszłym, choć sens jest przyszły.", en: "Literally: if God has willed. The verb shā'a is past tense though the sense is future." } }, { ar: "الحَمْدُ لِلَّه", ph: "al-ḥamdu lillāh", pl: "chwała Bogu", en: "praise be to God", usage: { pl: "Odpowiedź na „jak się masz?”, reakcja na dobrą wiadomość, po jedzeniu, po kichnięciu. Uniwersalne.", en: "The answer to 'how are you?', a reaction to good news, after eating, after sneezing. Universal." }, lit: { pl: "Znasz to z Al-Fatihy, werset 2! Ten sam zwrot otwiera Koran.", en: "You know it from Al-Fatiha, verse 2! The same phrase opens the Quran." } }, { ar: "ما شاءَ اللَّه", ph: "mā shā' allāh", pl: "jak Bóg zechciał", en: "what God has willed", usage: { pl: "Wyraz podziwu — przy pochwale dziecka, urody, sukcesu. Chroni przed „złym okiem”.", en: "An expression of admiration — praising a child, beauty, success. It wards off the 'evil eye'." }, lit: { pl: "Ta sama konstrukcja co inshallah, ale ما zamiast إِنْ — stwierdzenie zamiast warunku.", en: "The same construction as inshallah, but mā instead of in — a statement instead of a condition." } }, { ar: "بِسْمِ اللَّه", ph: "bismillāh", pl: "w imię Boga", en: "in the name of God", usage: { pl: "Przed jedzeniem, przed pracą, przed wejściem do samochodu. Znak rozpoczęcia czegokolwiek.", en: "Before eating, before work, before getting into a car. A marker of beginning anything." }, lit: { pl: "Pierwsze słowa Koranu (Al-Fatiha 1:1), które już przerabiałeś.", en: "The opening words of the Quran (Al-Fatiha 1:1), which you've already studied." } } ] },
+  { group: { pl: "Kondolencje i troska", en: "Condolence and concern" }, items: [ { ar: "اللَّه يَرْحَمُه", ph: "allāh yerḥamo", pl: "niech Bóg się nad nim zmiłuje", en: "may God have mercy on him", usage: { pl: "Mówione zawsze po wspomnieniu zmarłego. Pominięcie tego brzmi niegrzecznie.", en: "Always said after mentioning someone deceased. Omitting it sounds rude." }, lit: { pl: "Rdzeń ر-ح-م — ten sam co ar-Raḥmān w bismillah. Miłosierdzie.", en: "Root ر-ح-م — the same as ar-Raḥmān in bismillah. Mercy." } }, { ar: "سَلامْتَك", ph: "salāmtak", pl: "zdrowia ci", en: "get well", usage: { pl: "Do osoby chorej lub po wypadku. Odpowiedź: „allāh yesallemak”.", en: "To someone ill or after an accident. The reply: 'allāh yesallemak'." }, lit: { pl: "Od سَلام (pokój, bezpieczeństwo) — ten sam rdzeń co islam i salām alaykum.", en: "From salām (peace, safety) — the same root as Islam and salām alaykum." } }, { ar: "رَبِّنا يِسَهِّل", ph: "rabbena yesahhel", pl: "niech Bóg ułatwi", en: "may God make it easy", usage: { pl: "Gdy ktoś ma przed sobą coś trudnego — egzamin, operację, długą podróż.", en: "When someone faces something hard — an exam, surgery, a long journey." }, lit: { pl: "„rabbena” = nasz Pan. To samo رَبّ co w „bi-rabbi l-falaq”.", en: "'rabbena' = our Lord. The same rabb as in 'bi-rabbi l-falaq'." } } ] },
+  { group: { pl: "Podziękowania i życzenia", en: "Thanks and wishes" }, items: [ { ar: "جَزاكَ اللَّه خَيْراً", ph: "jazāka llāhu khayran", pl: "niech Bóg cię wynagrodzi dobrem", en: "may God reward you with good", usage: { pl: "Mocniejsze podziękowanie niż „shukran”. Używane, gdy ktoś naprawdę pomógł.", en: "A stronger thanks than 'shukran'. Used when someone genuinely helped." }, lit: { pl: "Forma klasyczna, ale żywa w mowie. Odpowiedź: „wa-iyyāk”.", en: "A classical form but alive in speech. The reply: 'wa-iyyāk'." } }, { ar: "اللَّه يِبارِك فيك", ph: "allāh yebārek fiik", pl: "niech Bóg ci błogosławi", en: "may God bless you", usage: { pl: "Odpowiedź na komplement albo podziękowanie. Bardzo częste.", en: "A reply to a compliment or thanks. Very common." }, lit: { pl: "Rdzeń ب-ر-ك (błogosławieństwo) — stąd też „baraka”, łaska.", en: "Root ب-ر-ك (blessing) — hence also 'baraka', grace." } }, { ar: "بارَكَ اللَّه", ph: "bārak allāh", pl: "niech Bóg pobłogosławi", en: "may God bless", usage: { pl: "Krótsza wersja, często przy gratulacjach.", en: "A shorter version, often for congratulations." }, lit: { pl: "Ten sam rdzeń, forma klasyczna czasownika.", en: "The same root, classical verb form." } } ] }
+];
+
+// ---------- Dialogi MSA (rejestr formalny) ----------
+const MSA_DIALOGUES = [
+  { title: "Wywiad w radiu", titleEn: "A radio interview", emoji: "🎙️", context: "Dziennikarz rozmawia z ekspertem o gospodarce.", contextEn: "A journalist speaks with an expert about the economy.", lines: [ { s: "a", ar: "أَهْلاً بِكَ في بَرْنامَجِنا.", ph: "Ahlan bika fī barnāmajinā.", pl: "Witamy w naszym programie.", en: "Welcome to our programme." }, { s: "b", ar: "شُكْراً لِدَعْوَتِكُم.", ph: "Shukran li-daʿwatikum.", pl: "Dziękuję za zaproszenie.", en: "Thank you for the invitation." }, { s: "a", ar: "ما رَأْيُكَ في القانونِ الجَديدِ؟", ph: "Mā ra'yuka fī l-qānūni l-jadīd?", pl: "Jaka jest pana opinia o nowej ustawie?", en: "What is your view on the new law?" }, { s: "b", ar: "أَعْتَقِدُ أَنَّهُ خُطْوةٌ مُهِمّةٌ.", ph: "Aʿtaqidu annahu khuṭwatun muhimma.", pl: "Sądzę, że to ważny krok.", en: "I believe it is an important step." }, { s: "a", ar: "لٰكِنَّ بَعْضَ الخُبَراءِ لا يُوافِقونَ.", ph: "Lākinna baʿḍa l-khubarā'i lā yuwāfiqūn.", pl: "Ale niektórzy eksperci się nie zgadzają.", en: "But some experts disagree." }, { s: "b", ar: "هٰذا صَحيحٌ، وَالنِّقاشُ مُفيدٌ دائِماً.", ph: "Hādhā ṣaḥīḥ, wa-n-niqāshu mufīdun dā'iman.", pl: "To prawda, a dyskusja zawsze jest pożyteczna.", en: "That's true, and debate is always useful." } ] },
+  { title: "W urzędzie", titleEn: "At the government office", emoji: "🏛️", context: "Załatwiasz formalności — rejestr oficjalny.", contextEn: "You handle formalities — official register.", lines: [ { s: "a", ar: "صَباحَ الخَيْرِ، كَيْفَ يُمْكِنُني مُساعَدَتُكَ؟", ph: "Ṣabāḥa l-khayr, kayfa yumkinunī musāʿadatuk?", pl: "Dzień dobry, w czym mogę pomóc?", en: "Good morning, how may I help you?" }, { s: "b", ar: "أُريدُ تَقْديمَ طَلَبٍ.", ph: "Urīdu taqdīma ṭalab.", pl: "Chciałbym złożyć wniosek.", en: "I would like to submit an application." }, { s: "a", ar: "هَلْ مَعَكَ الوَثائِقُ المَطْلوبةُ؟", ph: "Hal maʿaka l-wathā'iqu l-maṭlūba?", pl: "Czy ma pan wymagane dokumenty?", en: "Do you have the required documents?" }, { s: "b", ar: "نَعَم، هٰذِهِ نُسْخةٌ مِن جَوازِ السَّفَرِ.", ph: "Naʿam, hādhihi nuskhatun min jawāzi s-safar.", pl: "Tak, to kopia paszportu.", en: "Yes, this is a copy of the passport." }, { s: "a", ar: "شُكْراً. وَقِّعْ هُنا مِن فَضْلِكَ.", ph: "Shukran. Waqqiʿ hunā min faḍlik.", pl: "Dziękuję. Proszę podpisać tutaj.", en: "Thank you. Please sign here." }, { s: "b", ar: "مَتى سَأَتَلَقّى الجَوابَ؟", ph: "Matā sa-atalaqqā l-jawāb?", pl: "Kiedy otrzymam odpowiedź?", en: "When will I receive a reply?" }, { s: "a", ar: "خِلالَ أُسْبوعَيْنِ تَقْريباً.", ph: "Khilāla usbūʿayni taqrīban.", pl: "W ciągu mniej więcej dwóch tygodni.", en: "Within about two weeks." } ] },
+  { title: "Na konferencji", titleEn: "At a conference", emoji: "👔", context: "Poznajesz kogoś na spotkaniu zawodowym.", contextEn: "Meeting someone at a professional event.", lines: [ { s: "a", ar: "اِسْمَحْ لي أَنْ أُقَدِّمَ نَفْسي.", ph: "Ismaḥ lī an uqaddima nafsī.", pl: "Pozwoli pan, że się przedstawię.", en: "Allow me to introduce myself." }, { s: "b", ar: "تَفَضَّلْ، تَشَرَّفْنا.", ph: "Tafaḍḍal, tasharrafnā.", pl: "Proszę bardzo, miło mi.", en: "Please do, it's an honour." }, { s: "a", ar: "أَعْمَلُ في مَجالِ القانونِ.", ph: "Aʿmalu fī majāli l-qānūn.", pl: "Pracuję w dziedzinie prawa.", en: "I work in the field of law." }, { s: "b", ar: "مُثيرٌ لِلاِهْتِمامِ. وَأَنا في الاِقْتِصادِ.", ph: "Muthīrun li-l-ihtimām. Wa-anā fī l-iqtiṣād.", pl: "Interesujące. A ja w gospodarce.", en: "Interesting. And I'm in economics." }, { s: "a", ar: "رُبَّما يُمْكِنُنا التَّعاوُنُ مُسْتَقْبَلاً.", ph: "Rubbamā yumkinunā t-taʿāwunu mustaqbalan.", pl: "Może uda nam się kiedyś współpracować.", en: "Perhaps we could collaborate in future." }, { s: "b", ar: "بِكُلِّ سُرورٍ. هٰذِهِ بِطاقَتي.", ph: "Bi-kulli surūr. Hādhihi biṭāqatī.", pl: "Z przyjemnością. Oto moja wizytówka.", en: "With pleasure. Here's my card." } ] },
+  { title: "Wiadomości telewizyjne", titleEn: "TV news", emoji: "📺", context: "Prezenter i korespondent — język mediów.", contextEn: "Anchor and correspondent — media language.", lines: [ { s: "a", ar: "نَنْتَقِلُ الآنَ إِلى مُراسِلِنا.", ph: "Nantaqilu l-āna ilā murāsilinā.", pl: "Przechodzimy teraz do naszego korespondenta.", en: "We now go to our correspondent." }, { s: "b", ar: "شُكْراً. أَنا هُنا أَمامَ المَجْلِسِ.", ph: "Shukran. Anā hunā amāma l-majlis.", pl: "Dziękuję. Jestem tutaj przed radą.", en: "Thank you. I'm here in front of the council." }, { s: "a", ar: "ماذا حَدَثَ اليَوْمَ؟", ph: "Mādhā ḥadatha l-yawm?", pl: "Co wydarzyło się dzisiaj?", en: "What happened today?" }, { s: "b", ar: "أَقَرَّ المَجْلِسُ القانونَ بَعْدَ نِقاشٍ طَويلٍ.", ph: "Aqarra l-majlisu l-qānūna baʿda niqāshin ṭawīl.", pl: "Rada uchwaliła ustawę po długiej dyskusji.", en: "The council passed the law after a long debate." }, { s: "a", ar: "وَما رَدُّ الفِعْلِ؟", ph: "Wa-mā raddu l-fiʿl?", pl: "A jaka jest reakcja?", en: "And what's the reaction?" }, { s: "b", ar: "الآراءُ مُخْتَلِفةٌ حَتّى الآنَ.", ph: "Al-ārā'u mukhtalifatun ḥattā l-ān.", pl: "Opinie są jak dotąd podzielone.", en: "Opinions remain divided so far." } ] },
+  { title: "Rozmowa o książce", titleEn: "Talking about a book", emoji: "📚", context: "Dwie osoby omawiają lekturę — rejestr kulturalny.", contextEn: "Two people discuss a book — cultural register.", lines: [ { s: "a", ar: "هَلْ قَرَأْتَ الكِتابَ الَّذي أَعْطَيْتُكَ إِيّاهُ؟", ph: "Hal qara'ta l-kitāba lladhī aʿṭaytuka iyyāh?", pl: "Czy przeczytałeś książkę, którą ci dałem?", en: "Did you read the book I gave you?" }, { s: "b", ar: "نَعَم، أَنْهَيْتُهُ أَمْسِ.", ph: "Naʿam, anhaytuhu amsi.", pl: "Tak, skończyłem go wczoraj.", en: "Yes, I finished it yesterday." }, { s: "a", ar: "ما رَأْيُكَ فيهِ؟", ph: "Mā ra'yuka fīh?", pl: "Co o nim sądzisz?", en: "What did you think of it?" }, { s: "b", ar: "أُسْلوبُ الكاتِبِ جَميلٌ جِدّاً.", ph: "Uslūbu l-kātibi jamīlun jiddan.", pl: "Styl autora jest bardzo piękny.", en: "The author's style is very beautiful." }, { s: "a", ar: "لٰكِنَّ النِّهايةَ كانَتْ غَريبةً، أَلَيْسَ كَذٰلِكَ؟", ph: "Lākinna n-nihāyata kānat gharībatan, alaysa kadhālik?", pl: "Ale zakończenie było dziwne, prawda?", en: "But the ending was strange, wasn't it?" }, { s: "b", ar: "بَلى، لٰكِنَّها جَعَلَتْني أُفَكِّرُ.", ph: "Balā, lākinnahā jaʿalatnī ufakkir.", pl: "Owszem, ale skłoniło mnie to do myślenia.", en: "Indeed, but it made me think." } ] }
+];
+
+// ---------- Czytanki MSA ----------
+const MSA_READINGS = [
+  {
+    id: "r1", emoji: "🏫",
+    title: { pl: "W szkole", en: "At school" },
+    level: "A1",
+    lines: [
+      { ar: "أَحْمَدُ طالِبٌ في المَدْرَسةِ.", ph: "Aḥmadu ṭālibun fī l-madrasa.", pl: "Ahmad jest uczniem w szkole.", en: "Ahmad is a student at school." },
+      { ar: "المَدْرَسةُ كَبيرةٌ وَجَديدةٌ.", ph: "Al-madrasatu kabīratun wa-jadīda.", pl: "Szkoła jest duża i nowa.", en: "The school is big and new." },
+      { ar: "يَدْرُسُ أَحْمَدُ العَرَبِيّةَ كُلَّ يَوْمٍ.", ph: "Yadrusu Aḥmadu l-ʿarabiyyata kulla yawm.", pl: "Ahmad uczy się arabskiego każdego dnia.", en: "Ahmad studies Arabic every day." },
+      { ar: "الدَّرْسُ صَعْبٌ لٰكِنَّهُ مُهِمٌّ.", ph: "Ad-darsu ṣaʿbun lākinnahu muhimm.", pl: "Lekcja jest trudna, ale ważna.", en: "The lesson is difficult but important." },
+      { ar: "بَعْدَ المَدْرَسةِ يَذْهَبُ إِلى المَكْتَبةِ.", ph: "Baʿda l-madrasati yadhhabu ilā l-maktaba.", pl: "Po szkole idzie do biblioteki.", en: "After school he goes to the library." },
+    ],
+    questions: [
+      { q: { pl: "Gdzie uczy się Ahmad?", en: "Where does Ahmad study?" },
+        options: [ { pl: "w szkole", en: "at school", ok: true }, { pl: "w domu", en: "at home" }, { pl: "na targu", en: "at the market" } ] },
+      { q: { pl: "Jaka jest lekcja?", en: "What is the lesson like?" },
+        options: [ { pl: "łatwa", en: "easy" }, { pl: "trudna, ale ważna", en: "difficult but important", ok: true }, { pl: "nudna", en: "boring" } ] },
+      { q: { pl: "Dokąd idzie po szkole?", en: "Where does he go after school?" },
+        options: [ { pl: "do domu", en: "home" }, { pl: "do biblioteki", en: "to the library", ok: true }, { pl: "do sklepu", en: "to a shop" } ] },
+    ],
+  },
+  {
+    id: "r2", emoji: "🚉",
+    title: { pl: "Na dworcu", en: "At the station" },
+    level: "A1",
+    lines: [
+      { ar: "المَحَطّةُ قَريبةٌ مِنَ البَيْتِ.", ph: "Al-maḥaṭṭatu qarībatun mina l-bayt.", pl: "Dworzec jest blisko domu.", en: "The station is near the house." },
+      { ar: "ذَهَبْتُ إِلى المَحَطّةِ وَاشْتَرَيْتُ تَذْكِرةً.", ph: "Dhahabtu ilā l-maḥaṭṭati wa-shtaraytu tadhkira.", pl: "Poszedłem na dworzec i kupiłem bilet.", en: "I went to the station and bought a ticket." },
+      { ar: "القِطارُ إِلى الإِسْكَنْدَرِيّةِ.", ph: "Al-qiṭāru ilā l-Iskandariyya.", pl: "Pociąg do Aleksandrii.", en: "The train to Alexandria." },
+      { ar: "وَجَدْتُ الرَّصيفَ رَقَم ثَلاثة.", ph: "Wajadtu r-raṣīfa raqam thalātha.", pl: "Znalazłem peron numer trzy.", en: "I found platform number three." },
+      { ar: "كانَ المَطْعَمُ في المَحَطّةِ مُغْلَقاً.", ph: "Kāna l-maṭʿamu fī l-maḥaṭṭati mughlaqan.", pl: "Restauracja na dworcu była zamknięta.", en: "The restaurant at the station was closed." },
+    ],
+    questions: [
+      { q: { pl: "Co kupił na dworcu?", en: "What did he buy at the station?" },
+        options: [ { pl: "bilet", en: "a ticket", ok: true }, { pl: "gazetę", en: "a newspaper" }, { pl: "książkę", en: "a book" } ] },
+      { q: { pl: "Który peron znalazł?", en: "Which platform did he find?" },
+        options: [ { pl: "pierwszy", en: "first" }, { pl: "trzeci", en: "third", ok: true }, { pl: "piąty", en: "fifth" } ] },
+      { q: { pl: "Jaka była restauracja?", en: "How was the restaurant?" },
+        options: [ { pl: "otwarta", en: "open" }, { pl: "zamknięta", en: "closed", ok: true }, { pl: "pełna", en: "full" } ] },
+    ],
+  },
+  {
+    id: "r3", emoji: "📰",
+    title: { pl: "Wiadomość z gazety", en: "A news item" },
+    level: "A2",
+    lines: [
+      { ar: "قالَ الوَزيرُ إِنَّ الاِقْتِصادَ مُهِمٌّ.", ph: "Qāla l-wazīru inna l-iqtiṣāda muhimm.", pl: "Minister powiedział, że gospodarka jest ważna.", en: "The minister said that the economy is important." },
+      { ar: "نَشَرَتِ الصَّحيفةُ تَقْريراً جَديداً.", ph: "Nasharati ṣ-ṣaḥīfatu taqrīran jadīdan.", pl: "Gazeta opublikowała nowy raport.", en: "The newspaper published a new report." },
+      { ar: "يَقولُ التَّقْريرُ إِنَّ المُشْكِلةَ صَعْبةٌ.", ph: "Yaqūlu t-taqrīru inna l-mushkilata ṣaʿba.", pl: "Raport mówi, że problem jest trudny.", en: "The report says the problem is difficult." },
+      { ar: "لٰكِنَّ الحُكومةَ تَعْمَلُ عَلى قانونٍ جَديدٍ.", ph: "Lākinna l-ḥukūmata taʿmalu ʿalā qānūnin jadīd.", pl: "Ale rząd pracuje nad nowym prawem.", en: "But the government is working on a new law." },
+      { ar: "سَيَجْتَمِعُ المَجْلِسُ بَعْدَ أُسْبوعٍ.", ph: "Sa-yajtamiʿu l-majlisu baʿda usbūʿ.", pl: "Rada zbierze się za tydzień.", en: "The council will meet in a week." },
+    ],
+    questions: [
+      { q: { pl: "Co powiedział minister?", en: "What did the minister say?" },
+        options: [ { pl: "że gospodarka jest ważna", en: "that the economy is important", ok: true }, { pl: "że problem jest łatwy", en: "that the problem is easy" }, { pl: "że rada się nie zbierze", en: "that the council won't meet" } ] },
+      { q: { pl: "Nad czym pracuje rząd?", en: "What is the government working on?" },
+        options: [ { pl: "nad raportem", en: "on a report" }, { pl: "nad nowym prawem", en: "on a new law", ok: true }, { pl: "nad gazetą", en: "on a newspaper" } ] },
+      { q: { pl: "Kiedy zbierze się rada?", en: "When will the council meet?" },
+        options: [ { pl: "jutro", en: "tomorrow" }, { pl: "za tydzień", en: "in a week", ok: true }, { pl: "za miesiąc", en: "in a month" } ] },
+    ],
+  },
+  { id: "r4", emoji: "🏠", title: { pl: "Mój dom", en: "My house" }, level: "A1", lines: [ { ar: "بَيْتي في وَسَطِ المَدينةِ.", ph: "Baytī fī wasaṭi l-madīna.", pl: "Mój dom jest w centrum miasta.", en: "My house is in the city centre." }, { ar: "البَيْتُ صَغيرٌ لٰكِنَّهُ جَميلٌ.", ph: "Al-baytu ṣaghīrun lākinnahu jamīl.", pl: "Dom jest mały, ale ładny.", en: "The house is small but pretty." }, { ar: "فيهِ غُرْفَتانِ وَمَطْبَخٌ.", ph: "Fīhi ghurfatāni wa-maṭbakh.", pl: "Są w nim dwa pokoje i kuchnia.", en: "It has two rooms and a kitchen." }, { ar: "أَمامَ البَيْتِ حَديقةٌ صَغيرةٌ.", ph: "Amāma l-bayti ḥadīqatun ṣaghīra.", pl: "Przed domem jest mały ogród.", en: "In front of the house there's a small garden." }, { ar: "أُحِبُّ الجُلوسَ هُناكَ في المَساءِ.", ph: "Uḥibbu l-julūsa hunāka fī l-masā'.", pl: "Lubię tam siadać wieczorem.", en: "I like sitting there in the evening." } ], questions: [ { q: { pl: "Gdzie jest dom?", en: "Where is the house?" }, options: [ { pl: "w centrum miasta", en: "in the city centre", ok: true }, { pl: "na wsi", en: "in the countryside" }, { pl: "nad morzem", en: "by the sea" } ] }, { q: { pl: "Ile jest pokoi?", en: "How many rooms?" }, options: [ { pl: "jeden", en: "one" }, { pl: "dwa", en: "two", ok: true }, { pl: "trzy", en: "three" } ] }, { q: { pl: "Co jest przed domem?", en: "What's in front of the house?" }, options: [ { pl: "ogród", en: "a garden", ok: true }, { pl: "sklep", en: "a shop" }, { pl: "ulica", en: "a street" } ] } ] },
+  { id: "r5", emoji: "🍽️", title: { pl: "W restauracji", en: "At the restaurant" }, level: "A1", lines: [ { ar: "ذَهَبْتُ إِلى المَطْعَمِ مَعَ صَديقي.", ph: "Dhahabtu ilā l-maṭʿami maʿa ṣadīqī.", pl: "Poszedłem do restauracji z przyjacielem.", en: "I went to the restaurant with my friend." }, { ar: "المَطْعَمُ قَريبٌ مِنَ الجامِعةِ.", ph: "Al-maṭʿamu qarībun mina l-jāmiʿa.", pl: "Restauracja jest blisko uniwersytetu.", en: "The restaurant is near the university." }, { ar: "طَلَبْتُ سَمَكاً وَأَرُزّاً.", ph: "Ṭalabtu samakan wa-aruzzan.", pl: "Zamówiłem rybę i ryż.", en: "I ordered fish and rice." }, { ar: "كانَ الطَّعامُ لَذيذاً جِدّاً.", ph: "Kāna ṭ-ṭaʿāmu ladhīdhan jiddan.", pl: "Jedzenie było bardzo smaczne.", en: "The food was very tasty." }, { ar: "دَفَعْتُ الحِسابَ وَخَرَجْنا.", ph: "Dafaʿtu l-ḥisāba wa-kharajnā.", pl: "Zapłaciłem rachunek i wyszliśmy.", en: "I paid the bill and we left." } ], questions: [ { q: { pl: "Z kim poszedł do restauracji?", en: "Who did he go with?" }, options: [ { pl: "z przyjacielem", en: "with a friend", ok: true }, { pl: "sam", en: "alone" }, { pl: "z rodziną", en: "with family" } ] }, { q: { pl: "Co zamówił?", en: "What did he order?" }, options: [ { pl: "mięso", en: "meat" }, { pl: "rybę i ryż", en: "fish and rice", ok: true }, { pl: "tylko kawę", en: "just coffee" } ] }, { q: { pl: "Jakie było jedzenie?", en: "How was the food?" }, options: [ { pl: "bardzo smaczne", en: "very tasty", ok: true }, { pl: "złe", en: "bad" }, { pl: "zimne", en: "cold" } ] } ] },
+  { id: "r6", emoji: "🌦️", title: { pl: "Pogoda i pory roku", en: "Weather and seasons" }, level: "A1", lines: [ { ar: "في الشِّتاءِ يَكونُ الطَّقْسُ بارِداً.", ph: "Fī sh-shitā'i yakūnu ṭ-ṭaqsu bāridan.", pl: "Zimą pogoda jest zimna.", en: "In winter the weather is cold." }, { ar: "وَفي الصَّيْفِ يَكونُ حارّاً جِدّاً.", ph: "Wa-fī ṣ-ṣayfi yakūnu ḥārran jiddan.", pl: "A latem jest bardzo gorąco.", en: "And in summer it's very hot." }, { ar: "أُحِبُّ الرَّبيعَ لِأَنَّ الجَوَّ جَميلٌ.", ph: "Uḥibbu r-rabīʿa li-anna l-jawwa jamīl.", pl: "Lubię wiosnę, bo pogoda jest piękna.", en: "I like spring because the weather is lovely." }, { ar: "في الخَريفِ تَسْقُطُ أَوْراقُ الشَّجَرِ.", ph: "Fī l-kharīfi tasquṭu awrāqu sh-shajar.", pl: "Jesienią opadają liście z drzew.", en: "In autumn the leaves fall from the trees." }, { ar: "اليَوْمَ الطَّقْسُ مُعْتَدِلٌ وَجَميلٌ.", ph: "Al-yawma ṭ-ṭaqsu muʿtadilun wa-jamīl.", pl: "Dziś pogoda jest umiarkowana i ładna.", en: "Today the weather is mild and nice." } ], questions: [ { q: { pl: "Jaka jest pogoda latem?", en: "What's the weather like in summer?" }, options: [ { pl: "bardzo gorąca", en: "very hot", ok: true }, { pl: "zimna", en: "cold" }, { pl: "deszczowa", en: "rainy" } ] }, { q: { pl: "Którą porę roku lubi autor?", en: "Which season does the author like?" }, options: [ { pl: "zimę", en: "winter" }, { pl: "wiosnę", en: "spring", ok: true }, { pl: "jesień", en: "autumn" } ] }, { q: { pl: "Co dzieje się jesienią?", en: "What happens in autumn?" }, options: [ { pl: "opadają liście", en: "leaves fall", ok: true }, { pl: "pada śnieg", en: "it snows" }, { pl: "kwitną kwiaty", en: "flowers bloom" } ] } ] },
+  { id: "r7", emoji: "✈️", title: { pl: "Podróż do Kairu", en: "A trip to Cairo" }, level: "A2", lines: [ { ar: "سافَرْتُ إِلى القاهِرةِ الشَّهْرَ الماضِيَ.", ph: "Sāfartu ilā l-Qāhirati sh-shahra l-māḍiya.", pl: "Pojechałem do Kairu w zeszłym miesiącu.", en: "I travelled to Cairo last month." }, { ar: "وَصَلْتُ إِلى المَطارِ في الصَّباحِ الباكِرِ.", ph: "Waṣaltu ilā l-maṭāri fī ṣ-ṣabāḥi l-bākir.", pl: "Dotarłem na lotnisko wczesnym rankiem.", en: "I arrived at the airport early in the morning." }, { ar: "زُرْتُ الأَهْرامَ وَالمُتْحَفَ المِصْرِيَّ.", ph: "Zurtu l-ahrāma wa-l-mutḥafa l-miṣriyya.", pl: "Zwiedziłem piramidy i Muzeum Egipskie.", en: "I visited the pyramids and the Egyptian Museum." }, { ar: "كانَتِ المَدينةُ مُزْدَحِمةً لٰكِنَّها رائِعةٌ.", ph: "Kānati l-madīnatu muzdaḥimatan lākinnahā rā'iʿa.", pl: "Miasto było zatłoczone, ale wspaniałe.", en: "The city was crowded but wonderful." }, { ar: "أَتَمَنّى أَنْ أَعودَ إِلَيْها مَرّةً أُخْرى.", ph: "Atamannā an aʿūda ilayhā marratan ukhrā.", pl: "Mam nadzieję wrócić tam jeszcze raz.", en: "I hope to return there again." } ], questions: [ { q: { pl: "Kiedy pojechał do Kairu?", en: "When did he travel to Cairo?" }, options: [ { pl: "w zeszłym miesiącu", en: "last month", ok: true }, { pl: "w zeszłym roku", en: "last year" }, { pl: "wczoraj", en: "yesterday" } ] }, { q: { pl: "Co zwiedził?", en: "What did he visit?" }, options: [ { pl: "piramidy i muzeum", en: "pyramids and museum", ok: true }, { pl: "tylko meczet", en: "only a mosque" }, { pl: "targ", en: "the market" } ] }, { q: { pl: "Jakie było miasto?", en: "How was the city?" }, options: [ { pl: "zatłoczone, ale wspaniałe", en: "crowded but wonderful", ok: true }, { pl: "puste", en: "empty" }, { pl: "nudne", en: "boring" } ] } ] },
+  { id: "r8", emoji: "💼", title: { pl: "Rynek pracy", en: "The job market" }, level: "A2", lines: [ { ar: "نَشَرَتِ الحُكومةُ تَقْريراً عَنِ العَمَلِ.", ph: "Nasharati l-ḥukūmatu taqrīran ʿani l-ʿamal.", pl: "Rząd opublikował raport o pracy.", en: "The government published a report on employment." }, { ar: "يَقولُ التَّقْريرُ إِنَّ عَدَدَ العامِلينَ اِزْدادَ.", ph: "Yaqūlu t-taqrīru inna ʿadada l-ʿāmilīna izdāda.", pl: "Raport mówi, że liczba pracujących wzrosła.", en: "The report says the number of workers has risen." }, { ar: "لٰكِنَّ الشَّبابَ يَجِدونَ صُعوبةً في العَمَلِ.", ph: "Lākinna sh-shabāba yajidūna ṣuʿūbatan fī l-ʿamal.", pl: "Ale młodzi mają trudność ze znalezieniem pracy.", en: "But young people find it hard to get work." }, { ar: "بِسَبَبِ ذٰلِكَ أَعْلَنَتِ الوِزارةُ بَرْنامَجاً جَديداً.", ph: "Bi-sababi dhālika aʿlanati l-wizāratu barnāmajan jadīdan.", pl: "Z tego powodu ministerstwo ogłosiło nowy program.", en: "For that reason the ministry announced a new programme." }, { ar: "سَيَبْدَأُ البَرْنامَجُ في الشَّهْرِ القادِمِ.", ph: "Sa-yabda'u l-barnāmaju fī sh-shahri l-qādim.", pl: "Program rozpocznie się w przyszłym miesiącu.", en: "The programme will begin next month." } ], questions: [ { q: { pl: "Co opublikował rząd?", en: "What did the government publish?" }, options: [ { pl: "raport o pracy", en: "a report on employment", ok: true }, { pl: "nowe prawo", en: "a new law" }, { pl: "budżet", en: "a budget" } ] }, { q: { pl: "Kto ma trudność ze znalezieniem pracy?", en: "Who finds it hard to get work?" }, options: [ { pl: "młodzi", en: "young people", ok: true }, { pl: "starsi", en: "the elderly" }, { pl: "kobiety", en: "women" } ] }, { q: { pl: "Kiedy rusza program?", en: "When does the programme start?" }, options: [ { pl: "w przyszłym miesiącu", en: "next month", ok: true }, { pl: "dziś", en: "today" }, { pl: "za rok", en: "in a year" } ] } ] },
+  { id: "r9", emoji: "⚖️", title: { pl: "Nowa ustawa", en: "A new statute" }, level: "B1", lines: [ { ar: "أَقَرَّ المَجْلِسُ قانوناً جَديداً لِلضَّرائِبِ.", ph: "Aqarra l-majlisu qānūnan jadīdan li-ḍ-ḍarā'ib.", pl: "Rada uchwaliła nową ustawę podatkową.", en: "The council passed a new tax law." }, { ar: "وَفْقاً لِلْمادّةِ الثّالِثةِ تُخَفَّضُ الضَّريبةُ عَلى الشَّرِكاتِ الصَّغيرةِ.", ph: "Wafqan li-l-māddati th-thālithati tukhaffaḍu ḍ-ḍarībatu ʿalā sh-sharikāti ṣ-ṣaghīra.", pl: "Zgodnie z artykułem trzecim obniża się podatek dla małych firm.", en: "Under article three, tax on small companies is reduced." }, { ar: "يُحْظَرُ عَلى الشَّرِكاتِ تَأْخيرُ الدَّفْعِ.", ph: "Yuḥẓaru ʿalā sh-sharikāti ta'khīru d-dafʿ.", pl: "Firmom zabrania się opóźniania płatności.", en: "Companies are prohibited from delaying payment." }, { ar: "وَقالَ الوَزيرُ إِنَّ القانونَ يُساعِدُ الاِقْتِصادَ.", ph: "Wa-qāla l-wazīru inna l-qānūna yusāʿidu l-iqtiṣād.", pl: "Minister powiedział, że ustawa pomoże gospodarce.", en: "The minister said the law will help the economy." }, { ar: "عَلى الرَّغْمِ مِن ذٰلِكَ يَرى بَعْضُ الخُبَراءِ أَنَّهُ غَيْرُ كافٍ.", ph: "ʿAlā r-raghmi min dhālika yarā baʿḍu l-khubarā'i annahu ghayru kāfin.", pl: "Mimo to niektórzy eksperci uważają, że to niewystarczające.", en: "Nevertheless some experts consider it insufficient." } ], questions: [ { q: { pl: "Czego dotyczy ustawa?", en: "What is the law about?" }, options: [ { pl: "podatków", en: "taxes", ok: true }, { pl: "edukacji", en: "education" }, { pl: "transportu", en: "transport" } ] }, { q: { pl: "Co mówi artykuł trzeci?", en: "What does article three say?" }, options: [ { pl: "obniża podatek dla małych firm", en: "reduces tax for small companies", ok: true }, { pl: "podnosi podatek", en: "raises tax" }, { pl: "znosi podatek", en: "abolishes tax" } ] }, { q: { pl: "Co sądzą niektórzy eksperci?", en: "What do some experts think?" }, options: [ { pl: "że to niewystarczające", en: "that it's insufficient", ok: true }, { pl: "że to za dużo", en: "that it's too much" }, { pl: "nic nie mówią", en: "they say nothing" } ] } ] },
+  { id: "r10", emoji: "🎓", title: { pl: "Reforma edukacji", en: "Education reform" }, level: "B1", lines: [ { ar: "تُناقِشُ الحُكومةُ إِصْلاحَ التَّعْليمِ مُنْذُ سَنَواتٍ.", ph: "Tunāqishu l-ḥukūmatu iṣlāḥa t-taʿlīmi mundhu sanawāt.", pl: "Rząd dyskutuje o reformie edukacji od lat.", en: "The government has been discussing education reform for years." }, { ar: "يَرى المُدَرِّسونَ أَنَّ عَدَدَ الطُّلّابِ في الفَصْلِ كَبيرٌ جِدّاً.", ph: "Yarā l-mudarrisūna anna ʿadada ṭ-ṭullābi fī l-faṣli kabīrun jiddan.", pl: "Nauczyciele uważają, że liczba uczniów w klasie jest za duża.", en: "Teachers believe class sizes are far too large." }, { ar: "بِالإِضافةِ إِلى ذٰلِكَ تَحْتاجُ المَدارِسُ إِلى كُتُبٍ جَديدةٍ.", ph: "Bi-l-iḍāfati ilā dhālika taḥtāju l-madārisu ilā kutubin jadīda.", pl: "Ponadto szkoły potrzebują nowych podręczników.", en: "In addition, schools need new textbooks." }, { ar: "أَعْلَنَتِ الوِزارةُ أَنَّها سَتَبْني مَدارِسَ جَديدةً.", ph: "Aʿlanati l-wizāratu annahā sa-tabnī madārisa jadīda.", pl: "Ministerstwo ogłosiło, że zbuduje nowe szkoły.", en: "The ministry announced it will build new schools." }, { ar: "نَتيجةً لِذٰلِكَ يَأْمُلُ الأَهالي في تَحَسُّنٍ حَقيقِيٍّ.", ph: "Natījatan li-dhālika ya'mulu l-ahālī fī taḥassunin ḥaqīqī.", pl: "W wyniku tego rodzice liczą na realną poprawę.", en: "As a result, parents hope for real improvement." } ], questions: [ { q: { pl: "Od jak dawna trwa dyskusja?", en: "How long has the discussion lasted?" }, options: [ { pl: "od lat", en: "for years", ok: true }, { pl: "od tygodnia", en: "for a week" }, { pl: "od wczoraj", en: "since yesterday" } ] }, { q: { pl: "Na co skarżą się nauczyciele?", en: "What do teachers complain about?" }, options: [ { pl: "za duże klasy", en: "class sizes too large", ok: true }, { pl: "niskie pensje", en: "low pay" }, { pl: "brak szkół", en: "no schools" } ] }, { q: { pl: "Co ogłosiło ministerstwo?", en: "What did the ministry announce?" }, options: [ { pl: "budowę nowych szkół", en: "building new schools", ok: true }, { pl: "zamknięcie szkół", en: "closing schools" }, { pl: "nowe egzaminy", en: "new exams" } ] } ] },
+  { id: "r11", emoji: "📖", title: { pl: "Stary dom (proza)", en: "The old house (prose)" }, level: "B1", lines: [ { ar: "في قَلْبِ المَدينةِ القَديمةِ بَيْتٌ صامِتٌ.", ph: "Fī qalbi l-madīnati l-qadīmati baytun ṣāmit.", pl: "W sercu starego miasta stoi milczący dom.", en: "In the heart of the old city stands a silent house." }, { ar: "نَوافِذُهُ مُغْلَقةٌ مُنْذُ سَنَواتٍ طَويلةٍ.", ph: "Nawāfidhuhu mughlaqatun mundhu sanawātin ṭawīla.", pl: "Jego okna są zamknięte od długich lat.", en: "Its windows have been shut for many years." }, { ar: "يَقولُ النّاسُ إِنَّ عائِلةً كَبيرةً عاشَتْ فيهِ.", ph: "Yaqūlu n-nāsu inna ʿā'ilatan kabīratan ʿāshat fīhi.", pl: "Ludzie mówią, że mieszkała w nim duża rodzina.", en: "People say a large family once lived in it." }, { ar: "لٰكِنَّ أَحَداً لا يَتَذَكَّرُ مَتى خَرَجوا.", ph: "Lākinna aḥadan lā yatadhakkaru matā kharajū.", pl: "Ale nikt nie pamięta, kiedy się wyprowadzili.", en: "But no one remembers when they left." }, { ar: "وَحْدَها الشَّجَرةُ أَمامَ البابِ ما زالَتْ تَنْمو.", ph: "Waḥdahā sh-shajaratu amāma l-bābi mā zālat tanmū.", pl: "Tylko drzewo przed drzwiami wciąż rośnie.", en: "Only the tree before the door still grows." } ], questions: [ { q: { pl: "Gdzie stoi dom?", en: "Where does the house stand?" }, options: [ { pl: "w sercu starego miasta", en: "in the heart of the old city", ok: true }, { pl: "na wsi", en: "in a village" }, { pl: "nad rzeką", en: "by a river" } ] }, { q: { pl: "Co mówią ludzie?", en: "What do people say?" }, options: [ { pl: "że mieszkała tam duża rodzina", en: "a large family lived there", ok: true }, { pl: "że dom jest nowy", en: "the house is new" }, { pl: "że nikt tam nie był", en: "no one was ever there" } ] }, { q: { pl: "Co wciąż rośnie?", en: "What still grows?" }, options: [ { pl: "drzewo przed drzwiami", en: "the tree before the door", ok: true }, { pl: "trawa w środku", en: "grass inside" }, { pl: "kwiaty w oknie", en: "flowers in the window" } ] } ] },
+  { id: "r12", emoji: "🏛️", title: { pl: "Biblioteka Aleksandryjska", en: "The Library of Alexandria" }, level: "B1", lines: [ { ar: "كانَتْ مَكْتَبةُ الإِسْكَنْدَرِيّةِ أَشْهَرَ مَكْتَبةٍ في العالَمِ القَديمِ.", ph: "Kānat maktabatu l-Iskandariyyati ashhara maktabatin fī l-ʿālami l-qadīm.", pl: "Biblioteka Aleksandryjska była najsłynniejszą biblioteką starożytnego świata.", en: "The Library of Alexandria was the most famous library of the ancient world." }, { ar: "جَمَعَتْ آلافَ الكُتُبِ مِن بِلادٍ مُخْتَلِفةٍ.", ph: "Jamaʿat ālāfa l-kutubi min bilādin mukhtalifa.", pl: "Zgromadziła tysiące ksiąg z różnych krajów.", en: "It gathered thousands of books from different lands." }, { ar: "دَرَسَ فيها عُلَماءُ كِبارٌ في الرِّياضِيّاتِ وَالفَلَكِ.", ph: "Darasa fīhā ʿulamā'u kibārun fī r-riyāḍiyyāti wa-l-falak.", pl: "Studiowali w niej wielcy uczeni matematyki i astronomii.", en: "Great scholars of mathematics and astronomy studied there." }, { ar: "لٰكِنَّها اُحْتُرِقَتْ وَضاعَ مُعْظَمُ ما فيها.", ph: "Lākinnahā uḥturiqat wa-ḍāʿa muʿẓamu mā fīhā.", pl: "Ale spłonęła i przepadła większość tego, co w niej było.", en: "But it burned and most of its contents were lost." }, { ar: "وَاليَوْمَ تَقِفُ مَكْتَبةٌ حَديثةٌ في المَكانِ نَفْسِهِ.", ph: "Wa-l-yawma taqifu maktabatun ḥadīthatun fī l-makāni nafsih.", pl: "A dziś w tym samym miejscu stoi nowoczesna biblioteka.", en: "And today a modern library stands in the same place." } ], questions: [ { q: { pl: "Czym była Biblioteka Aleksandryjska?", en: "What was the Library of Alexandria?" }, options: [ { pl: "najsłynniejszą biblioteką starożytności", en: "the most famous ancient library", ok: true }, { pl: "szkołą", en: "a school" }, { pl: "świątynią", en: "a temple" } ] }, { q: { pl: "Kto tam studiował?", en: "Who studied there?" }, options: [ { pl: "uczeni matematyki i astronomii", en: "scholars of maths and astronomy", ok: true }, { pl: "tylko kapłani", en: "only priests" }, { pl: "kupcy", en: "merchants" } ] }, { q: { pl: "Co jest tam dzisiaj?", en: "What is there today?" }, options: [ { pl: "nowoczesna biblioteka", en: "a modern library", ok: true }, { pl: "ruiny", en: "ruins" }, { pl: "muzeum", en: "a museum" } ] } ] },
+  { id: "r13", emoji: "💬", title: { pl: "Głos w dyskusji", en: "A voice in the debate" }, level: "B1", lines: [ { ar: "يَقولُ البَعْضُ إِنَّ التِّكْنولوجيا غَيَّرَتْ حَياتَنا إِلى الأَفْضَلِ.", ph: "Yaqūlu l-baʿḍu inna t-tiknulūjiyā ghayyarat ḥayātanā ilā l-afḍal.", pl: "Niektórzy mówią, że technologia zmieniła nasze życie na lepsze.", en: "Some say technology has changed our lives for the better." }, { ar: "أَصْبَحَ الحُصولُ عَلى المَعْلوماتِ سَهْلاً وَسَريعاً.", ph: "Aṣbaḥa l-ḥuṣūlu ʿalā l-maʿlūmāti sahlan wa-sarīʿan.", pl: "Zdobywanie informacji stało się łatwe i szybkie.", en: "Obtaining information has become easy and fast." }, { ar: "لٰكِنَّ آخَرينَ يَرَوْنَ أَنَّنا فَقَدْنا شَيْئاً مُهِمّاً.", ph: "Lākinna ākharīna yarawna annanā faqadnā shay'an muhimman.", pl: "Ale inni uważają, że straciliśmy coś ważnego.", en: "But others believe we have lost something important." }, { ar: "فَالنّاسُ يَتَحَدَّثونَ وَجْهاً لِوَجْهٍ أَقَلَّ مِن قَبْلُ.", ph: "Fa-n-nāsu yataḥaddathūna wajhan li-wajhin aqalla min qablu.", pl: "Bo ludzie rozmawiają twarzą w twarz rzadziej niż kiedyś.", en: "For people talk face to face less than before." }, { ar: "وَفي رَأْيي الحَقيقةُ في مَكانٍ بَيْنَ الرَّأْيَيْنِ.", ph: "Wa-fī ra'yī l-ḥaqīqatu fī makānin bayna r-ra'yayn.", pl: "Moim zdaniem prawda leży gdzieś pomiędzy tymi opiniami.", en: "In my view the truth lies somewhere between the two." } ], questions: [ { q: { pl: "Co mówią zwolennicy technologii?", en: "What do technology's supporters say?" }, options: [ { pl: "zmieniła życie na lepsze", en: "it changed life for the better", ok: true }, { pl: "jest bezużyteczna", en: "it's useless" }, { pl: "jest droga", en: "it's expensive" } ] }, { q: { pl: "Co według krytyków straciliśmy?", en: "What do critics say we lost?" }, options: [ { pl: "rozmowy twarzą w twarz", en: "face-to-face conversation", ok: true }, { pl: "książki", en: "books" }, { pl: "czas wolny", en: "free time" } ] }, { q: { pl: "Jakie jest stanowisko autora?", en: "What is the author's position?" }, options: [ { pl: "prawda leży pośrodku", en: "the truth is in between", ok: true }, { pl: "technologia jest zła", en: "technology is bad" }, { pl: "technologia jest doskonała", en: "technology is perfect" } ] } ] }
+];
+
+// ---------- Zdania MSA (praca z tekstem) ----------
+const MSA_SENTENCES = [
+  {
+    group: { pl: "Zdanie imienne (bez czasownika)", en: "Nominal sentence (no verb)" },
+    items: [
+      { ar: "البَيْتُ كَبيرٌ", ph: "al-baytu kabīrun", pl: "Dom jest duży.", en: "The house is big.",
+        note: { pl: "Podmiot określony (z الـ) + orzecznik nieokreślony (z tanwinem ٌ). To podstawowy wzór.", en: "Definite subject (with الـ) + indefinite predicate (with tanwin ٌ). The basic pattern." } },
+      { ar: "الدَّرْسُ سَهْلٌ", ph: "ad-darsu sahlun", pl: "Lekcja jest łatwa.", en: "The lesson is easy.",
+        note: { pl: "Ten sam wzór. Zauważ: الدَّرْس czytamy „ad-dars” — litera słoneczna د wchłania „l”.", en: "Same pattern. Note: الدَّرْس reads 'ad-dars' — the sun letter د absorbs the 'l'." } },
+      { ar: "الكِتَابُ جَديدٌ", ph: "al-kitābu jadīdun", pl: "Książka jest nowa.", en: "The book is new.",
+        note: { pl: "Rodzaj męski, więc przymiotnik też męski. Zgodność rodzaju jest obowiązkowa.", en: "Masculine noun, so the adjective is masculine too. Gender agreement is obligatory." } },
+      { ar: "المَدْرَسةُ قَديمةٌ", ph: "al-madrasatu qadīmatun", pl: "Szkoła jest stara.", en: "The school is old.",
+        note: { pl: "Rzeczownik żeński (ة) → przymiotnik też dostaje ة. Widać zgodność.", en: "Feminine noun (ة) → the adjective takes ة too. Agreement in action." } },
+    ],
+  },
+  {
+    group: { pl: "Zdanie z przyimkiem", en: "Sentence with a preposition" },
+    items: [
+      { ar: "الكِتَابُ عَلى الطّاوِلةِ", ph: "al-kitābu ʿalā ṭ-ṭāwila", pl: "Książka jest na stole.", en: "The book is on the table.",
+        note: { pl: "Po przyimku rzeczownik w dopełniaczu (końcówka -i). عَلى wymaga tej formy.", en: "After a preposition the noun is in the genitive (ending -i). عَلى requires this form." } },
+      { ar: "الطّالِبُ في المَدْرَسةِ", ph: "aṭ-ṭālibu fī l-madrasa", pl: "Uczeń jest w szkole.", en: "The student is at school.",
+        note: { pl: "في + dopełniacz. To najczęstsza konstrukcja w tekstach.", en: "في + genitive. The most common construction in texts." } },
+      { ar: "ذَهَبْتُ إِلى السّوقِ", ph: "dhahabtu ilā s-sūq", pl: "Poszedłem na targ.", en: "I went to the market.",
+        note: { pl: "إِلى (do) wskazuje kierunek. Czasownik na początku — szyk typowy dla MSA.", en: "إِلى (to) marks direction. Verb first — the typical MSA order." } },
+      { ar: "الخَبَرُ في الصَّحيفةِ", ph: "al-khabaru fī ṣ-ṣaḥīfa", pl: "Wiadomość jest w gazecie.", en: "The news is in the newspaper.",
+        note: { pl: "Słowa prasowe w praktyce. الصَّحيفة — znów litera słoneczna ص.", en: "Press vocabulary in practice. الصَّحيفة — again a sun letter, ص." } },
+    ],
+  },
+  {
+    group: { pl: "Zdanie czasownikowe", en: "Verbal sentence" },
+    items: [
+      { ar: "كَتَبَ الوَلَدُ الدَّرْسَ", ph: "kataba l-waladu d-darsa", pl: "Chłopiec napisał lekcję.", en: "The boy wrote the lesson.",
+        note: { pl: "Szyk VSO: czasownik → podmiot (mianownik -u) → dopełnienie (biernik -a).", en: "VSO order: verb → subject (nominative -u) → object (accusative -a)." } },
+      { ar: "قالَ الرَّئيسُ", ph: "qāla r-ra'īsu", pl: "Prezydent powiedział.", en: "The president said.",
+        note: { pl: "Tak zaczyna się większość depesz prasowych. Zapamiętaj ten zwrot.", en: "This is how most news dispatches begin. Memorize this phrase." } },
+      { ar: "يَدْرُسُ الطّالِبُ العَرَبِيّةَ", ph: "yadrusu ṭ-ṭālibu l-ʿarabiyya", pl: "Uczeń uczy się arabskiego.", en: "The student studies Arabic.",
+        note: { pl: "Czas teraźniejszy: przedrostek يـ. Dopełnienie w bierniku (-a).", en: "Present tense: prefix يـ. Object in the accusative (-a)." } },
+      { ar: "وَجَدْتُ الكِتَابَ في المَكْتَبةِ", ph: "wajadtu l-kitāba fī l-maktaba", pl: "Znalazłem książkę w bibliotece.", en: "I found the book in the library.",
+        note: { pl: "Trzy elementy: czasownik + dopełnienie + okolicznik miejsca. Pełne zdanie.", en: "Three elements: verb + object + place adverbial. A complete sentence." } },
+    ],
+  },
+  {
+    group: { pl: "Zdanie złożone", en: "Complex sentence" },
+    items: [
+      { ar: "ذَهَبْتُ إِلى السّوقِ وَاشْتَرَيْتُ كِتَاباً", ph: "dhahabtu ilā s-sūqi wa-shtaraytu kitāban", pl: "Poszedłem na targ i kupiłem książkę.", en: "I went to the market and bought a book.",
+        note: { pl: "وَ (i) łączy dwa zdania. Kitāban z tanwinem -an = biernik nieokreślony.", en: "وَ (and) joins two clauses. Kitāban with tanwin -an = indefinite accusative." } },
+      { ar: "الدَّرْسُ صَعْبٌ لٰكِنَّهُ مُهِمٌّ", ph: "ad-darsu ṣaʿbun lākinnahu muhimmun", pl: "Lekcja jest trudna, ale ważna.", en: "The lesson is difficult but important.",
+        note: { pl: "لٰكِنَّ (ale) + zaimek -هُ (on/to). Częsty sposób budowania kontrastu.", en: "لٰكِنَّ (but) + pronoun -هُ (it). A common way to build contrast." } },
+      { ar: "لا أَذْهَبُ لِأَنَّ الطَّقْسَ سَيِّئٌ", ph: "lā adhhabu li-anna ṭ-ṭaqsa sayyi'un", pl: "Nie idę, ponieważ pogoda jest zła.", en: "I'm not going because the weather is bad.",
+        note: { pl: "لا + czas teraźniejszy = przeczenie. لِأَنَّ (ponieważ) wymaga biernika po sobie.", en: "لا + present = negation. لِأَنَّ (because) requires the accusative after it." } },
+      { ar: "عِنْدَما وَصَلْتُ كانَ المَكْتَبُ مُغْلَقاً", ph: "ʿindamā waṣaltu kāna l-maktabu mughlaqan", pl: "Kiedy przyszedłem, biuro było zamknięte.", en: "When I arrived, the office was closed.",
+        note: { pl: "عِنْدَما (kiedy) + كانَ (był) — konstrukcja przeszła złożona. مُغْلَقاً z tanwinem, bo orzecznik po كان idzie w bierniku.", en: "عِنْدَما (when) + كانَ (was) — a compound past construction. مُغْلَقاً with tanwin, since the predicate after كان takes the accusative." } },
+    ],
+  },
+  { group: { pl: "Zdania z إِنَّ i أَنَّ", en: "Sentences with inna and anna" }, items: [ { ar: "قالَ الوَزيرُ إِنَّ الوَضْعَ صَعْبٌ.", ph: "Qāla l-wazīru inna l-waḍʿa ṣaʿb.", pl: "Minister powiedział, że sytuacja jest trudna.", en: "The minister said the situation is difficult.", note: { pl: "Po إِنَّ rzeczownik w bierniku: الوَضْعَ (nie الوَضْعُ).", en: "After إِنَّ the noun takes the accusative: al-waḍʿa (not al-waḍʿu)." } }, { ar: "أَعْتَقِدُ أَنَّ الفِكْرةَ جَيِّدةٌ.", ph: "Aʿtaqidu anna l-fikrata jayyida.", pl: "Sądzę, że pomysł jest dobry.", en: "I think the idea is good.", note: { pl: "أَنَّ po czasowniku myślenia. Też wymusza biernik: الفِكْرةَ.", en: "أَنَّ after a verb of thinking. It also forces the accusative." } } ] },
+  { group: { pl: "Zdania względne", en: "Relative clauses" }, items: [ { ar: "الكِتابُ الَّذي قَرَأْتُهُ مُفيدٌ.", ph: "Al-kitābu lladhī qara'tuhu mufīd.", pl: "Książka, którą przeczytałem, jest pożyteczna.", en: "The book that I read is useful.", note: { pl: "Uwaga na -هُ w قَرَأْتُهُ — arabski powtarza dopełnienie w zdaniu względnym.", en: "Note the -hu in qara'tuhu — Arabic repeats the object inside the relative clause." } }, { ar: "المَدينةُ الَّتي زُرْتُها جَميلةٌ.", ph: "Al-madīnatu llatī zurtuhā jamīla.", pl: "Miasto, które odwiedziłem, jest piękne.", en: "The city I visited is beautiful.", note: { pl: "الَّتي bo مَدينة jest żeńskie. I znowu powtórzone -ها.", en: "الَّتي because madīna is feminine. And again the repeated -hā." } } ] },
+  { group: { pl: "Strona bierna", en: "The passive" }, items: [ { ar: "كُتِبَ التَّقْريرُ في يَوْمٍ واحِدٍ.", ph: "Kutiba t-taqrīru fī yawmin wāḥid.", pl: "Raport został napisany w jeden dzień.", en: "The report was written in one day.", note: { pl: "kutiba zamiast kataba — samogłoski u–i to znak strony biernej.", en: "kutiba instead of kataba — the u–i vowels mark the passive." } }, { ar: "فُتِحَ البابُ في السّاعةِ الثّامِنةِ.", ph: "Futiḥa l-bābu fī s-sāʿati th-thāmina.", pl: "Drzwi zostały otwarte o ósmej.", en: "The door was opened at eight.", note: { pl: "Ten sam wzór: fataḥa → futiḥa. Rdzeń ف-ت-ح, który już znasz.", en: "Same pattern: fataḥa → futiḥa. The root ف-ت-ح you already know." } } ] },
+  { group: { pl: "Zdania celu i warunku", en: "Purpose and condition" }, items: [ { ar: "دَرَسْتُ كَثيراً لِأَنْجَحَ في الاِمْتِحانِ.", ph: "Darastu kathīran li-anjaḥa fī l-imtiḥān.", pl: "Uczyłem się dużo, żeby zdać egzamin.", en: "I studied a lot in order to pass the exam.", note: { pl: "لِـ + tryb łączący (-a): أَنْجَحَ, nie أَنْجَحُ.", en: "لِـ + subjunctive (-a): anjaḥa, not anjaḥu." } }, { ar: "إِذا وَصَلْتَ مُبَكِّراً فَسَنَبْدَأُ.", ph: "Idhā waṣalta mubakkiran fa-sa-nabda'.", pl: "Jeśli przyjdziesz wcześnie, to zaczniemy.", en: "If you arrive early, we'll begin.", note: { pl: "إِذا + przeszły w znaczeniu przyszłym. Druga część z فَـ.", en: "إِذا + past form with future meaning. The second clause takes فَـ." } } ] },
+  { group: { pl: "Konstrukcje prasowe", en: "Press constructions" }, items: [ { ar: "وَفْقاً لِمَصادِرَ رَسْمِيّةٍ، اِرْتَفَعَتِ الأَسْعارُ.", ph: "Wafqan li-maṣādira rasmiyyatin, irtafaʿati l-asʿār.", pl: "Według oficjalnych źródeł ceny wzrosły.", en: "According to official sources, prices have risen.", note: { pl: "Standardowy początek depeszy. وَفْقاً لِـ + dopełniacz.", en: "A standard dispatch opening. wafqan li- + genitive." } }, { ar: "مِنَ المُتَوَقَّعِ أَنْ يَبْدَأَ الاِجْتِماعُ غَداً.", ph: "Mina l-mutawaqqaʿi an yabda'a l-ijtimāʿu ghadan.", pl: "Oczekuje się, że spotkanie rozpocznie się jutro.", en: "The meeting is expected to begin tomorrow.", note: { pl: "„min al-mutawaqqaʿ an” = oczekuje się, że. Bardzo częste w prasie.", en: "'min al-mutawaqqaʿ an' = it is expected that. Very common in the press." } } ] }
+];
+
+// ---------- Słownictwo MSA (osobna baza — kurs MSA ma własne słowa) ----------
+const MSA_WORDS = [
+  { cat: "msa_places", pl: "przystanek, dworzec", en: "station, stop", ar: "مَحَطّة", ph: "maḥaṭṭa" },
+  { cat: "msa_places", pl: "księgarnia, biblioteka", en: "bookshop, library", ar: "مَكْتَبة", ph: "maktaba" },
+  { cat: "msa_places", pl: "szpital", en: "hospital", ar: "مُسْتَشْفى", ph: "mustashfā" },
+  { cat: "msa_places", pl: "apteka", en: "pharmacy", ar: "صَيْدَلِيّة", ph: "ṣaydaliyya" },
+  { cat: "msa_places", pl: "restauracja", en: "restaurant", ar: "مَطْعَم", ph: "maṭʿam" },
+  { cat: "msa_places", pl: "bank", en: "bank", ar: "مَصْرِف", ph: "maṣrif" },
+  { cat: "msa_places", pl: "szkoła", en: "school", ar: "مَدْرَسة", ph: "madrasa" },
+  { cat: "msa_places", pl: "uniwersytet", en: "university", ar: "جامِعة", ph: "jāmiʿa" },
+  { cat: "msa_places", pl: "targ, bazar", en: "market, bazaar", ar: "سوق", ph: "sūq" },
+  { cat: "msa_places", pl: "meczet", en: "mosque", ar: "مَسْجِد", ph: "masjid" },
+  { cat: "msa_signs", pl: "wejście", en: "entrance", ar: "مَدْخَل", ph: "madkhal" },
+  { cat: "msa_signs", pl: "wyjście", en: "exit", ar: "خُروج", ph: "khurūj" },
+  { cat: "msa_signs", pl: "zakaz, zabronione", en: "forbidden", ar: "مَمْنوع", ph: "mamnūʿ" },
+  { cat: "msa_signs", pl: "otwarte", en: "open", ar: "مَفْتوح", ph: "maftūḥ" },
+  { cat: "msa_signs", pl: "zamknięte", en: "closed", ar: "مُغْلَق", ph: "mughlaq" },
+  { cat: "msa_signs", pl: "na sprzedaż", en: "for sale", ar: "لِلْبَيْع", ph: "lil-bayʿ" },
+  { cat: "msa_signs", pl: "do wynajęcia", en: "for rent", ar: "لِلْإيجار", ph: "lil-ījār" },
+  { cat: "msa_office", pl: "imię, nazwa", en: "name", ar: "اِسْم", ph: "ism" },
+  { cat: "msa_office", pl: "data; historia", en: "date; history", ar: "تَاريخ", ph: "tārīkh" },
+  { cat: "msa_office", pl: "adres; tytuł", en: "address; title", ar: "عُنْوان", ph: "ʿunwān" },
+  { cat: "msa_office", pl: "numer", en: "number", ar: "رَقَم", ph: "raqam" },
+  { cat: "msa_office", pl: "podpis", en: "signature", ar: "تَوْقيع", ph: "tawqīʿ" },
+  { cat: "msa_office", pl: "paszport", en: "passport", ar: "جَواز سَفَر", ph: "jawāz safar" },
+  { cat: "msa_transport", pl: "pociąg", en: "train", ar: "قِطار", ph: "qiṭār" },
+  { cat: "msa_transport", pl: "autobus", en: "bus", ar: "حافِلة", ph: "ḥāfila" },
+  { cat: "msa_transport", pl: "lotnisko", en: "airport", ar: "مَطار", ph: "maṭār" },
+  { cat: "msa_transport", pl: "bilet", en: "ticket", ar: "تَذْكِرة", ph: "tadhkira" },
+  { cat: "msa_transport", pl: "peron; chodnik", en: "platform; pavement", ar: "رَصيف", ph: "raṣīf" },
+  { cat: "msa_basics", pl: "język arabski", en: "the Arabic language", ar: "العَرَبِيّة", ph: "al-ʿarabiyya" },
+  { cat: "msa_basics", pl: "dom", en: "house", ar: "بَيْت", ph: "bayt" },
+  { cat: "msa_basics", pl: "uczeń", en: "pupil", ar: "تِلْميذ", ph: "tilmīdh" },
+  { cat: "msa_basics", pl: "dziewczyny", en: "girls", ar: "بَنَات", ph: "banāt" },
+  { cat: "msa_basics", pl: "drzwi", en: "door", ar: "بَاب", ph: "bāb" },
+  { cat: "msa_basics", pl: "napisał", en: "he wrote", ar: "كَتَبَ", ph: "kataba" },
+  { cat: "msa_basics", pl: "książka", en: "book", ar: "كِتَاب", ph: "kitāb" },
+  { cat: "msa_basics", pl: "ta książka", en: "the book", ar: "الكِتَاب", ph: "al-kitāb" },
+  { cat: "msa_basics", pl: "z, od", en: "from", ar: "مِن", ph: "min" },
+  { cat: "msa_basics", pl: "w, wewnątrz", en: "in", ar: "في", ph: "fī" },
+  { cat: "msa_basics", pl: "nauczyciel", en: "teacher (m)", ar: "مُدَرِّس", ph: "mudarris" },
+  { cat: "msa_basics", pl: "lekcja", en: "lesson", ar: "دَرْس", ph: "dars" },
+  { cat: "msa_basics", pl: "narysował", en: "he drew", ar: "رَسَمَ", ph: "rasama" },
+  { cat: "msa_basics", pl: "nauczyciele (m.)", en: "teachers (m)", ar: "مُدَرِّسون", ph: "mudarrisūn" },
+  { cat: "msa_basics", pl: "nauczycielki (ż.)", en: "teachers (f)", ar: "مُدَرِّسات", ph: "mudarrisāt" },
+  { cat: "msa_basics", pl: "domy", en: "houses", ar: "بُيوت", ph: "buyūt" },
+  { cat: "msa_basics", pl: "napisałem", en: "I wrote", ar: "كَتَبْتُ", ph: "katabtu" },
+  { cat: "msa_basics", pl: "piszę", en: "I write", ar: "أَكْتُبُ", ph: "aktubu" },
+  { cat: "msa_basics", pl: "piszesz", en: "you write (m)", ar: "تَكْتُبُ", ph: "taktubu" },
+  { cat: "msa_basics", pl: "on pisze", en: "he writes", ar: "يَكْتُبُ", ph: "yaktubu" },
+  { cat: "msa_basics", pl: "piszemy", en: "we write", ar: "نَكْتُبُ", ph: "naktubu" },
+  { cat: "msa_roots", pl: "pisarz, autor", en: "writer", ar: "كاتِب", ph: "kaatib" },
+  { cat: "msa_roots", pl: "biuro, biurko", en: "office, desk", ar: "مَكْتَب", ph: "maktab" },
+  { cat: "msa_roots", pl: "zjadł", en: "he ate", ar: "أَكَلَ", ph: "akala" },
+  { cat: "msa_roots", pl: "jedzący", en: "eater / eating", ar: "آكِل", ph: "aakil" },
+  { cat: "msa_roots", pl: "potrawy, dania", en: "foods, dishes", ar: "مَأْكُولات", ph: "ma2kuulaat" },
+  { cat: "msa_roots", pl: "pokarm, pożywienie", en: "food, sustenance", ar: "مَأْكَل", ph: "ma2kal" },
+  { cat: "msa_roots", pl: "uczący się, student", en: "learner, student", ar: "دارِس", ph: "daaris" },
+  { cat: "msa_roots", pl: "miłosierdzie, litość", en: "mercy", ar: "رَحْمة", ph: "raḥma" },
+  { cat: "msa_roots", pl: "Miłosierny (przymiot Boga)", en: "the Most Gracious", ar: "الرحمن", ph: "ar-raḥmān" },
+  { cat: "msa_roots", pl: "Litościwy", en: "the Most Merciful", ar: "الرحيم", ph: "ar-raḥīm" },
+  { cat: "msa_roots", pl: "łono; więzy krwi", en: "womb; kinship", ar: "رَحِم", ph: "raḥim" },
+  { cat: "msa_roots", pl: "wiedział", en: "he knew", ar: "عَلِمَ", ph: "ʿalima" },
+  { cat: "msa_roots", pl: "uczony, znawca", en: "scholar", ar: "عالِم", ph: "ʿālim" },
+  { cat: "msa_roots", pl: "punkt orientacyjny, zabytek", en: "landmark", ar: "مَعْلَم", ph: "maʿlam" },
+  { cat: "msa_roots", pl: "mówił, rozmawiał", en: "he spoke", ar: "تَكَلَّمَ", ph: "takallama" },
+  { cat: "msa_roots", pl: "słowo", en: "word", ar: "كَلِمة", ph: "kalima" },
+  { cat: "msa_roots", pl: "mowa, gadanie", en: "speech, talk", ar: "كَلام", ph: "kalām" },
+  { cat: "msa_roots", pl: "mówił do kogoś", en: "he spoke to someone", ar: "كَلَّمَ", ph: "kallama" },
+  { cat: "msa_roots", pl: "pracował, zrobił", en: "he worked, did", ar: "عَمِلَ", ph: "ʿamila" },
+  { cat: "msa_roots", pl: "robotnik, pracownik", en: "worker", ar: "عامِل", ph: "ʿāmil" },
+  { cat: "msa_roots", pl: "laboratorium, warsztat", en: "laboratory, workshop", ar: "مَعْمَل", ph: "maʿmal" },
+  { cat: "msa_roots", pl: "traktowanie; transakcja", en: "treatment; transaction", ar: "مُعامَلة", ph: "muʿāmala" },
+  { cat: "msa_roots", pl: "mieszkał", en: "he lived, dwelt", ar: "سَكَنَ", ph: "sakana" },
+  { cat: "msa_roots", pl: "mieszkanie, dom", en: "dwelling, residence", ar: "مَسْكَن", ph: "maskan" },
+  { cat: "msa_roots", pl: "mieszkaniec; nieruchomy", en: "resident; still", ar: "ساكِن", ph: "sākin" },
+  { cat: "msa_roots", pl: "sukun (znak braku samogłoski)", en: "sukun (no-vowel mark)", ar: "سُكون", ph: "sukūn" },
+  { cat: "msa_roots", pl: "spokój, ukojenie", en: "tranquility", ar: "سَكينة", ph: "sakīna" },
+  { cat: "msa_glue", pl: "i", en: "and", ar: "وَ", ph: "wa" },
+  { cat: "msa_glue", pl: "lub", en: "or", ar: "أَوْ", ph: "aw" },
+  { cat: "msa_glue", pl: "ale, lecz", en: "but", ar: "لٰكِنْ", ph: "lākin" },
+  { cat: "msa_glue", pl: "ponieważ", en: "because", ar: "لِأَنَّ", ph: "li-anna" },
+  { cat: "msa_glue", pl: "potem, następnie", en: "then", ar: "ثُمَّ", ph: "thumma" },
+  { cat: "msa_glue", pl: "także, również", en: "also", ar: "أَيْضاً", ph: "ayḍan" },
+  { cat: "msa_glue", pl: "kiedy, gdy", en: "when", ar: "عِنْدَما", ph: "ʿindamā" },
+  { cat: "msa_glue", pl: "jeśli", en: "if", ar: "إِذا", ph: "idhā" },
+  { cat: "msa_glue", pl: "każdy, wszystko", en: "every, all", ar: "كُلّ", ph: "kull" },
+  { cat: "msa_glue", pl: "niektóre, część", en: "some", ar: "بَعْضْ", ph: "baʿḍ" },
+  { cat: "msa_prep", pl: "na", en: "on", ar: "عَلى", ph: "ʿalā" },
+  { cat: "msa_prep", pl: "do, ku", en: "to, towards", ar: "إِلى", ph: "ilā" },
+  { cat: "msa_prep", pl: "z (kimś)", en: "with", ar: "مَعَ", ph: "maʿa" },
+  { cat: "msa_prep", pl: "o, na temat", en: "about", ar: "عَنْ", ph: "ʿan" },
+  { cat: "msa_prep", pl: "między", en: "between", ar: "بَيْنَ", ph: "bayna" },
+  { cat: "msa_prep", pl: "po", en: "after", ar: "بَعْدَ", ph: "baʿda" },
+  { cat: "msa_prep", pl: "przed", en: "before", ar: "قَبْلَ", ph: "qabla" },
+  { cat: "msa_prep", pl: "pod", en: "under", ar: "تَحْتَ", ph: "taḥta" },
+  { cat: "msa_verbs", pl: "powiedział", en: "he said", ar: "قالَ", ph: "qāla" },
+  { cat: "msa_verbs", pl: "poszedł", en: "he went", ar: "ذَهَبَ", ph: "dhahaba" },
+  { cat: "msa_verbs", pl: "przyszedł", en: "he came", ar: "جاءَ", ph: "jā'a" },
+  { cat: "msa_verbs", pl: "zobaczył", en: "he saw", ar: "رَأى", ph: "ra'ā" },
+  { cat: "msa_verbs", pl: "wiedział, poznał", en: "he knew", ar: "عَرَفَ", ph: "ʿarafa" },
+  { cat: "msa_verbs", pl: "chciał", en: "he wanted", ar: "أَرادَ", ph: "arāda" },
+  { cat: "msa_verbs", pl: "mógł, zdołał", en: "he could", ar: "اِسْتَطاعَ", ph: "istaṭāʿa" },
+  { cat: "msa_verbs", pl: "znalazł", en: "he found", ar: "وَجَدَ", ph: "wajada" },
+  { cat: "msa_verbs", pl: "dał", en: "he gave", ar: "أَعْطى", ph: "aʿṭā" },
+  { cat: "msa_verbs", pl: "zapytał", en: "he asked", ar: "سَأَلَ", ph: "sa'ala" },
+  { cat: "msa_news", pl: "państwo", en: "state, country", ar: "دَوْلة", ph: "dawla" },
+  { cat: "msa_news", pl: "rząd", en: "government", ar: "حُكومة", ph: "ḥukūma" },
+  { cat: "msa_news", pl: "prezydent, przewodniczący", en: "president, chief", ar: "رَئيس", ph: "ra'īs" },
+  { cat: "msa_news", pl: "minister", en: "minister", ar: "وَزير", ph: "wazīr" },
+  { cat: "msa_news", pl: "rada, parlament", en: "council, parliament", ar: "مَجْلِس", ph: "majlis" },
+  { cat: "msa_news", pl: "gospodarka", en: "economy", ar: "اِقْتِصاد", ph: "iqtiṣād" },
+  { cat: "msa_news", pl: "społeczeństwo", en: "society", ar: "مُجْتَمَع", ph: "mujtamaʿ" },
+  { cat: "msa_news", pl: "prawo, ustawa", en: "law", ar: "قَانون", ph: "qānūn" },
+  { cat: "msa_news", pl: "wiadomość", en: "news item", ar: "خَبَر", ph: "khabar" },
+  { cat: "msa_news", pl: "gazeta", en: "newspaper", ar: "صَحيفة", ph: "ṣaḥīfa" },
+  { cat: "msa_news", pl: "raport", en: "report", ar: "تَقْرير", ph: "taqrīr" },
+  { cat: "msa_news", pl: "problem", en: "problem", ar: "مُشْكِلة", ph: "mushkila" },
+  { cat: "msa_adj", pl: "nowy", en: "new", ar: "جَديد", ph: "jadīd" },
+  { cat: "msa_adj", pl: "stary (rzecz)", en: "old (thing)", ar: "قَديم", ph: "qadīm" },
+  { cat: "msa_adj", pl: "trudny", en: "difficult", ar: "صَعْب", ph: "ṣaʿb" },
+  { cat: "msa_adj", pl: "łatwy", en: "easy", ar: "سَهْل", ph: "sahl" },
+  { cat: "msa_adj", pl: "ważny", en: "important", ar: "مُهِمّ", ph: "muhimm" },
+  { cat: "msa_adj", pl: "liczny, dużo", en: "many, much", ar: "كَثير", ph: "kathīr" },
+  { cat: "msa_adj", pl: "nieliczny, mało", en: "few, little", ar: "قَليل", ph: "qalīl" },
+  { cat: "msa_home", pl: "pokój", en: "room", ar: "غُرْفة", ph: "ghurfa" },
+  { cat: "msa_home", pl: "kuchnia", en: "kitchen", ar: "مَطْبَخ", ph: "maṭbakh" },
+  { cat: "msa_home", pl: "ogród", en: "garden", ar: "حَديقة", ph: "ḥadīqa" },
+  { cat: "msa_home", pl: "okno", en: "window", ar: "نافِذة", ph: "nāfidha" },
+  { cat: "msa_home", pl: "drzwi", en: "door", ar: "باب", ph: "bāb" },
+  { cat: "msa_home", pl: "drzewo", en: "tree", ar: "شَجَرة", ph: "shajara" },
+  { cat: "msa_home", pl: "środek, serce (czegoś)", en: "heart, centre", ar: "قَلْب", ph: "qalb" },
+  { cat: "msa_food", pl: "jedzenie, posiłek", en: "food, meal", ar: "طَعام", ph: "ṭaʿām" },
+  { cat: "msa_food", pl: "ryba", en: "fish", ar: "سَمَك", ph: "samak" },
+  { cat: "msa_food", pl: "ryż", en: "rice", ar: "أَرُزّ", ph: "aruzz" },
+  { cat: "msa_food", pl: "chleb", en: "bread", ar: "خُبْز", ph: "khubz" },
+  { cat: "msa_food", pl: "woda", en: "water", ar: "ماء", ph: "mā'" },
+  { cat: "msa_food", pl: "rachunek", en: "bill", ar: "حِساب", ph: "ḥisāb" },
+  { cat: "msa_food", pl: "smaczny", en: "tasty", ar: "لَذيذ", ph: "ladhīdh" },
+  { cat: "msa_time", pl: "pogoda", en: "weather", ar: "طَقْس", ph: "ṭaqs" },
+  { cat: "msa_time", pl: "zima", en: "winter", ar: "شِتاء", ph: "shitā'" },
+  { cat: "msa_time", pl: "lato", en: "summer", ar: "صَيْف", ph: "ṣayf" },
+  { cat: "msa_time", pl: "wiosna", en: "spring", ar: "رَبيع", ph: "rabīʿ" },
+  { cat: "msa_time", pl: "jesień", en: "autumn", ar: "خَريف", ph: "kharīf" },
+  { cat: "msa_time", pl: "rok", en: "year", ar: "سَنة", ph: "sana" },
+  { cat: "msa_time", pl: "miesiąc", en: "month", ar: "شَهْر", ph: "shahr" },
+  { cat: "msa_time", pl: "tydzień", en: "week", ar: "أُسْبوع", ph: "usbūʿ" },
+  { cat: "msa_time", pl: "dzień", en: "day", ar: "يَوْم", ph: "yawm" },
+  { cat: "msa_time", pl: "poranek", en: "morning", ar: "صَباح", ph: "ṣabāḥ" },
+  { cat: "msa_time", pl: "wieczór", en: "evening", ar: "مَساء", ph: "masā'" },
+  { cat: "msa_time", pl: "zeszły, miniony", en: "past, last", ar: "ماضٍ", ph: "māḍin" },
+  { cat: "msa_time", pl: "następny, nadchodzący", en: "next, coming", ar: "قادِم", ph: "qādim" },
+  { cat: "msa_travel", pl: "podróżować", en: "to travel", ar: "سافَرَ", ph: "sāfara" },
+  { cat: "msa_travel", pl: "przybyć, dotrzeć", en: "to arrive", ar: "وَصَلَ", ph: "waṣala" },
+  { cat: "msa_travel", pl: "odwiedzić", en: "to visit", ar: "زارَ", ph: "zāra" },
+  { cat: "msa_travel", pl: "muzeum", en: "museum", ar: "مُتْحَف", ph: "mutḥaf" },
+  { cat: "msa_travel", pl: "piramidy", en: "pyramids", ar: "أَهْرام", ph: "ahrām" },
+  { cat: "msa_travel", pl: "zatłoczony", en: "crowded", ar: "مُزْدَحِم", ph: "muzdaḥim" },
+  { cat: "msa_travel", pl: "wspaniały", en: "wonderful", ar: "رائِع", ph: "rā'iʿ" },
+  { cat: "msa_econ", pl: "praca", en: "work", ar: "عَمَل", ph: "ʿamal" },
+  { cat: "msa_econ", pl: "firma, spółka", en: "company", ar: "شَرِكة", ph: "sharika" },
+  { cat: "msa_econ", pl: "podatek", en: "tax", ar: "ضَريبة", ph: "ḍarība" },
+  { cat: "msa_econ", pl: "program", en: "programme", ar: "بَرْنامَج", ph: "barnāmaj" },
+  { cat: "msa_econ", pl: "ministerstwo", en: "ministry", ar: "وِزارة", ph: "wizāra" },
+  { cat: "msa_econ", pl: "liczba", en: "number", ar: "عَدَد", ph: "ʿadad" },
+  { cat: "msa_econ", pl: "wzrosnąć", en: "to increase", ar: "اِزْدادَ", ph: "izdāda" },
+  { cat: "msa_econ", pl: "trudność", en: "difficulty", ar: "صُعوبة", ph: "ṣuʿūba" },
+  { cat: "msa_econ", pl: "płatność, zapłata", en: "payment", ar: "دَفْع", ph: "dafʿ" },
+  { cat: "msa_law", pl: "uchwalić, zatwierdzić", en: "to pass, approve", ar: "أَقَرَّ", ph: "aqarra" },
+  { cat: "msa_law", pl: "artykuł (ustawy)", en: "article (of law)", ar: "مادّة", ph: "mādda" },
+  { cat: "msa_law", pl: "zabrania się", en: "it is prohibited", ar: "يُحْظَر", ph: "yuḥẓar" },
+  { cat: "msa_law", pl: "zgodnie z", en: "in accordance with", ar: "وَفْقاً لِـ", ph: "wafqan li-" },
+  { cat: "msa_law", pl: "ekspert", en: "expert", ar: "خَبير", ph: "khabīr" },
+  { cat: "msa_law", pl: "wystarczający", en: "sufficient", ar: "كافٍ", ph: "kāfin" },
+  { cat: "msa_edu", pl: "edukacja, nauczanie", en: "education", ar: "تَعْليم", ph: "taʿlīm" },
+  { cat: "msa_edu", pl: "reforma", en: "reform", ar: "إِصْلاح", ph: "iṣlāḥ" },
+  { cat: "msa_edu", pl: "klasa (szkolna)", en: "classroom", ar: "فَصْل", ph: "faṣl" },
+  { cat: "msa_edu", pl: "podręcznik, książka", en: "book", ar: "كِتاب", ph: "kitāb" },
+  { cat: "msa_edu", pl: "budować", en: "to build", ar: "بَنى", ph: "banā" },
+  { cat: "msa_edu", pl: "poprawa", en: "improvement", ar: "تَحَسُّن", ph: "taḥassun" },
+  { cat: "msa_edu", pl: "matematyka", en: "mathematics", ar: "رِياضِيّات", ph: "riyāḍiyyāt" },
+  { cat: "msa_opinion", pl: "opinia, zdanie", en: "opinion", ar: "رَأْي", ph: "ra'y" },
+  { cat: "msa_opinion", pl: "prawda", en: "truth", ar: "حَقيقة", ph: "ḥaqīqa" },
+  { cat: "msa_opinion", pl: "informacja", en: "information", ar: "مَعْلومات", ph: "maʿlūmāt" },
+  { cat: "msa_opinion", pl: "technologia", en: "technology", ar: "تِكْنولوجيا", ph: "tiknulūjiyā" },
+  { cat: "msa_opinion", pl: "zmienić", en: "to change", ar: "غَيَّرَ", ph: "ghayyara" },
+  { cat: "msa_opinion", pl: "stracić", en: "to lose", ar: "فَقَدَ", ph: "faqada" },
+  { cat: "msa_opinion", pl: "stać się", en: "to become", ar: "أَصْبَحَ", ph: "aṣbaḥa" },
+  { cat: "msa_opinion", pl: "szybki", en: "fast", ar: "سَريع", ph: "sarīʿ" },
+  { cat: "msa_opinion", pl: "inny", en: "other", ar: "آخَر", ph: "ākhar" },
+  { cat: "msa_verbs2", pl: "myśleć, sądzić", en: "to think", ar: "اِعْتَقَدَ", ph: "iʿtaqada" },
+  { cat: "msa_verbs2", pl: "mieć nadzieję", en: "to hope", ar: "أَمَلَ", ph: "amala" },
+  { cat: "msa_verbs2", pl: "potrzebować", en: "to need", ar: "اِحْتاجَ", ph: "iḥtāja" },
+  { cat: "msa_verbs2", pl: "dyskutować", en: "to discuss", ar: "ناقَشَ", ph: "nāqasha" },
+  { cat: "msa_verbs2", pl: "zamówić, poprosić", en: "to order, request", ar: "طَلَبَ", ph: "ṭalaba" },
+  { cat: "msa_verbs2", pl: "zapłacić", en: "to pay", ar: "دَفَعَ", ph: "dafaʿa" },
+  { cat: "msa_verbs2", pl: "pamiętać", en: "to remember", ar: "تَذَكَّرَ", ph: "tadhakkara" },
+  { cat: "msa_verbs2", pl: "mieszkać, żyć", en: "to live", ar: "عاشَ", ph: "ʿāsha" },
+  { cat: "msa_verbs2", pl: "rosnąć", en: "to grow", ar: "نَما", ph: "namā" }
+];
+
+const MSA_CATEGORIES = [
+  { key: "msa_places", emoji: "🏛️", label: "Budynki i miejsca", labelEn: "Buildings and places" },
+  { key: "msa_signs", emoji: "🚪", label: "Napisy i szyldy", labelEn: "Signs" },
+  { key: "msa_office", emoji: "📋", label: "Urząd i dokumenty", labelEn: "Office and documents" },
+  { key: "msa_transport", emoji: "🚉", label: "Transport", labelEn: "Transport" },
+  { key: "msa_basics", emoji: "🔤", label: "Podstawy", labelEn: "Basics" },
+  { key: "msa_roots", emoji: "🌱", label: "Z rdzeni", labelEn: "From roots" },
+  { key: "msa_glue", emoji: "🔗", label: "Spójniki tekstu", labelEn: "Text connectors" },
+  { key: "msa_prep", emoji: "📍", label: "Przyimki", labelEn: "Prepositions" },
+  { key: "msa_verbs", emoji: "⚡", label: "Czasowniki", labelEn: "Verbs" },
+  { key: "msa_news", emoji: "📰", label: "Słowa prasowe", labelEn: "Press vocabulary" },
+  { key: "msa_adj", emoji: "🎨", label: "Przymiotniki", labelEn: "Adjectives" },
+  { key: "msa_home", emoji: "🏠", label: "dom i codzienność", labelEn: "home & daily life" },
+  { key: "msa_food", emoji: "🍽️", label: "jedzenie", labelEn: "food" },
+  { key: "msa_time", emoji: "📅", label: "czas i pogoda", labelEn: "time & weather" },
+  { key: "msa_travel", emoji: "✈️", label: "podróż", labelEn: "travel" },
+  { key: "msa_econ", emoji: "💼", label: "praca i gospodarka", labelEn: "work & economy" },
+  { key: "msa_law", emoji: "⚖️", label: "prawo", labelEn: "law" },
+  { key: "msa_edu", emoji: "🎓", label: "edukacja i nauka", labelEn: "education & science" },
+  { key: "msa_opinion", emoji: "💬", label: "opinie i dyskusja", labelEn: "opinion & debate" },
+  { key: "msa_verbs2", emoji: "🔁", label: "czasowniki (więcej)", labelEn: "more verbs" }
+];
+
+// ---------- Słownictwo „z ulicy" (MSA): szyldy, napisy, urząd ----------
+const STREET_MSA = [
+  {
+    group: { pl: "Budynki i miejsca", en: "Buildings and places" },
+    items: [
+      { ar: "مَحَطّة", ph: "maḥaṭṭa", pl: "przystanek, dworzec", en: "station, stop",
+        where: { pl: "Na dworcach kolejowych i autobusowych.", en: "At train and bus stations." },
+        rootLink: { ar: "ح-ط-ط", tr: "ḥ-ṭ-ṭ", note: { pl: "Rdzeń „kłaść, składać” — miejsce, gdzie pojazd się zatrzymuje.", en: "Root 'to put down' — the place where a vehicle stops." } } },
+      { ar: "مَكْتَبة", ph: "maktaba", pl: "księgarnia, biblioteka", en: "bookshop, library",
+        where: { pl: "Na szyldach księgarni w każdym mieście.", en: "On bookshop signs in every city." },
+        rootLink: { ar: "ك-ت-ب", tr: "k-t-b", note: { pl: "Znasz ten rdzeń! Wzór مَفْعَلة = miejsce. Miejsce książek.", en: "You know this root! The مَفْعَلة pattern = place. Place of books." }, rootIdx: 0 } },
+      { ar: "مُسْتَشْفى", ph: "mustashfā", pl: "szpital", en: "hospital",
+        where: { pl: "Duże niebieskie tablice przy drogach.", en: "Large blue signs along roads." },
+        rootLink: { ar: "ش-ف-ي", tr: "sh-f-y", note: { pl: "Rdzeń „leczyć, zdrowieć” — miejsce szukania uzdrowienia (X wzór).", en: "Root 'to heal' — the place where healing is sought (form X)." } } },
+      { ar: "صَيْدَلِيّة", ph: "ṣaydaliyya", pl: "apteka", en: "pharmacy",
+        where: { pl: "Zielony krzyż i ten napis.", en: "A green cross and this word." } },
+      { ar: "مَطْعَم", ph: "maṭʿam", pl: "restauracja", en: "restaurant",
+        where: { pl: "Na każdej ulicy handlowej.", en: "On every commercial street." },
+        rootLink: { ar: "ط-ع-م", tr: "ṭ-ʿ-m", note: { pl: "Rdzeń „jedzenie, smak” — miejsce jedzenia. Jak مَكْتَب (biuro) od pisania.", en: "Root 'food, taste' — place of eating. Like مَكْتَب (office) from writing." } } },
+      { ar: "مَصْرِف", ph: "maṣrif", pl: "bank", en: "bank",
+        where: { pl: "Też: بَنْك (bank) — oba w użyciu.", en: "Also: بَنْك (bank) — both are used." } },
+      { ar: "مَدْرَسة", ph: "madrasa", pl: "szkoła", en: "school",
+        where: { pl: "Na budynkach szkolnych.", en: "On school buildings." },
+        rootLink: { ar: "د-ر-س", tr: "d-r-s", note: { pl: "Znasz ten rdzeń! Miejsce nauki.", en: "You know this root! Place of study." }, rootIdx: 2 } },
+      { ar: "جامِعة", ph: "jāmiʿa", pl: "uniwersytet", en: "university",
+        where: { pl: "Na kampusach. Uwaga: جامِع (bez ة) = meczet!", en: "On campuses. Note: جامِع (without ة) = mosque!" } },
+      { ar: "سوق", ph: "sūq", pl: "targ, bazar", en: "market, bazaar",
+        where: { pl: "Wszędzie — od wielkich bazarów po lokalne targi.", en: "Everywhere — from grand bazaars to local markets." } },
+      { ar: "مَسْجِد", ph: "masjid", pl: "meczet", en: "mosque",
+        where: { pl: "Na tablicach i drogowskazach.", en: "On plaques and road signs." } },
+    ],
+  },
+  {
+    group: { pl: "Napisy funkcyjne", en: "Functional signs" },
+    items: [
+      { ar: "مَدْخَل", ph: "madkhal", pl: "wejście", en: "entrance",
+        where: { pl: "Nad drzwiami. Wzór مَفْعَل = miejsce wchodzenia.", en: "Above doors. The مَفْعَل pattern = place of entering." } },
+      { ar: "خُروج", ph: "khurūj", pl: "wyjście", en: "exit",
+        where: { pl: "Nad drzwiami wyjściowymi, często z zieloną strzałką.", en: "Above exit doors, often with a green arrow." } },
+      { ar: "مَمْنوع", ph: "mamnūʿ", pl: "zakaz, zabronione", en: "forbidden",
+        where: { pl: "Najważniejsze słowo na znakach! „mamnūʿ at-tadkhīn” = zakaz palenia.", en: "The key word on signs! 'mamnūʿ at-tadkhīn' = no smoking." } },
+      { ar: "مَفْتوح", ph: "maftūḥ", pl: "otwarte", en: "open",
+        where: { pl: "Na drzwiach sklepów.", en: "On shop doors." } },
+      { ar: "مُغْلَق", ph: "mughlaq", pl: "zamknięte", en: "closed",
+        where: { pl: "Na drzwiach. W egipskim usłyszysz „ma'fūl”.", en: "On doors. In Egyptian you'll hear 'ma'fūl'." } },
+      { ar: "لِلْبَيْع", ph: "lil-bayʿ", pl: "na sprzedaż", en: "for sale",
+        where: { pl: "Na nieruchomościach i samochodach.", en: "On property and cars." } },
+      { ar: "لِلْإيجار", ph: "lil-ījār", pl: "do wynajęcia", en: "for rent",
+        where: { pl: "Na mieszkaniach i lokalach.", en: "On flats and premises." } },
+    ],
+  },
+  {
+    group: { pl: "Urząd i dokumenty", en: "Office and documents" },
+    items: [
+      { ar: "اِسْم", ph: "ism", pl: "imię, nazwa", en: "name",
+        where: { pl: "Pierwsze pole każdego formularza.", en: "The first field on every form." },
+        rootLink: { ar: "س-م-و", tr: "s-m-w", note: { pl: "Znasz z „bismillāh” (w imię Boga)!", en: "You know it from 'bismillāh' (in the name of God)!" } } },
+      { ar: "تَاريخ", ph: "tārīkh", pl: "data; historia", en: "date; history",
+        where: { pl: "Na formularzach i w nagłówkach gazet.", en: "On forms and in newspaper headers." } },
+      { ar: "عُنْوان", ph: "ʿunwān", pl: "adres; tytuł", en: "address; title",
+        where: { pl: "W formularzach i jako tytuł artykułu.", en: "On forms and as an article title." } },
+      { ar: "رَقَم", ph: "raqam", pl: "numer", en: "number",
+        where: { pl: "Wszędzie: numer telefonu, dokumentu, pokoju.", en: "Everywhere: phone, document, room number." } },
+      { ar: "تَوْقيع", ph: "tawqīʿ", pl: "podpis", en: "signature",
+        where: { pl: "Na dole dokumentu.", en: "At the bottom of a document." } },
+      { ar: "جَواز سَفَر", ph: "jawāz safar", pl: "paszport", en: "passport",
+        where: { pl: "Na lotnisku i w urzędach. Dosł. „pozwolenie podróży”.", en: "At airports and offices. Literally 'travel permit'." } },
+    ],
+  },
+  {
+    group: { pl: "Transport", en: "Transport" },
+    items: [
+      { ar: "قِطار", ph: "qiṭār", pl: "pociąg", en: "train",
+        where: { pl: "Na dworcach. W egipskim „'iṭr”.", en: "At stations. In Egyptian ''iṭr'." } },
+      { ar: "حافِلة", ph: "ḥāfila", pl: "autobus", en: "bus",
+        where: { pl: "MSA na tablicach; w Egipcie mówi się „otobīs”.", en: "MSA on signs; in Egypt people say 'otobīs'." } },
+      { ar: "مَطار", ph: "maṭār", pl: "lotnisko", en: "airport",
+        where: { pl: "Duże tablice przy drogach. Rdzeń ط-ي-ر (latać).", en: "Large road signs. Root ط-ي-ر (to fly)." } },
+      { ar: "تَذْكِرة", ph: "tadhkira", pl: "bilet", en: "ticket",
+        where: { pl: "W kasach. Rdzeń ذ-ك-ر (pamiętać) — to, co przypomina o prawie wstępu.", en: "At ticket offices. Root ذ-ك-ر (to remember)." } },
+      { ar: "رَصيف", ph: "raṣīf", pl: "peron; chodnik", en: "platform; pavement",
+        where: { pl: "Na dworcach kolejowych.", en: "At train stations." } },
     ],
   },
 ];
@@ -5850,6 +6556,9 @@ const MSA_PATH = [
       { type: "text", pl: "MSA (arabski standardowy) to wspólny język pisany całego świata arabskiego — prasa, książki, wiadomości, dokumenty. Nikt nie mówi nim w domu, ale każdy go czyta.", en: "MSA (Modern Standard Arabic) is the shared written language of the whole Arab world — press, books, news, documents. No one speaks it at home, but everyone reads it." },
       { type: "text", pl: "Uczysz się już egipskiego (dialektu mówionego). MSA to jego „literacki brat” — wiele słów rozpoznasz. Arabski pisze się od PRAWEJ do lewej.", en: "You're already learning Egyptian (the spoken dialect). MSA is its 'literary sibling' — you'll recognize many words. Arabic is written from RIGHT to left." },
       { type: "fact", ar: "العَرَبِيّة", ph: "al-ʿarabiyya", pl: "„język arabski” — tak nazywa się MSA po arabsku", en: "'the Arabic language' — what MSA calls itself in Arabic" },
+      { type: "word", ar: "العَرَبِيّة", ph: "al-ʿarabiyya", pl: "język arabski", en: "the Arabic language" },
+      { type: "exercise", prompt: "Gdzie usłyszysz MSA, a gdzie dialekt egipski?", promptEn: "Where will you hear MSA, and where Egyptian dialect?", options: [ { ar: "📺", label: "wiadomości TV → MSA", labelEn: "TV news → MSA", ok: true }, { ar: "☕", label: "rozmowa w kawiarni → MSA", labelEn: "café chat → MSA" } ], why: "MSA to język pisany i oficjalny: wiadomości, książki, dokumenty. W kawiarni usłyszysz dialekt.", whyEn: "MSA is the written and formal language: news, books, documents. In a café you'll hear dialect." },
+      { type: "sentence", ar: "هٰذِهِ العَرَبِيّة", ph: "hādhihi l-ʿarabiyya", pl: "To jest język arabski.", en: "This is the Arabic language." }
     ],
   },
   {
@@ -5861,6 +6570,11 @@ const MSA_PATH = [
       { type: "letter", ar: "ت", ph: "t", pl: "dwie kropki na górze", en: "two dots above" },
       { type: "letter", ar: "ث", ph: "th (jak ang. think)", pl: "trzy kropki na górze", en: "three dots above" },
       { type: "tip", pl: "Kropki to jedyna różnica. Kształt („miseczka”) jest identyczny.", en: "Dots are the only difference. The shape (a 'bowl') is identical." },
+      { type: "text", pl: "Zobacz je od razu w prawdziwych słowach — nie musisz jeszcze rozumieć wszystkiego, chodzi o rozpoznanie kształtu.", en: "See them right away in real words — you don't need to understand everything yet, it's about recognizing the shape." },
+      { type: "word", ar: "بَيْت", ph: "bayt", pl: "dom", en: "house" },
+      { type: "word", ar: "تِلْميذ", ph: "tilmīdh", pl: "uczeń", en: "pupil" },
+      { type: "exercise", prompt: "Która litera ma DWIE kropki na górze?", promptEn: "Which letter has TWO dots above?", options: [ { ar: "ب", ph: "b" }, { ar: "ت", ph: "t", ok: true }, { ar: "ث", ph: "th" } ], why: "ت ma dwie kropki na górze, ب jedną pod spodem, ث trzy na górze.", whyEn: "ت has two dots above, ب one below, ث three above." },
+      { type: "sentence", ar: "البَيْتُ كَبيرٌ", ph: "al-baytu kabīrun", pl: "Dom jest duży.", en: "The house is big." }
     ],
   },
   {
@@ -5870,6 +6584,10 @@ const MSA_PATH = [
       { type: "text", pl: "Arabski to pismo łączone — litery w słowie łączą się jak w naszym piśmie odręcznym. Dlatego jedna litera ma różne kształty zależnie od miejsca w słowie.", en: "Arabic is a connected script — letters in a word join like our handwriting. That's why one letter has different shapes depending on its place in the word." },
       { type: "forms", ar: "ب", iso: "ب", ini: "بـ", med: "ـبـ", fin: "ـب", pl: "litera ب w czterech pozycjach", en: "the letter ب in four positions" },
       { type: "tip", pl: "Nie musisz ich teraz umieć na pamięć — zobaczysz je w praktyce. Pełna tabela jest w zakładce „alfabet”.", en: "You don't need to memorize these now — you'll see them in practice. The full table is in the 'alphabet' tab." },
+      { type: "text", pl: "Zobacz łączenie w praktyce — to samo słowo pisane osobno i połączone:", en: "See connection in practice — the same word written separately and joined:" },
+      { type: "word", ar: "بَنَات", ph: "banāt", pl: "dziewczyny", en: "girls" },
+      { type: "exercise", prompt: "Dlaczego litery w słowie wyglądają inaczej niż osobno?", promptEn: "Why do letters in a word look different than alone?", options: [ { ar: "✍️", label: "bo pismo jest łączone", labelEn: "because the script is connected", ok: true }, { ar: "🎲", label: "bo to przypadek", labelEn: "because it's random" } ], why: "Arabski to pismo łączone — każda litera ma formę zależną od pozycji w słowie.", whyEn: "Arabic is a connected script — each letter has a form depending on its position." },
+      { type: "sentence", ar: "البَنَاتُ في البَيْتِ", ph: "al-banātu fī l-bayt", pl: "Dziewczyny są w domu.", en: "The girls are in the house." }
     ],
   },
   {
@@ -5879,6 +6597,8 @@ const MSA_PATH = [
       { type: "text", pl: "Masz już ب (b). Dołóżmy dwie litery: ا (alif, długie „a”) i znów ب. Czytając od prawej: ب-ا-ب.", en: "You have ب (b). Let's add two letters: ا (alif, long 'a') and ب again. Reading right to left: ب-ا-ب." },
       { type: "word", ar: "بَاب", ph: "bāb", pl: "drzwi", en: "door" },
       { type: "text", pl: "Zauważ: pierwsze ب łączy się z alifem, ale alif NIE łączy się z następną literą — dlatego drugie ب stoi osobno.", en: "Notice: the first ب connects to the alif, but alif does NOT connect to the next letter — so the second ب stands alone." },
+      { type: "sentence", ar: "البَيْتُ كَبيرٌ", ph: "al-baytu kabīrun", pl: "Dom jest duży.", en: "The house is big." },
+      { type: "exercise", prompt: "Ile liter ma słowo بَاب?", promptEn: "How many letters does بَاب have?", options: [ { ar: "2", label: "dwie", labelEn: "two" }, { ar: "3", label: "trzy", labelEn: "three", ok: true }, { ar: "4", label: "cztery", labelEn: "four" } ], why: "ب + ا + ب = trzy litery. Znak fatha nad pierwszą to samogłoska, nie litera.", whyEn: "ب + ا + ب = three letters. The fatha above the first is a vowel mark, not a letter." }
     ],
   },
   {
@@ -5889,6 +6609,11 @@ const MSA_PATH = [
       { type: "haraka", ar: "بَ", ph: "ba", pl: "fatha (kreska na górze) = a", en: "fatha (stroke above) = a" },
       { type: "haraka", ar: "بِ", ph: "bi", pl: "kasra (kreska pod spodem) = i", en: "kasra (stroke below) = i" },
       { type: "haraka", ar: "بُ", ph: "bu", pl: "damma (pętelka na górze) = u", en: "damma (loop above) = u" },
+      { type: "text", pl: "Te same znaki na prawdziwym słowie — zobacz, jak zmieniają wymowę:", en: "The same marks on a real word — see how they change the pronunciation:" },
+      { type: "word", ar: "كَتَبَ", ph: "kataba", pl: "napisał", en: "he wrote" },
+      { type: "word", ar: "كُتُب", ph: "kutub", pl: "książki", en: "books" },
+      { type: "exercise", prompt: "Ten sam szkielet كتب, inne znaki. Co znaczy كُتُب?", promptEn: "Same skeleton كتب, different marks. What does كُتُب mean?", options: [ { ar: "كُتُب", ph: "kutub", label: "książki", labelEn: "books", ok: true }, { ar: "كُتُب", ph: "kutub", label: "napisał", labelEn: "he wrote" } ], why: "Damma (u) dwa razy = kutub, liczba mnoga „książki”. To pokazuje, po co są harakat!", whyEn: "Damma (u) twice = kutub, the plural 'books'. This shows what harakat are for!" },
+      { type: "sentence", ar: "كَتَبَ الدَّرْسَ", ph: "kataba d-darsa", pl: "Napisał lekcję.", en: "He wrote the lesson." }
     ],
   },
   {
@@ -5898,6 +6623,8 @@ const MSA_PATH = [
       { type: "text", pl: "Znasz z egipskiego „ketaab” (książka). W MSA to niemal to samo — „kitāb”. Rdzeń k-t-b (pisać) łączy książkę, pisanie i biuro.", en: "You know 'ketaab' (book) from Egyptian. In MSA it's almost the same — 'kitāb'. The root k-t-b (write) links book, writing and office." },
       { type: "word", ar: "كِتَاب", ph: "kitāb", pl: "książka", en: "book" },
       { type: "compare", msa: "kitāb", eg: "ketaab", pl: "MSA vs egipski — tylko drobna różnica w samogłosce", en: "MSA vs Egyptian — just a small vowel difference" },
+      { type: "sentence", ar: "هٰذا كِتَابي", ph: "hādhā kitābī", pl: "To jest moja książka.", en: "This is my book." },
+      { type: "exercise", prompt: "Egipskie „ketaab\" i MSA „kitāb\" to:", promptEn: "Egyptian 'ketaab' and MSA 'kitāb' are:", options: [ { ar: "ك-ت-ب", label: "to samo słowo, inna wymowa", labelEn: "the same word, different pronunciation", ok: true }, { ar: "≠", label: "dwa różne słowa", labelEn: "two different words" } ], why: "Ten sam rdzeń i to samo słowo — dialekty różnią się głównie krótkimi samogłoskami.", whyEn: "Same root, same word — dialects differ mainly in short vowels." }
     ],
   },
   {
@@ -5907,6 +6634,8 @@ const MSA_PATH = [
       { type: "text", pl: "Arabski ma jeden rodzajnik określony: الـ (al-), doklejany z przodu słowa. Nie ma rodzajnika nieokreślonego („a/an”) — jego brak to znaczy „jakiś”.", en: "Arabic has one definite article: الـ (al-), attached to the front of a word. There's no indefinite article ('a/an') — its absence means 'a/some'." },
       { type: "word", ar: "الكِتَاب", ph: "al-kitāb", pl: "ta książka", en: "the book" },
       { type: "tip", pl: "To samo „al-” znasz z egipskiego („el-”) i z „el-ḥamdu li-llāh”.", en: "You know the same 'al-' from Egyptian ('el-') and from 'el-ḥamdu li-llāh'." },
+      { type: "sentence", ar: "الكِتَابُ عَلى الطّاوِلةِ", ph: "al-kitābu ʿalā ṭ-ṭāwila", pl: "Książka jest na stole.", en: "The book is on the table." },
+      { type: "exercise", prompt: "Jak powiedzieć „ta szkoła”?", promptEn: "How do you say 'the school'?", options: [ { ar: "مَدْرَسة", ph: "madrasa", label: "jakaś szkoła", labelEn: "a school" }, { ar: "المَدْرَسة", ph: "al-madrasa", label: "ta szkoła", labelEn: "the school", ok: true } ], why: "الـ z przodu = określoność. Bez niego słowo znaczy „jakaś szkoła”.", whyEn: "الـ in front = definiteness. Without it the word means 'a school'." }
     ],
   },
   {
@@ -5916,8 +6645,140 @@ const MSA_PATH = [
       { type: "text", pl: "W arabskim w czasie teraźniejszym nie ma słowa „jest”. „Dom duży” = „dom (jest) duży”. To samo działa w egipskim!", en: "In Arabic there's no word 'is' in the present. 'House big' = 'the house (is) big'. The same works in Egyptian!" },
       { type: "sentence", ar: "البَيْتُ كَبيرٌ", ph: "al-baytu kabīrun", pl: "Dom jest duży.", en: "The house is big." },
       { type: "tip", pl: "Końcówki -u i -un to znaczniki przypadka (mianownik). W mowie się je pomija — zobaczysz je w tekście pisanym.", en: "The -u and -un endings mark the case (nominative). They're dropped in speech — you'll see them in written text." },
+      { type: "sentence", ar: "الطّالِبُ مُجْتَهِدٌ", ph: "aṭ-ṭālibu mujtahidun", pl: "Uczeń jest pilny.", en: "The student is diligent." },
+      { type: "exercise", prompt: "Jak powiedzieć po arabsku „Dom jest duży\"?", promptEn: "How to say 'The house is big' in Arabic?", options: [ { ar: "البَيْتُ كَبيرٌ", ph: "al-baytu kabīrun", label: "dom duży", labelEn: "house big", ok: true }, { ar: "البَيْتُ يَكونُ كَبيرٌ", ph: "...yakūnu...", label: "dom jest duży", labelEn: "house is big" } ], why: "W czasie teraźniejszym nie ma czasownika „być” — po prostu zestawiasz słowa.", whyEn: "In the present there's no verb 'to be' — you just place the words together." }
     ],
-  }
+  },
+  {
+    id: "l9", num: 9, title: { pl: "Litery ن، ي، م", en: "Letters ن, ي, م" },
+    goal: { pl: "Poznaj trzy bardzo częste litery.", en: "Learn three very common letters." },
+    blocks: [
+      { type: "text", pl: "Te trzy litery pojawiają się niemal w każdym tekście. Dwie pierwsze przypominają znane ci „miseczki”.", en: "These three letters appear in almost every text. The first two resemble the 'bowls' you know." },
+      { type: "letter", ar: "ن", ph: "n", pl: "miseczka z jedną kropką NA GÓRZE", en: "bowl with one dot ABOVE" },
+      { type: "letter", ar: "ي", ph: "y / ī", pl: "miseczka z dwiema kropkami POD spodem", en: "bowl with two dots BELOW" },
+      { type: "letter", ar: "م", ph: "m", pl: "kółeczko z ogonkiem", en: "a loop with a tail" },
+      { type: "word", ar: "مِن", ph: "min", pl: "z, od", en: "from" },
+      { type: "word", ar: "في", ph: "fī", pl: "w, wewnątrz", en: "in" },
+      { type: "tip", pl: "Właśnie przeczytałeś dwa najczęstsze przyimki arabskie. Zobaczysz je w każdym zdaniu.", en: "You've just read the two most common Arabic prepositions. You'll see them in every sentence." },
+      { type: "sentence", ar: "أَنا مِن بولَنْدا", ph: "anā min bōlandā", pl: "Jestem z Polski.", en: "I am from Poland." },
+      { type: "sentence", ar: "الكِتَابُ في البَيْتِ", ph: "al-kitābu fī l-bayt", pl: "Książka jest w domu.", en: "The book is in the house." },
+      { type: "exercise", prompt: "Które słowo znaczy: w, wewnątrz?", promptEn: "Which word means 'in'?", options: [ { ar: "مِن", ph: "min", label: "z, od", labelEn: "from" }, { ar: "في", ph: "fī", label: "w", labelEn: "in", ok: true } ], why: "في (fī) = w, wewnątrz. مِن (min) = z, od. Oba są bardzo częste.", whyEn: "في (fī) = in. مِن (min) = from. Both are very common." }
+    ],
+  },
+  {
+    id: "l10", num: 10, title: { pl: "Rodzaj: ta końcówka ة", en: "Gender: the ة ending" },
+    goal: { pl: "Rozpoznaj rzeczowniki żeńskie.", en: "Recognize feminine nouns." },
+    blocks: [
+      { type: "text", pl: "Arabski dzieli wszystko na męskie i żeńskie. Najczęstszy znak żeńskości to końcówka ة (ta marbuta) — „związane t”.", en: "Arabic divides everything into masculine and feminine. The most common feminine marker is the ending ة (ta marbuta) — 'tied t'." },
+      { type: "word", ar: "مُدَرِّس", ph: "mudarris", pl: "nauczyciel", en: "teacher (m)" },
+      { type: "word", ar: "مُدَرِّسة", ph: "mudarrisa", pl: "nauczycielka", en: "teacher (f)" },
+      { type: "text", pl: "Ta sama zasada działa w egipskim — znasz ją z „3aayez / 3ayza” (chcę, m./ż.).", en: "The same rule works in Egyptian — you know it from '3aayez / 3ayza' (I want, m/f)." },
+      { type: "tip", pl: "ة wymawia się jako „a” na końcu, ale gdy słowo dostaje końcówkę, zmienia się w zwykłe „t”.", en: "ة is pronounced 'a' at the end, but when the word takes a suffix it turns into a regular 't'." },
+      { type: "sentence", ar: "المُدَرِّسةُ في المَدْرَسةِ", ph: "al-mudarrisatu fī l-madrasa", pl: "Nauczycielka jest w szkole.", en: "The teacher (f) is at school." },
+      { type: "exercise", prompt: "Które słowo jest rodzaju żeńskiego?", promptEn: "Which word is feminine?", options: [ { ar: "مُدَرِّس", ph: "mudarris" }, { ar: "مُدَرِّسة", ph: "mudarrisa", ok: true } ], why: "Końcówka ة (ta marbuta) to znak żeńskości.", whyEn: "The ending ة (ta marbuta) marks the feminine." }
+    ],
+  },
+  {
+    id: "l11", num: 11, title: { pl: "Litery ل، ر، س", en: "Letters ل, ر, س" },
+    goal: { pl: "Dołóż kolejne trzy litery.", en: "Add three more letters." },
+    blocks: [
+      { type: "letter", ar: "ل", ph: "l", pl: "wysoka pionowa kreska z haczykiem", en: "tall vertical stroke with a hook" },
+      { type: "letter", ar: "ر", ph: "r", pl: "krótki zakrzywiony ogonek (NIE łączy się w lewo)", en: "short curved tail (does NOT connect leftward)" },
+      { type: "letter", ar: "س", ph: "s", pl: "trzy ząbki", en: "three teeth" },
+      { type: "word", ar: "دَرْس", ph: "dars", pl: "lekcja", en: "lesson" },
+      { type: "word", ar: "رَسَمَ", ph: "rasama", pl: "narysował", en: "he drew" },
+      { type: "tip", pl: "Znasz już „dars” z rdzenia د-ر-س! Teraz umiesz go przeczytać litera po literze.", en: "You already know 'dars' from the root د-ر-س! Now you can read it letter by letter." },
+      { type: "sentence", ar: "الدَّرْسُ سَهْلٌ", ph: "ad-darsu sahlun", pl: "Lekcja jest łatwa.", en: "The lesson is easy." },
+      { type: "exercise", prompt: "Która litera NIE łączy się z następną?", promptEn: "Which letter does NOT connect to the next one?", options: [ { ar: "ل", ph: "l" }, { ar: "ر", ph: "r", ok: true }, { ar: "س", ph: "s" } ], why: "ر należy do sześciu liter, które nie łączą się w lewo (jak ا، د، ذ، ز، و).", whyEn: "ر is one of six letters that don't connect leftward (like ا, د, ذ, ز, و)." }
+    ],
+  },
+  {
+    id: "l12", num: 12, title: { pl: "Liczba mnoga: regularna", en: "Plural: the regular kind" },
+    goal: { pl: "Utwórz liczbę mnogą przez końcówkę.", en: "Form the plural with an ending." },
+    blocks: [
+      { type: "text", pl: "Arabski ma dwa rodzaje liczby mnogiej. Ta łatwiejsza (regularna) po prostu dokleja końcówkę.", en: "Arabic has two kinds of plural. The easier one (regular) simply attaches an ending." },
+      { type: "word", ar: "مُدَرِّسون", ph: "mudarrisūn", pl: "nauczyciele (m.)", en: "teachers (m)" },
+      { type: "word", ar: "مُدَرِّسات", ph: "mudarrisāt", pl: "nauczycielki (ż.)", en: "teachers (f)" },
+      { type: "text", pl: "Męska końcówka: ـون. Żeńska: ـات. Żeńska jest bardzo częsta i łatwa do rozpoznania.", en: "Masculine ending: ـون. Feminine: ـات. The feminine one is very common and easy to spot." },
+      { type: "tip", pl: "Widziałeś już ـات w „ma'kūlāt” (potrawy) przy rdzeniu أ-ك-ل i w „muʿāmalāt” (formalności).", en: "You've already seen ـات in 'ma'kūlāt' (dishes) at the root أ-ك-ل and in 'muʿāmalāt' (paperwork)." },
+      { type: "sentence", ar: "المُدَرِّسونَ في المَدْرَسةِ", ph: "al-mudarrisūna fī l-madrasa", pl: "Nauczyciele są w szkole.", en: "The teachers are at school." },
+      { type: "exercise", prompt: "Jak brzmi liczba mnoga od مُدَرِّسة (nauczycielka)?", promptEn: "What's the plural of مُدَرِّسة (teacher, f)?", options: [ { ar: "مُدَرِّسون", ph: "mudarrisūn", label: "nauczyciele", labelEn: "teachers (m)" }, { ar: "مُدَرِّسات", ph: "mudarrisāt", label: "nauczycielki", labelEn: "teachers (f)", ok: true } ], why: "Żeńska liczba mnoga: ـات. Męska: ـون.", whyEn: "Feminine plural: ـات. Masculine: ـون." }
+    ],
+  },
+  {
+    id: "l13", num: 13, title: { pl: "Liczba mnoga: łamana", en: "Plural: the broken kind" },
+    goal: { pl: "Zrozum, czemu słowo zmienia kształt w liczbie mnogiej.", en: "Understand why a word changes shape in the plural." },
+    blocks: [
+      { type: "text", pl: "Druga liczba mnoga „łamie” słowo od środka — przestawia samogłoski zamiast doklejać końcówkę. To jak angielskie man → men, ale znacznie częstsze.", en: "The second plural 'breaks' the word from within — it rearranges the vowels instead of adding an ending. Like English man → men, but far more common." },
+      { type: "word", ar: "كِتَاب", ph: "kitāb", pl: "książka", en: "book" },
+      { type: "word", ar: "كُتُب", ph: "kutub", pl: "książki", en: "books" },
+      { type: "word", ar: "بَيْت", ph: "bayt", pl: "dom", en: "house" },
+      { type: "word", ar: "بُيوت", ph: "buyūt", pl: "domy", en: "houses" },
+      { type: "tip", pl: "Rdzeń zostaje ten sam (k-t-b), zmienia się tylko wzór samogłosek. Liczby mnogiej łamanej trzeba uczyć się razem ze słowem.", en: "The root stays the same (k-t-b), only the vowel pattern changes. Broken plurals must be learned together with the word." },
+      { type: "sentence", ar: "الكُتُبُ عَلى الطّاوِلةِ", ph: "al-kutubu ʿalā ṭ-ṭāwila", pl: "Książki są na stole.", en: "The books are on the table." },
+      { type: "exercise", prompt: "Co łączy كِتَاب i كُتُب?", promptEn: "What connects كِتَاب and كُتُب?", options: [ { ar: "ك-ت-ب", label: "ten sam rdzeń", labelEn: "the same root", ok: true }, { ar: "ـات", label: "ta sama końcówka", labelEn: "the same ending" } ], why: "Rdzeń zostaje (k-t-b), zmienia się wzór samogłosek. Dlatego to „łamana” liczba mnoga.", whyEn: "The root stays (k-t-b), the vowel pattern changes. That's why it's a 'broken' plural." }
+    ],
+  },
+  {
+    id: "l14", num: 14, title: { pl: "Czasownik: przeszły", en: "Verb: the past tense" },
+    goal: { pl: "Odmień czasownik w czasie przeszłym.", en: "Conjugate a verb in the past." },
+    blocks: [
+      { type: "text", pl: "W MSA czas przeszły tworzy się końcówkami, podobnie jak w egipskim — ale końcówki są pełniejsze.", en: "In MSA the past tense uses endings, similar to Egyptian — but the endings are fuller." },
+      { type: "word", ar: "كَتَبْتُ", ph: "katabtu", pl: "napisałem", en: "I wrote" },
+      { type: "word", ar: "كَتَبْتَ", ph: "katabta", pl: "napisałeś", en: "you wrote (m)" },
+      { type: "word", ar: "كَتَبَ", ph: "kataba", pl: "on napisał", en: "he wrote" },
+      { type: "word", ar: "كَتَبَتْ", ph: "katabat", pl: "ona napisała", en: "she wrote" },
+      { type: "compare", msa: "kataba", eg: "katab", pl: "MSA ma końcówkę -a, egipski ją gubi", en: "MSA has the -a ending, Egyptian drops it" },
+      { type: "tip", pl: "Forma „on” (kataba) to forma słownikowa — pod nią znajdziesz czasownik w słowniku.", en: "The 'he' form (kataba) is the dictionary form — that's how you'll find the verb in a dictionary." },
+      { type: "sentence", ar: "كَتَبَ الوَلَدُ رِسالةً", ph: "kataba l-waladu risālatan", pl: "Chłopiec napisał list.", en: "The boy wrote a letter." },
+      { type: "sentence", ar: "دَرَسْتُ العَرَبِيّةَ", ph: "darastu l-ʿarabiyya", pl: "Uczyłem się arabskiego.", en: "I studied Arabic." },
+      { type: "exercise", prompt: "Która forma znaczy: ona napisała?", promptEn: "Which form means 'she wrote'?", options: [ { ar: "كَتَبَ", ph: "kataba", label: "on napisał", labelEn: "he wrote" }, { ar: "كَتَبَتْ", ph: "katabat", label: "ona napisała", labelEn: "she wrote", ok: true }, { ar: "كَتَبْتُ", ph: "katabtu", label: "napisałem", labelEn: "I wrote" } ], why: "Końcówka ـَتْ (-at) oznacza trzecią osobę żeńską.", whyEn: "The ending ـَتْ (-at) marks the third person feminine." }
+    ],
+  },
+  {
+    id: "l15", num: 15, title: { pl: "Czasownik: teraźniejszy", en: "Verb: the present tense" },
+    goal: { pl: "Odmień czasownik w czasie teraźniejszym.", en: "Conjugate a verb in the present." },
+    blocks: [
+      { type: "text", pl: "Czas teraźniejszy działa odwrotnie niż przeszły: osobę pokazuje PRZEDROSTEK, nie końcówka.", en: "The present works the opposite way to the past: the person is shown by a PREFIX, not an ending." },
+      { type: "word", ar: "أَكْتُبُ", ph: "aktubu", pl: "piszę", en: "I write" },
+      { type: "word", ar: "تَكْتُبُ", ph: "taktubu", pl: "piszesz", en: "you write (m)" },
+      { type: "word", ar: "يَكْتُبُ", ph: "yaktubu", pl: "on pisze", en: "he writes" },
+      { type: "word", ar: "نَكْتُبُ", ph: "naktubu", pl: "piszemy", en: "we write" },
+      { type: "compare", msa: "yaktubu", eg: "biyekteb", pl: "MSA nie ma „bi-”; egipski je dokleja", en: "MSA has no 'bi-'; Egyptian attaches it" },
+      { type: "tip", pl: "Przedrostki: أ (ja), تـ (ty/ona), يـ (on), نـ (my). To te same litery, które właśnie poznałeś!", en: "Prefixes: أ (I), تـ (you/she), يـ (he), نـ (we). These are the very letters you've just learned!" },
+      { type: "sentence", ar: "أَدْرُسُ العَرَبِيّةَ", ph: "adrusu l-ʿarabiyya", pl: "Uczę się arabskiego.", en: "I study Arabic." },
+      { type: "sentence", ar: "يَكْتُبُ الطّالِبُ الدَّرْسَ", ph: "yaktubu ṭ-ṭālibu d-darsa", pl: "Uczeń pisze lekcję.", en: "The student writes the lesson." },
+      { type: "exercise", prompt: "Chcesz powiedzieć: piszę. Którą formę wybierzesz?", promptEn: "You want to say 'I write'. Which form?", options: [ { ar: "يَكْتُبُ", ph: "yaktubu", label: "on pisze", labelEn: "he writes" }, { ar: "أَكْتُبُ", ph: "aktubu", label: "piszę", labelEn: "I write", ok: true }, { ar: "نَكْتُبُ", ph: "naktubu", label: "piszemy", labelEn: "we write" } ], why: "Przedrostek أ (hamza) = pierwsza osoba, „ja”.", whyEn: "The prefix أ (hamza) = first person, 'I'." }
+    ],
+  },
+  {
+    id: "l16", num: 16, title: { pl: "Pierwsze zdanie czasownikowe", en: "Your first verbal sentence" },
+    goal: { pl: "Przeczytaj pełne zdanie z czasownikiem.", en: "Read a full sentence with a verb." },
+    blocks: [
+      { type: "text", pl: "Masz już wszystko: litery, rodzajnik, rodzaj i czasownik. Czas przeczytać prawdziwe zdanie.", en: "You now have everything: letters, the article, gender and the verb. Time to read a real sentence." },
+      { type: "sentence", ar: "كَتَبَ الوَلَدُ الدَّرْسَ", ph: "kataba l-waladu d-darsa", pl: "Chłopiec napisał lekcję.", en: "The boy wrote the lesson." },
+      { type: "text", pl: "Zauważ szyk: czasownik → podmiot → dopełnienie. W MSA czasownik często idzie PIERWSZY, inaczej niż po polsku.", en: "Note the order: verb → subject → object. In MSA the verb often comes FIRST, unlike English." },
+      { type: "sentence", ar: "تَدْرُسُ البِنْتُ في المَدْرَسةِ", ph: "tadrusu l-bintu fī l-madrasati", pl: "Dziewczynka uczy się w szkole.", en: "The girl studies at school." },
+      { type: "tip", pl: "Rozpoznajesz „madrasa” (szkoła) z rdzenia د-ر-س i „fī” (w) z lekcji 9. Wszystko się łączy!", en: "You recognize 'madrasa' (school) from the root د-ر-س and 'fī' (in) from lesson 9. It all connects!" },
+      { type: "exercise", prompt: "W zdaniu كَتَبَ الوَلَدُ الدَّرْسَ — co jest na pierwszym miejscu?", promptEn: "In كَتَبَ الوَلَدُ الدَّرْسَ — what comes first?", options: [ { ar: "الوَلَدُ", ph: "al-waladu", label: "podmiot", labelEn: "the subject" }, { ar: "كَتَبَ", ph: "kataba", label: "czasownik", labelEn: "the verb", ok: true } ], why: "W MSA czasownik zwykle idzie pierwszy (szyk VSO) — inaczej niż po polsku.", whyEn: "In MSA the verb usually comes first (VSO order) — unlike English." }
+    ],
+  },
+  { id: "l17", num: 17, title: { pl: "Przypadki: trzy końcówki", en: "Cases: three endings" }, goal: { pl: "Rozpoznaj rolę słowa po końcówce.", en: "Recognize a word's role from its ending." }, blocks: [ { type: "text", pl: "To klucz do czytania MSA. Końcówka mówi, jaką rolę pełni słowo w zdaniu — nie szyk, jak po polsku.", en: "This is the key to reading MSA. The ending tells you a word's role in the sentence — not word order, as in English." }, { type: "word", ar: "الوَلَدُ", ph: "al-waladu", pl: "chłopiec (podmiot)", en: "the boy (subject)" }, { type: "word", ar: "الوَلَدَ", ph: "al-walada", pl: "chłopca (dopełnienie)", en: "the boy (object)" }, { type: "word", ar: "الوَلَدِ", ph: "al-waladi", pl: "chłopca (po przyimku)", en: "the boy (after preposition)" }, { type: "sentence", ar: "رَأى الوَلَدُ البِنْتَ", ph: "ra'ā l-waladu l-binta", pl: "Chłopiec zobaczył dziewczynkę.", en: "The boy saw the girl." }, { type: "sentence", ar: "رَأى الوَلَدَ البِنْتُ", ph: "ra'ā l-walada l-bintu", pl: "Dziewczynka zobaczyła chłopca.", en: "The girl saw the boy." }, { type: "tip", pl: "Te dwa zdania mają TEN SAM szyk, ale odwrotne znaczenie! Decydują końcówki -u i -a.", en: "These two sentences have the SAME word order but opposite meanings! The endings -u and -a decide." }, { type: "exercise", prompt: "W zdaniu رَأى الوَلَدُ البِنْتَ — kto kogo zobaczył?", promptEn: "In رَأى الوَلَدُ البِنْتَ — who saw whom?", options: [ { ar: "الوَلَدُ", ph: "al-waladu", label: "chłopiec zobaczył", labelEn: "the boy saw", ok: true }, { ar: "البِنْتَ", ph: "al-binta", label: "dziewczynka zobaczyła", labelEn: "the girl saw" } ], why: "Końcówka -u (damma) oznacza podmiot. Chłopiec ma -u, więc to on patrzy.", whyEn: "The -u ending (damma) marks the subject. The boy has -u, so he is the one seeing." } ] },
+  { id: "l18", num: 18, title: { pl: "Zdanie względne (który)", en: "Relative clauses (which/who)" }, goal: { pl: "Połącz dwa zdania w jedno.", en: "Join two sentences into one." }, blocks: [ { type: "text", pl: "Bez tego nie przeczytasz dłuższego tekstu — zdania względne są wszędzie w prasie.", en: "Without this you can't read longer texts — relative clauses are everywhere in the press." }, { type: "word", ar: "الَّذي", ph: "alladhī", pl: "który (m.)", en: "who/which (m)" }, { type: "word", ar: "الَّتي", ph: "allatī", pl: "która (ż.)", en: "who/which (f)" }, { type: "sentence", ar: "الرَّجُلُ الَّذي قالَ ذٰلِكَ", ph: "ar-rajulu lladhī qāla dhālika", pl: "Mężczyzna, który to powiedział.", en: "The man who said that." }, { type: "sentence", ar: "الصَّحيفةُ الَّتي نَشَرَتِ التَّقْريرَ", ph: "aṣ-ṣaḥīfatu llatī nasharati t-taqrīra", pl: "Gazeta, która opublikowała raport.", en: "The newspaper that published the report." }, { type: "tip", pl: "UWAGA: الَّذي używa się TYLKO po rzeczowniku określonym (z الـ). Po nieokreślonym nie ma nic.", en: "NOTE: الَّذي is used ONLY after a definite noun (with الـ). After an indefinite one, nothing is used." }, { type: "exercise", prompt: "Mówisz o gazecie (ż.). Którego słowa użyjesz?", promptEn: "You're talking about a newspaper (f). Which word?", options: [ { ar: "الَّذي", ph: "alladhī", label: "rodzaj męski", labelEn: "masculine" }, { ar: "الَّتي", ph: "allatī", label: "rodzaj żeński", labelEn: "feminine", ok: true } ], why: "صَحيفة kończy się na ة, więc jest żeńska — الَّتي.", whyEn: "صَحيفة ends in ة, so it's feminine — الَّتي." } ] },
+  { id: "l19", num: 19, title: { pl: "Liczebniki i daty", en: "Numbers and dates" }, goal: { pl: "Przeczytaj liczby w tekście.", en: "Read numbers in a text." }, blocks: [ { type: "text", pl: "W tekstach prasowych liczby są wszędzie — daty, kwoty, statystyki.", en: "In press texts numbers are everywhere — dates, amounts, statistics." }, { type: "word", ar: "واحِد", ph: "wāḥid", pl: "jeden", en: "one" }, { type: "word", ar: "اِثْنان", ph: "ithnān", pl: "dwa", en: "two" }, { type: "word", ar: "ثَلاثة", ph: "thalātha", pl: "trzy", en: "three" }, { type: "word", ar: "عَشَرة", ph: "ʿashara", pl: "dziesięć", en: "ten" }, { type: "word", ar: "مِئة", ph: "mi'a", pl: "sto", en: "hundred" }, { type: "word", ar: "أَلْف", ph: "alf", pl: "tysiąc", en: "thousand" }, { type: "sentence", ar: "في اليَوْمِ الثّالِثِ", ph: "fī l-yawmi th-thālith", pl: "Trzeciego dnia.", en: "On the third day." }, { type: "tip", pl: "Cyfry arabskie: ٠١٢٣٤٥٦٧٨٩ — spotkasz je w gazetach obok naszych.", en: "Arabic-Indic digits: ٠١٢٣٤٥٦٧٨٩ — you'll meet them in newspapers alongside ours." }, { type: "exercise", prompt: "Które słowo znaczy: tysiąc?", promptEn: "Which word means 'thousand'?", options: [ { ar: "مِئة", ph: "mi'a", label: "sto", labelEn: "hundred" }, { ar: "أَلْف", ph: "alf", label: "tysiąc", labelEn: "thousand", ok: true } ], why: "أَلْف = tysiąc. Znasz z „Alf layla wa-layla” — Tysiąc i jedna noc.", whyEn: "أَلْف = thousand. You know it from 'Alf layla wa-layla' — One Thousand and One Nights." } ] },
+  { id: "l20", num: 20, title: { pl: "Strona bierna", en: "The passive voice" }, goal: { pl: "Rozpoznaj, kiedy nie wiadomo, kto działa.", en: "Recognize when the doer is unstated." }, blocks: [ { type: "text", pl: "Prasa uwielbia stronę bierną: „raport został opublikowany”, „decyzja została podjęta”.", en: "The press loves the passive: 'the report was published', 'the decision was taken'." }, { type: "word", ar: "كَتَبَ", ph: "kataba", pl: "napisał", en: "he wrote" }, { type: "word", ar: "كُتِبَ", ph: "kutiba", pl: "został napisany", en: "it was written" }, { type: "word", ar: "نَشَرَ", ph: "nashara", pl: "opublikował", en: "he published" }, { type: "word", ar: "نُشِرَ", ph: "nushira", pl: "został opublikowany", en: "it was published" }, { type: "sentence", ar: "نُشِرَ التَّقْريرُ أَمْسِ", ph: "nushira t-taqrīru amsi", pl: "Raport został opublikowany wczoraj.", en: "The report was published yesterday." }, { type: "tip", pl: "Reguła: samogłoski zmieniają się na u–i. kataba → kutiba. Sam szkielet spółgłosek zostaje.", en: "Rule: the vowels change to u–i. kataba → kutiba. The consonant skeleton stays." }, { type: "exercise", prompt: "Które słowo znaczy: został napisany?", promptEn: "Which word means 'it was written'?", options: [ { ar: "كَتَبَ", ph: "kataba", label: "napisał", labelEn: "he wrote" }, { ar: "كُتِبَ", ph: "kutiba", label: "został napisany", labelEn: "it was written", ok: true } ], why: "Samogłoski u–i to znak strony biernej. To jedyna różnica!", whyEn: "The u–i vowels mark the passive. That's the only difference!" } ] },
+  { id: "l21", num: 21, title: { pl: "Konstrukcja dopełniaczowa (idafa)", en: "The genitive construction (idafa)" }, goal: { pl: "Zrozum „X czegoś” bez przyimka.", en: "Understand 'X of Y' without a preposition." }, blocks: [ { type: "text", pl: "Idafa to najczęstsza konstrukcja arabska. Dwa rzeczowniki obok siebie = „coś czegoś”.", en: "Idafa is the most common Arabic construction. Two nouns side by side = 'something of something'." }, { type: "sentence", ar: "بابُ البَيْتِ", ph: "bābu l-bayt", pl: "drzwi domu", en: "the door of the house" }, { type: "sentence", ar: "وَزيرُ الاِقْتِصادِ", ph: "wazīru l-iqtiṣād", pl: "minister gospodarki", en: "the minister of economy" }, { type: "sentence", ar: "رَئيسُ المَجْلِسِ", ph: "ra'īsu l-majlis", pl: "przewodniczący rady", en: "the chairman of the council" }, { type: "tip", pl: "Zasada: PIERWSZY człon NIGDY nie ma الـ, DRUGI zawsze w dopełniaczu (-i). Nie ma słowa „of”.", en: "Rule: the FIRST element NEVER takes الـ, the SECOND is always genitive (-i). There's no word for 'of'." }, { type: "exercise", prompt: "Jak powiedzieć: drzwi szkoły?", promptEn: "How to say 'the door of the school'?", options: [ { ar: "بابُ المَدْرَسةِ", ph: "bābu l-madrasa", ok: true }, { ar: "البابُ المَدْرَسةِ", ph: "al-bābu l-madrasa" } ], why: "Pierwszy człon (باب) bez الـ — to reguła idafy.", whyEn: "The first element (باب) takes no الـ — that's the idafa rule." } ] },
+  { id: "l22", num: 22, title: { pl: "Czasownik: wzory II i IV", en: "Verb forms II and IV" }, goal: { pl: "Zobacz, jak rdzeń zmienia znaczenie.", en: "See how a root shifts meaning." }, blocks: [ { type: "text", pl: "Arabski ma 10 wzorów czasownika. Dwa najważniejsze poza podstawowym to II (wzmocnienie) i IV (powodowanie).", en: "Arabic has 10 verb forms. The two most important beyond the base are II (intensive) and IV (causative)." }, { type: "word", ar: "عَلِمَ", ph: "ʿalima", pl: "wiedział (wzór I)", en: "he knew (form I)" }, { type: "word", ar: "عَلَّمَ", ph: "ʿallama", pl: "nauczał (wzór II)", en: "he taught (form II)" }, { type: "word", ar: "أَعْلَمَ", ph: "aʿlama", pl: "poinformował (wzór IV)", en: "he informed (form IV)" }, { type: "sentence", ar: "عَلَّمَ المُدَرِّسُ الطُّلّابَ", ph: "ʿallama l-mudarrisu ṭ-ṭullāba", pl: "Nauczyciel uczył studentów.", en: "The teacher taught the students." }, { type: "tip", pl: "Wzór II = podwojona środkowa spółgłoska (ʿallama). Wzór IV = przedrostek أ (aʿlama).", en: "Form II = doubled middle consonant (ʿallama). Form IV = prefix أ (aʿlama)." }, { type: "exercise", prompt: "Od عَلِمَ (wiedzieć) — jak powstaje: nauczać?", promptEn: "From عَلِمَ (to know) — how is 'to teach' formed?", options: [ { ar: "عَلَّمَ", ph: "ʿallama", label: "podwojenie środkowej", labelEn: "doubling the middle", ok: true }, { ar: "أَعْلَمَ", ph: "aʿlama", label: "przedrostek أ", labelEn: "prefix أ" } ], why: "Nauczać = sprawiać, że ktoś wie, wielokrotnie. Stąd wzór II z podwojeniem.", whyEn: "To teach = to make someone know, repeatedly. Hence form II with doubling." } ] },
+  { id: "l23", num: 23, title: { pl: "Spójniki tekstu", en: "Text connectors" }, goal: { pl: "Śledź tok wywodu w artykule.", en: "Follow the argument in an article." }, blocks: [ { type: "text", pl: "Te słowa organizują tekst. Kto je zna, ten rozumie strukturę wywodu, nawet gubiąc pojedyncze słowa.", en: "These words organize a text. Knowing them lets you follow the structure even when you miss individual words." }, { type: "word", ar: "أَمّا... فَـ", ph: "ammā... fa-", pl: "co do... to", en: "as for... then" }, { type: "word", ar: "بِالإِضافةِ إِلى", ph: "bi-l-iḍāfati ilā", pl: "ponadto, oprócz", en: "in addition to" }, { type: "word", ar: "عَلى الرَّغْمِ مِن", ph: "ʿalā r-raghmi min", pl: "mimo że", en: "despite" }, { type: "word", ar: "بِسَبَبِ", ph: "bi-sababi", pl: "z powodu", en: "because of" }, { type: "word", ar: "نَتيجةً لِـ", ph: "natījatan li-", pl: "w wyniku", en: "as a result of" }, { type: "sentence", ar: "عَلى الرَّغْمِ مِن المُشْكِلةِ نَجَحَ", ph: "ʿalā r-raghmi mina l-mushkilati najaḥa", pl: "Mimo problemu odniósł sukces.", en: "Despite the problem he succeeded." }, { type: "tip", pl: "Te zwroty to szkielet artykułu. Rozpoznanie ich ułatwia czytanie bardziej niż znajomość rzadkich słów.", en: "These phrases form an article's skeleton. Spotting them helps reading more than knowing rare words." }, { type: "exercise", prompt: "Które wyrażenie znaczy: z powodu?", promptEn: "Which expression means 'because of'?", options: [ { ar: "بِسَبَبِ", ph: "bi-sababi", ok: true }, { ar: "بِالإِضافةِ إِلى", ph: "bi-l-iḍāfati ilā", label: "ponadto", labelEn: "in addition" } ], why: "سَبَب = przyczyna. بِسَبَبِ = z przyczyny, z powodu.", whyEn: "سَبَب = cause. بِسَبَبِ = for the cause of, because of." } ] },
+  { id: "l24", num: 24, title: { pl: "Czytanie nagłówków", en: "Reading headlines" }, goal: { pl: "Rozszyfruj tytuł prasowy.", en: "Decode a press headline." }, blocks: [ { type: "text", pl: "Nagłówki mają własną gramatykę: skrótową, bez harakat, często bez czasownika. Oto jak je czytać.", en: "Headlines have their own grammar: compressed, no harakat, often no verb. Here's how to read them." }, { type: "sentence", ar: "الحُكومة تُعْلِن قانوناً جَديداً", ph: "al-ḥukūma tuʿlin qānūnan jadīdan", pl: "Rząd ogłasza nowe prawo.", en: "Government announces new law." }, { type: "sentence", ar: "اِجْتِماع المَجْلِس بَعْدَ أُسْبوع", ph: "ijtimāʿ al-majlis baʿda usbūʿ", pl: "Posiedzenie rady za tydzień.", en: "Council meeting in a week." }, { type: "text", pl: "Zauważ: drugi nagłówek nie ma czasownika w ogóle — to sama idafa („posiedzenie rady”) plus okolicznik czasu.", en: "Note: the second headline has no verb at all — just an idafa ('council meeting') plus a time adverbial." }, { type: "tip", pl: "Strategia czytania nagłówka: znajdź rzeczowniki, rozpoznaj idafę, dopiero potem szukaj czasownika.", en: "Headline strategy: find the nouns, spot the idafa, only then look for a verb." }, { type: "exercise", prompt: "W nagłówku اِجْتِماع المَجْلِس — co to za konstrukcja?", promptEn: "In the headline 'اِجْتِماع المَجْلِس' — what construction is this?", options: [ { ar: "إِضافة", ph: "iḍāfa", label: "idafa (posiedzenie rady)", labelEn: "idafa (council meeting)", ok: true }, { ar: "فِعْل", ph: "fiʿl", label: "zdanie czasownikowe", labelEn: "verbal sentence" } ], why: "Dwa rzeczowniki obok siebie, pierwszy bez الـ — klasyczna idafa.", whyEn: "Two nouns side by side, the first without الـ — a classic idafa." } ] },
+  { id: "l25", num: 25, title: { pl: "Zdania złożone: إِنَّ i أَنَّ", en: "Complex clauses: inna and anna" }, goal: { pl: "Zrozum zdania z mową zależną.", en: "Understand reported speech." }, blocks: [ { type: "text", pl: "Te dwa słowa otwierają większość zdań w prasie. Wyglądają podobnie, ale robią co innego.", en: "These two words open most sentences in the press. They look alike but do different jobs." }, { type: "word", ar: "إِنَّ", ph: "inna", pl: "zaiste (wzmocnienie, na początku zdania)", en: "indeed (emphasis, sentence-initial)" }, { type: "word", ar: "أَنَّ", ph: "anna", pl: "że (po czasowniku)", en: "that (after a verb)" }, { type: "sentence", ar: "قالَ إِنَّ الاِقْتِصادَ مُهِمٌّ", ph: "qāla inna l-iqtiṣāda muhimm", pl: "Powiedział, że gospodarka jest ważna.", en: "He said that the economy is important." }, { type: "sentence", ar: "أَعْتَقِدُ أَنَّ التَّقْريرَ صَحيحٌ", ph: "aʿtaqidu anna t-taqrīra ṣaḥīḥ", pl: "Sądzę, że raport jest prawdziwy.", en: "I believe the report is true." }, { type: "tip", pl: "KLUCZOWE: po obu następuje rzeczownik w BIERNIKU (-a), nie mianowniku. To częsty błąd.", en: "KEY: both are followed by a noun in the ACCUSATIVE (-a), not nominative. A common mistake." }, { type: "exercise", prompt: "Po قالَ إِنَّ — w jakim przypadku stoi rzeczownik?", promptEn: "After قالَ إِنَّ — what case is the noun in?", options: [ { ar: "الاِقْتِصادُ", ph: "al-iqtiṣādu", label: "mianownik", labelEn: "nominative" }, { ar: "الاِقْتِصادَ", ph: "al-iqtiṣāda", label: "biernik", labelEn: "accusative", ok: true } ], why: "إِنَّ i أَنَّ zawsze wymagają biernika. Stąd -a na końcu.", whyEn: "إِنَّ and أَنَّ always require the accusative. Hence the -a ending." } ] },
+  { id: "l26", num: 26, title: { pl: "Rzeczownik odsłowny (masdar)", en: "The verbal noun (masdar)" }, goal: { pl: "Rozpoznaj czynność zapisaną jako rzeczownik.", en: "Recognize an action written as a noun." }, blocks: [ { type: "text", pl: "Arabski uwielbia zamieniać czasowniki w rzeczowniki. Nagłówki składają się z nich niemal w całości.", en: "Arabic loves turning verbs into nouns. Headlines consist of them almost entirely." }, { type: "word", ar: "اِجْتَمَعَ", ph: "ijtamaʿa", pl: "zebrał się", en: "he met" }, { type: "word", ar: "اِجْتِماع", ph: "ijtimāʿ", pl: "spotkanie, posiedzenie", en: "meeting" }, { type: "word", ar: "أَعْلَنَ", ph: "aʿlana", pl: "ogłosił", en: "he announced" }, { type: "word", ar: "إِعْلان", ph: "iʿlān", pl: "ogłoszenie, reklama", en: "announcement, advert" }, { type: "sentence", ar: "إِعْلانُ الحُكومةِ عَنِ القانونِ", ph: "iʿlānu l-ḥukūmati ʿani l-qānūn", pl: "Ogłoszenie prawa przez rząd.", en: "The government's announcement of the law." }, { type: "tip", pl: "Masdar + idafa to typowy nagłówek: „ogłoszenie rządu”, „spotkanie rady”. Bez czasownika!", en: "Masdar + idafa is the typical headline: 'the government's announcement', 'the council's meeting'. No verb!" }, { type: "exercise", prompt: "Od اِجْتَمَعَ (zebrał się) — jaki jest rzeczownik odsłowny?", promptEn: "From اِجْتَمَعَ (he met) — what's the verbal noun?", options: [ { ar: "اِجْتِماع", ph: "ijtimāʿ", ok: true }, { ar: "مُجْتَمَع", ph: "mujtamaʿ", label: "społeczeństwo", labelEn: "society" } ], why: "اِجْتِماع = czynność zbierania się. مُجْتَمَع = to, co się zebrało (społeczeństwo). Ten sam rdzeń ج-م-ع!", whyEn: "اِجْتِماع = the act of gathering. مُجْتَمَع = that which gathered (society). Same root ج-م-ع!" } ] },
+  { id: "l27", num: 27, title: { pl: "Imiesłowy: czynny i bierny", en: "Participles: active and passive" }, goal: { pl: "Odróżnij tego, kto robi, od tego, co zrobione.", en: "Tell the doer from the done." }, blocks: [ { type: "text", pl: "Dwa wzory, które spotkasz na każdej stronie: فاعِل (ten, kto robi) i مَفْعول (to, co zrobione).", en: "Two patterns you'll meet on every page: فاعِل (the one who does) and مَفْعول (that which is done)." }, { type: "word", ar: "كاتِب", ph: "kātib", pl: "piszący; pisarz", en: "writing; writer" }, { type: "word", ar: "مَكْتوب", ph: "maktūb", pl: "napisany; list, los", en: "written; letter, fate" }, { type: "word", ar: "عامِل", ph: "ʿāmil", pl: "pracujący; robotnik", en: "working; worker" }, { type: "word", ar: "مَعْلوم", ph: "maʿlūm", pl: "wiadomy, znany", en: "known" }, { type: "sentence", ar: "الكاتِبُ مَعْروفٌ", ph: "al-kātibu maʿrūf", pl: "Pisarz jest znany.", en: "The writer is well known." }, { type: "tip", pl: "„maktūb” znaczy też „przeznaczenie” — to, co zostało zapisane. Piękny przykład, jak wzór niesie sens.", en: "'maktūb' also means 'destiny' — that which has been written. A beautiful example of a pattern carrying meaning." }, { type: "exercise", prompt: "Które słowo znaczy: ten, kto pisze?", promptEn: "Which word means 'the one who writes'?", options: [ { ar: "كاتِب", ph: "kātib", ok: true }, { ar: "مَكْتوب", ph: "maktūb", label: "napisany", labelEn: "written" } ], why: "Wzór فاعِل = wykonawca czynności. Wzór مَفْعول = obiekt czynności.", whyEn: "The فاعِل pattern = doer. The مَفْعول pattern = object of the action." } ] },
+  { id: "l28", num: 28, title: { pl: "Tryb łączący (subjunctive)", en: "The subjunctive mood" }, goal: { pl: "Zrozum zdania celu i zamiaru.", en: "Understand purpose and intention clauses." }, blocks: [ { type: "text", pl: "Po pewnych spójnikach czasownik zmienia końcówkę z -u na -a. To tryb łączący.", en: "After certain conjunctions the verb ending changes from -u to -a. That's the subjunctive." }, { type: "word", ar: "أَنْ", ph: "an", pl: "żeby", en: "to, that" }, { type: "word", ar: "لِـ", ph: "li-", pl: "aby", en: "in order to" }, { type: "word", ar: "حَتّى", ph: "ḥattā", pl: "aż, żeby", en: "until, so that" }, { type: "sentence", ar: "أُريدُ أَنْ أَدْرُسَ العَرَبِيّةَ", ph: "urīdu an adrusa l-ʿarabiyya", pl: "Chcę uczyć się arabskiego.", en: "I want to study Arabic." }, { type: "sentence", ar: "جِئْتُ لِأَتَعَلَّمَ", ph: "ji'tu li-ataʿallama", pl: "Przyszedłem, aby się uczyć.", en: "I came in order to learn." }, { type: "tip", pl: "Porównaj: أَدْرُسُ (uczę się, oznajmujący) vs أَدْرُسَ (żebym się uczył, łączący). Jedna litera zmienia sens.", en: "Compare: أَدْرُسُ (I study, indicative) vs أَدْرُسَ (that I study, subjunctive). One letter changes the meaning." }, { type: "exercise", prompt: "Po أَنْ — jaka końcówka czasownika?", promptEn: "After أَنْ — what verb ending?", options: [ { ar: "أَدْرُسُ", ph: "adrusu", label: "-u (oznajmujący)", labelEn: "-u (indicative)" }, { ar: "أَدْرُسَ", ph: "adrusa", label: "-a (łączący)", labelEn: "-a (subjunctive)", ok: true } ], why: "أَنْ wymaga trybu łączącego, czyli końcówki -a.", whyEn: "أَنْ requires the subjunctive, i.e. the -a ending." } ] },
+  { id: "l29", num: 29, title: { pl: "Tekst prawniczy i urzędowy", en: "Legal and official texts" }, goal: { pl: "Przeczytaj fragment dokumentu.", en: "Read a fragment of a document." }, blocks: [ { type: "text", pl: "Rejestr, który może Cię zainteresować zawodowo. Charakteryzuje się stałymi formułami.", en: "A register that may interest you professionally. It's marked by fixed formulas." }, { type: "word", ar: "وَفْقاً لِـ", ph: "wafqan li-", pl: "zgodnie z", en: "in accordance with" }, { type: "word", ar: "بِموجِبِ", ph: "bi-mūjibi", pl: "na mocy", en: "by virtue of" }, { type: "word", ar: "المادّة", ph: "al-mādda", pl: "artykuł (ustawy)", en: "article (of law)" }, { type: "word", ar: "الفَقْرة", ph: "al-faqra", pl: "ustęp, paragraf", en: "paragraph" }, { type: "word", ar: "يُحْظَر", ph: "yuḥẓar", pl: "zabrania się", en: "it is prohibited" }, { type: "sentence", ar: "وَفْقاً لِلْمادّةِ الخامِسةِ مِنَ القانونِ", ph: "wafqan li-l-māddati l-khāmisati mina l-qānūn", pl: "Zgodnie z artykułem piątym ustawy.", en: "In accordance with article five of the law." }, { type: "tip", pl: "Teksty prawne używają strony biernej bezosobowej (يُحْظَر — zabrania się), tak jak polskie ustawy.", en: "Legal texts use the impersonal passive (yuḥẓar — it is prohibited), just like Polish statutes." }, { type: "exercise", prompt: "Co znaczy المادّة w tekście ustawy?", promptEn: "What does المادّة mean in a statute?", options: [ { ar: "المادّة", ph: "al-mādda", label: "artykuł ustawy", labelEn: "article of law", ok: true }, { ar: "المادّة", ph: "al-mādda", label: "materiał, substancja", labelEn: "material, substance" } ], why: "To słowo ma oba znaczenia — w tekście prawnym zawsze „artykuł”. Kontekst decyduje.", whyEn: "The word has both senses — in a legal text it's always 'article'. Context decides." } ] },
+  { id: "l30", num: 30, title: { pl: "Styl literacki", en: "Literary style" }, goal: { pl: "Zauważ, czym różni się proza od prasy.", en: "Notice how prose differs from journalism." }, blocks: [ { type: "text", pl: "Literatura używa innych narzędzi: dłuższych zdań, metafor, rzadszych słów, szyku dla efektu.", en: "Literature uses different tools: longer sentences, metaphor, rarer words, word order for effect." }, { type: "word", ar: "قَلْب", ph: "qalb", pl: "serce", en: "heart" }, { type: "word", ar: "روح", ph: "rūḥ", pl: "dusza, duch", en: "soul, spirit" }, { type: "word", ar: "ذِكْرى", ph: "dhikrā", pl: "wspomnienie", en: "memory, remembrance" }, { type: "word", ar: "حُلْم", ph: "ḥulm", pl: "sen, marzenie", en: "dream" }, { type: "sentence", ar: "في قَلْبِ المَدينةِ بَيْتٌ قَديمٌ", ph: "fī qalbi l-madīnati baytun qadīm", pl: "W sercu miasta stoi stary dom.", en: "In the heart of the city stands an old house." }, { type: "tip", pl: "„qalb al-madina” — serce miasta. Metafora działa tak samo jak po polsku. Wiele obrazów jest wspólnych.", en: "'qalb al-madina' — the heart of the city. The metaphor works as in English. Many images are shared." }, { type: "exercise", prompt: "W zdaniu في قَلْبِ المَدينةِ — co znaczy قَلْب?", promptEn: "In في قَلْبِ المَدينةِ — what does قَلْب mean?", options: [ { ar: "قَلْب", ph: "qalb", label: "środek, centrum", labelEn: "centre", ok: true }, { ar: "قَلْب", ph: "qalb", label: "organ ciała", labelEn: "body organ" } ], why: "Przenośnie: serce = środek. Ta sama metafora co po polsku.", whyEn: "Figuratively: heart = centre. The same metaphor as in English." } ] },
+  { id: "l31", num: 31, title: { pl: "Strategie czytania", en: "Reading strategies" }, goal: { pl: "Czytaj tekst, nie znając wszystkich słów.", en: "Read a text without knowing every word." }, blocks: [ { type: "text", pl: "Na B1 nie chodzi o rozumienie każdego słowa, tylko o wyłuskanie sensu mimo luk. Oto jak.", en: "B1 isn't about understanding every word — it's about extracting meaning despite gaps. Here's how." }, { type: "text", pl: "1. Najpierw znajdź czasownik i podmiot. Reszta to detale.", en: "1. First find the verb and the subject. The rest is detail." }, { type: "text", pl: "2. Rozpoznaj rdzeń nieznanego słowa — często zgadniesz sens.", en: "2. Spot the root of an unknown word — you can often guess the sense." }, { type: "text", pl: "3. Spójniki (لٰكِنْ، لِأَنَّ) mówią, jak zdania się łączą, nawet gdy gubisz szczegóły.", en: "3. Connectors (lākin, li-anna) tell you how clauses relate, even when details escape you." }, { type: "sentence", ar: "الكاتِبُ المَعْروفُ نَشَرَ كِتاباً جَديداً", ph: "al-kātibu l-maʿrūfu nashara kitāban jadīdan", pl: "Znany pisarz opublikował nową książkę.", en: "The well-known writer published a new book." }, { type: "tip", pl: "W tym zdaniu: rdzeń ك-ت-ب pojawia się dwa razy (kātib, kitāb). Rozpoznanie rdzenia daje pół znaczenia.", en: "In this sentence the root ك-ت-ب appears twice (kātib, kitāb). Spotting the root gives you half the meaning." }, { type: "exercise", prompt: "Nie znasz słowa مَكْتوب. Co pomoże je zrozumieć?", promptEn: "You don't know the word مَكْتوب. What helps you understand it?", options: [ { ar: "ك-ت-ب", label: "rozpoznanie rdzenia", labelEn: "recognizing the root", ok: true }, { ar: "?", label: "sprawdzenie w słowniku", labelEn: "looking it up" } ], why: "Rdzeń ك-ت-ب (pisać) + wzór مَفْعول (bierny) = napisany. Bez słownika.", whyEn: "Root ك-ت-ب (write) + مَفْعول pattern (passive) = written. No dictionary needed." } ] },
+  { id: "l32", num: 32, title: { pl: "Pełny artykuł prasowy", en: "A full news article" }, goal: { pl: "Przeczytaj autentyczny tekst od początku do końca.", en: "Read an authentic text start to finish." }, blocks: [ { type: "text", pl: "Ostatnia lekcja. Wszystko, czego się nauczyłeś, w jednym tekście: idafa, przypadki, strona bierna, spójniki.", en: "The final lesson. Everything you've learned in one text: idafa, cases, passive, connectors." }, { type: "sentence", ar: "أَعْلَنَتِ الحُكومةُ أَمْسِ عَنْ قانونٍ جَديدٍ", ph: "aʿlanati l-ḥukūmatu amsi ʿan qānūnin jadīd", pl: "Rząd ogłosił wczoraj nowe prawo.", en: "The government announced a new law yesterday." }, { type: "sentence", ar: "وَقالَ وَزيرُ الاِقْتِصادِ إِنَّ القانونَ مُهِمٌّ", ph: "wa-qāla wazīru l-iqtiṣādi inna l-qānūna muhimm", pl: "Minister gospodarki powiedział, że prawo jest ważne.", en: "The economy minister said the law is important." }, { type: "sentence", ar: "لٰكِنَّ بَعْضَ الخُبَراءِ يَرَوْنَ أَنَّ المُشْكِلةَ أَكْبَرُ", ph: "lākinna baʿḍa l-khubarā'i yarawna anna l-mushkilata akbar", pl: "Ale niektórzy eksperci uważają, że problem jest większy.", en: "But some experts believe the problem is bigger." }, { type: "sentence", ar: "وَسَيَجْتَمِعُ المَجْلِسُ الأُسْبوعَ القادِمَ", ph: "wa-sa-yajtamiʿu l-majlisu l-usbūʿa l-qādim", pl: "Rada zbierze się w przyszłym tygodniu.", en: "The council will meet next week." }, { type: "tip", pl: "Rozbierz to zdanie po zdaniu: وَزيرُ الاِقْتِصادِ to idafa, إِنَّ wymusza biernik, لٰكِنَّ wprowadza kontrast, سَـ oznacza przyszłość.", en: "Break it down clause by clause: وَزيرُ الاِقْتِصادِ is an idafa, إِنَّ forces the accusative, لٰكِنَّ introduces contrast, سَـ marks the future." }, { type: "exercise", prompt: "W وَسَيَجْتَمِعُ المَجْلِسُ — co oznacza przedrostek سَـ?", promptEn: "In وَسَيَجْتَمِعُ المَجْلِسُ — what does the prefix سَـ mark?", options: [ { ar: "سَـ", label: "czas przyszły", labelEn: "the future", ok: true }, { ar: "سَـ", label: "stronę bierną", labelEn: "the passive" } ], why: "سَـ (albo سَوْفَ) to znak przyszłości w MSA — odpowiednik egipskiego ha-.", whyEn: "سَـ (or سَوْفَ) marks the future in MSA — the counterpart of Egyptian ha-." } ] }
 ];
 
 const MSA_MODULE_1 = {
@@ -6148,6 +7009,73 @@ const MSA_ROOTS = [
       { role: "student", wazn: { ar: "فاعِل", tr: "faa3il" }, msa: { ar: "دارِس", ph: "daaris" }, eg: { ar: "دارس", ph: "daaris" }, pl: "uczący się, student", en: "learner, student", note: { pl: "Imiesłów: ten, kto się uczy.", en: "Participle: the one who studies." } },
     ],
   },
+  {
+    root: { ar: "ر-ح-م", tr: "r-ḥ-m" },
+    meaning: { pl: "miłosierdzie, litość", en: "mercy, compassion" },
+    coreIdea: { pl: "współczucie, łaska, więź krwi", en: "compassion, grace, blood kinship" },
+    quran: { pl: "Znasz ten rdzeń z basmali: „ar-raḥmān ar-raḥīm”.", en: "You know this root from the basmala: 'ar-raḥmān ar-raḥīm'." },
+    family: [
+      { role: "noun", wazn: { ar: "فَعْمة", tr: "raḥma" }, cl: { ar: "رَحْمة", ph: "raḥma" }, msa: { ar: "رَحْمة", ph: "raḥma" }, eg: { ar: "رحمة", ph: "raḥma" }, pl: "miłosierdzie, litość", en: "mercy", note: { pl: "Podstawowy rzeczownik. W egipskim „ya raḥma!” = litości!", en: "The base noun. In Egyptian 'ya raḥma!' = have mercy!" } },
+      { role: "attr", wazn: { ar: "فَعْلان", tr: "faʿlān" }, cl: { ar: "الرَّحْمٰن", ph: "ar-raḥmān" }, msa: { ar: "الرحمن", ph: "ar-raḥmān" }, eg: { ar: "الرحمن", ph: "er-raḥman" }, pl: "Miłosierny (przymiot Boga)", en: "the Most Gracious", note: { pl: "Wzór فَعْلان = intensywna, stała cecha. Tylko o Bogu.", en: "The فَعْلان pattern = intense, permanent quality. Used only of God." } },
+      { role: "attr", wazn: { ar: "فَعيل", tr: "faʿīl" }, cl: { ar: "الرَّحيم", ph: "ar-raḥīm" }, msa: { ar: "الرحيم", ph: "ar-raḥīm" }, eg: { ar: "الرحيم", ph: "er-raḥīm" }, pl: "Litościwy", en: "the Most Merciful", note: { pl: "Wzór فَعيل = trwała cecha. Stąd też imię „Raḥīm”.", en: "The فَعيل pattern = lasting quality. Hence the name 'Raḥīm'." } },
+      { role: "noun", wazn: { ar: "فَعِم", tr: "raḥim" }, cl: { ar: "رَحِم", ph: "raḥim" }, msa: { ar: "رَحِم", ph: "raḥim" }, eg: { ar: "رحم", ph: "reḥm" }, pl: "łono; więzy krwi", en: "womb; kinship", note: { pl: "Zaskakujący związek: miłosierdzie i łono z tego samego rdzenia — więź matczyna.", en: "A striking link: mercy and womb from the same root — the maternal bond." } },
+    ],
+  },
+  {
+    root: { ar: "ع-ل-م", tr: "ʿ-l-m" },
+    meaning: { pl: "wiedza, poznanie", en: "knowledge" },
+    coreIdea: { pl: "wiedzieć, uczyć, świat jako to, co poznawalne", en: "to know, to teach, the world as the knowable" },
+    quran: { pl: "Z Al-Fatihy: „rabbi l-ʿālamīn” (Pan światów).", en: "From Al-Fatiha: 'rabbi l-ʿālamīn' (Lord of the worlds)." },
+    family: [
+      { role: "verb", wazn: { ar: "فَعِلَ", tr: "faʿila" }, msa: { ar: "عَلِمَ", ph: "ʿalima" }, eg: { ar: "علم", ph: "ʿelem" }, pl: "wiedział", en: "he knew", note: { pl: "I wzór = wiedzieć. W egipskim częściej „ʿaraf”.", en: "Form I = to know. Egyptian more often uses 'ʿaraf'." } },
+      { role: "noun", wazn: { ar: "فِعْل", tr: "ʿilm" }, msa: { ar: "عِلْم", ph: "ʿilm" }, eg: { ar: "علم", ph: "ʿelm" }, pl: "nauka, wiedza", en: "science, knowledge", note: { pl: "Stąd „ʿulūm” (nauki) i tytuł „ʿālim” (uczony).", en: "Hence 'ʿulūm' (sciences) and the title 'ʿālim' (scholar)." } },
+      { role: "agent", wazn: { ar: "فاعِل", tr: "fāʿil" }, msa: { ar: "عالِم", ph: "ʿālim" }, eg: { ar: "عالم", ph: "ʿālem" }, pl: "uczony, znawca", en: "scholar", note: { pl: "Ten, kto wie. Liczba mnoga „ʿulamā'” — znana z mediów.", en: "The one who knows. Plural 'ʿulamā'' — familiar from the news." } },
+      { role: "noun", wazn: { ar: "فاعَل", tr: "ʿālam" }, cl: { ar: "عالَم", ph: "ʿālam" }, msa: { ar: "عالَم", ph: "ʿālam" }, eg: { ar: "عالم", ph: "ʿālam" }, pl: "świat", en: "world", note: { pl: "Świat = to, przez co poznaje się Stwórcę. Stąd „ʿālamīn” w Al-Fatisze.", en: "The world = that through which the Creator is known. Hence 'ʿālamīn' in Al-Fatiha." } },
+      { role: "place", wazn: { ar: "مَفْعَل", tr: "mafʿal" }, msa: { ar: "مَعْلَم", ph: "maʿlam" }, eg: { ar: "معلم", ph: "maʿlam" }, pl: "punkt orientacyjny, zabytek", en: "landmark", note: { pl: "To, po czym rozpoznajesz miejsce. Lm. „maʿālim” — na tablicach turystycznych.", en: "What you recognize a place by. Plural 'maʿālim' — seen on tourist signs." } },
+      { role: "agent", wazn: { ar: "مُفَعِّل", tr: "muʿallim" }, msa: { ar: "مُعَلِّم", ph: "muʿallim" }, eg: { ar: "معلم", ph: "meʿallem" }, pl: "nauczyciel; majster", en: "teacher; master craftsman", note: { pl: "W egipskim „meʿallem” to też szef/majster — np. w warsztacie.", en: "In Egyptian 'meʿallem' also means boss/foreman — e.g. in a workshop." } },
+    ],
+  },
+  {
+    root: { ar: "ك-ل-م", tr: "k-l-m" },
+    meaning: { pl: "mowa, słowo", en: "speech, word" },
+    coreIdea: { pl: "wszystko związane z mówieniem", en: "everything to do with speaking" },
+    family: [
+      { role: "verb", wazn: { ar: "تَفَعَّلَ", tr: "takallama" }, msa: { ar: "تَكَلَّمَ", ph: "takallama" }, eg: { ar: "اتكلم", ph: "etkallem" }, pl: "mówił, rozmawiał", en: "he spoke", note: { pl: "V wzór (zwrotny). Egipski zamienia „ta-” na „et-”.", en: "Form V (reflexive). Egyptian turns 'ta-' into 'et-'." } },
+      { role: "noun", wazn: { ar: "فَعِمة", tr: "kalima" }, msa: { ar: "كَلِمة", ph: "kalima" }, eg: { ar: "كلمة", ph: "kelma" }, pl: "słowo", en: "word", note: { pl: "MSA „kalima” → egipskie „kelma” (skrócone).", en: "MSA 'kalima' → Egyptian 'kelma' (shortened)." } },
+      { role: "noun", wazn: { ar: "فَعام", tr: "kalām" }, msa: { ar: "كَلام", ph: "kalām" }, eg: { ar: "كلام", ph: "kalām" }, pl: "mowa, gadanie", en: "speech, talk", note: { pl: "Bardzo częste w egipskim: „kalām fāḍi” = puste gadanie.", en: "Very common in Egyptian: 'kalām fāḍi' = empty talk." } },
+      { role: "verb", wazn: { ar: "فَعَّلَ", tr: "kallama" }, msa: { ar: "كَلَّمَ", ph: "kallama" }, eg: { ar: "كلم", ph: "kallem" }, pl: "mówił do kogoś", en: "he spoke to someone", note: { pl: "II wzór = skierowane do kogoś. Egipskie „kallemni” = zadzwoń do mnie.", en: "Form II = directed at someone. Egyptian 'kallemni' = call me." } },
+    ],
+  },
+  {
+    root: { ar: "ع-م-ل", tr: "ʿ-m-l" },
+    meaning: { pl: "praca, działanie", en: "work, action" },
+    coreIdea: { pl: "robić, działać, wytwarzać", en: "to do, to act, to make" },
+    family: [
+      { role: "verb", wazn: { ar: "فَعِلَ", tr: "ʿamila" }, msa: { ar: "عَمِلَ", ph: "ʿamila" }, eg: { ar: "عمل", ph: "ʿemel" }, pl: "pracował, zrobił", en: "he worked, did", note: { pl: "W egipskim „ʿamal” = zrobił; „bitiʿmel eeh?” = co robisz?", en: "In Egyptian 'ʿamal' = did; 'bitiʿmel eeh?' = what are you doing?" } },
+      { role: "noun", wazn: { ar: "فَعَل", tr: "ʿamal" }, msa: { ar: "عَمَل", ph: "ʿamal" }, eg: { ar: "عمل", ph: "ʿamal" }, pl: "praca, czyn", en: "work, deed", note: { pl: "Lm. „aʿmāl” = działalność, interesy.", en: "Plural 'aʿmāl' = business, activities." } },
+      { role: "agent", wazn: { ar: "فاعِل", tr: "ʿāmil" }, msa: { ar: "عامِل", ph: "ʿāmil" }, eg: { ar: "عامل", ph: "ʿāmel" }, pl: "robotnik, pracownik", en: "worker", note: { pl: "Ten, kto pracuje. W egipskim też „jak leci” w pytaniu „ʿāmel eeh?”.", en: "The one who works. In Egyptian also 'how's it going' in 'ʿāmel eeh?'." } },
+      { role: "place", wazn: { ar: "مَفْعَل", tr: "maʿmal" }, msa: { ar: "مَعْمَل", ph: "maʿmal" }, eg: { ar: "معمل", ph: "maʿmal" }, pl: "laboratorium, warsztat", en: "laboratory, workshop", note: { pl: "Miejsce pracy/wytwarzania. Na szyldach.", en: "Place of work/production. Seen on signs." } },
+      { role: "noun", wazn: { ar: "مُفاعَلة", tr: "muʿāmala" }, msa: { ar: "مُعامَلة", ph: "muʿāmala" }, eg: { ar: "معاملة", ph: "muʿamla" }, pl: "traktowanie; transakcja", en: "treatment; transaction", note: { pl: "III wzór = wzajemność. W urzędzie: „muʿāmalāt” = sprawy, formalności.", en: "Form III = mutuality. At an office: 'muʿāmalāt' = paperwork, procedures." } },
+    ],
+  },
+  {
+    root: { ar: "س-ك-ن", tr: "s-k-n" },
+    meaning: { pl: "mieszkanie, spokój", en: "dwelling, stillness" },
+    coreIdea: { pl: "zatrzymać się, uspokoić, zamieszkać", en: "to settle, to be still, to dwell" },
+    family: [
+      { role: "verb", wazn: { ar: "فَعَنَ", tr: "sakana" }, msa: { ar: "سَكَنَ", ph: "sakana" }, eg: { ar: "سكن", ph: "saken" }, pl: "mieszkał", en: "he lived, dwelt", note: { pl: "W egipskim częściej „ʿāyesh” (żyjący) na „mieszkam”.", en: "Egyptian more often uses 'ʿāyesh' (living) for 'I live'." } },
+      { role: "noun", wazn: { ar: "مَفْعَن", tr: "maskan" }, msa: { ar: "مَسْكَن", ph: "maskan" }, eg: { ar: "مسكن", ph: "maskan" }, pl: "mieszkanie, dom", en: "dwelling, residence", note: { pl: "Miejsce zamieszkania — w dokumentach i na formularzach.", en: "Place of residence — in documents and forms." } },
+      { role: "agent", wazn: { ar: "فاعِن", tr: "sākin" }, msa: { ar: "ساكِن", ph: "sākin" }, eg: { ar: "ساكن", ph: "sāken" }, pl: "mieszkaniec; nieruchomy", en: "resident; still", note: { pl: "Dwa znaczenia: kto mieszka i co się nie rusza.", en: "Two senses: one who dwells, and what does not move." } },
+      { role: "grammar", wazn: { ar: "فُعُون", tr: "sukūn" }, msa: { ar: "سُكون", ph: "sukūn" }, eg: { ar: "سكون", ph: "sukūn" }, pl: "sukun (znak braku samogłoski)", en: "sukun (no-vowel mark)", note: { pl: "Znasz go z harakat! Kółeczko = spółgłoska „w spoczynku”.", en: "You know it from harakat! The little circle = a consonant 'at rest'." } },
+      { role: "noun", wazn: { ar: "فَعينة", tr: "sakīna" }, cl: { ar: "سَكينة", ph: "sakīna" }, msa: { ar: "سَكينة", ph: "sakīna" }, eg: { ar: "سكينة", ph: "sakīna" }, pl: "spokój, ukojenie", en: "tranquility", note: { pl: "Pojęcie religijne: spokój zesłany przez Boga.", en: "A religious concept: tranquility sent down by God." } },
+    ],
+  },
+  { root: { ar: "ج-م-ع", tr: "j-m-ʿ" }, meaning: { pl: "zbieranie, łączenie", en: "gathering, joining" }, coreIdea: { pl: "zbierać razem, gromadzić", en: "to gather, to bring together" }, fromBase: { pl: "Znasz z bazy: جامِعة (uniwersytet) i مُجْتَمَع (społeczeństwo).", en: "From your vocabulary: جامِعة (university) and مُجْتَمَع (society)." }, family: [ { role: "verb", wazn: { ar: "فَعَلَ", tr: "jamaʿa" }, msa: { ar: "جَمَعَ", ph: "jamaʿa" }, eg: { ar: "جمع", ph: "gamaʿ" }, pl: "zebrał, zgromadził", en: "he gathered", note: { pl: "Podstawowe znaczenie: zbierać do kupy.", en: "Base meaning: to gather together." } }, { role: "noun", wazn: { ar: "فاعِلة", tr: "jāmiʿa" }, msa: { ar: "جامِعة", ph: "jāmiʿa" }, eg: { ar: "جامعة", ph: "gamʿa" }, pl: "uniwersytet", en: "university", note: { pl: "Miejsce, które GROMADZI uczonych i studentów.", en: "The place that GATHERS scholars and students." } }, { role: "place", wazn: { ar: "فاعِل", tr: "jāmiʿ" }, msa: { ar: "جامِع", ph: "jāmiʿ" }, eg: { ar: "جامع", ph: "gāmeʿ" }, pl: "meczet (wielki, piątkowy)", en: "grand mosque", note: { pl: "Meczet, który gromadzi wiernych na modlitwę piątkową. Uwaga: bez ة!", en: "The mosque that gathers the faithful for Friday prayer. Note: no ة!" } }, { role: "noun", wazn: { ar: "مُفْتَعَل", tr: "mujtamaʿ" }, msa: { ar: "مُجْتَمَع", ph: "mujtamaʿ" }, eg: { ar: "مجتمع", ph: "mogtamaʿ" }, pl: "społeczeństwo", en: "society", note: { pl: "To, co się zebrało — ludzie żyjący razem.", en: "That which has gathered — people living together." } }, { role: "noun", wazn: { ar: "اِفْتِعال", tr: "ijtimāʿ" }, msa: { ar: "اِجْتِماع", ph: "ijtimāʿ" }, eg: { ar: "اجتماع", ph: "egtemāʿ" }, pl: "spotkanie, zebranie", en: "meeting", note: { pl: "Częste w prasie: „اجتماع المجلس” = posiedzenie rady.", en: "Common in the press: 'ijtimāʿ al-majlis' = council meeting." } } ] },
+  { root: { ar: "ف-ت-ح", tr: "f-t-ḥ" }, meaning: { pl: "otwieranie", en: "opening" }, coreIdea: { pl: "otwierać, zdobywać, początek", en: "to open, to conquer, beginning" }, fromBase: { pl: "Znasz z bazy: مَفْتوح (otwarte) — napis na drzwiach sklepu.", en: "From your vocabulary: مَفْتوح (open) — the sign on a shop door." }, family: [ { role: "verb", wazn: { ar: "فَعَلَ", tr: "fataḥa" }, msa: { ar: "فَتَحَ", ph: "fataḥa" }, eg: { ar: "فتح", ph: "fataḥ" }, pl: "otworzył", en: "he opened", note: { pl: "W egipskim „eftaḥ!” = otwórz!", en: "In Egyptian 'eftaḥ!' = open it!" } }, { role: "attr", wazn: { ar: "مَفْعول", tr: "maftūḥ" }, msa: { ar: "مَفْتوح", ph: "maftūḥ" }, eg: { ar: "مفتوح", ph: "maftūḥ" }, pl: "otwarty", en: "open", note: { pl: "Wzór مَفْعول = imiesłów bierny: „ten, który został otwarty”.", en: "The مَفْعول pattern = passive participle: 'that which has been opened'." } }, { role: "noun", wazn: { ar: "مِفْعال", tr: "miftāḥ" }, msa: { ar: "مِفْتاح", ph: "miftāḥ" }, eg: { ar: "مفتاح", ph: "meftāḥ" }, pl: "klucz", en: "key", note: { pl: "Wzór مِفْعال = narzędzie. Klucz to narzędzie do otwierania!", en: "The مِفْعال pattern = tool. A key is the tool for opening!" } }, { role: "noun", wazn: { ar: "فاتِحة", tr: "fātiḥa" }, cl: { ar: "الفاتِحة", ph: "al-fātiḥa" }, msa: { ar: "فاتِحة", ph: "fātiḥa" }, eg: { ar: "فاتحة", ph: "fatḥa" }, pl: "otwierająca (pierwsza sura Koranu)", en: "the Opening (first sura)", note: { pl: "Znasz z kursu koranicznego! Al-Fatiha = ta, która otwiera Księgę.", en: "You know it from the Quran course! Al-Fatiha = the one that opens the Book." } } ] },
+  { root: { ar: "د-خ-ل", tr: "d-kh-l" }, meaning: { pl: "wchodzenie", en: "entering" }, coreIdea: { pl: "wejść, wnikać, dochód", en: "to enter, to penetrate, income" }, fromBase: { pl: "Znasz z bazy: مَدْخَل (wejście) — napis nad drzwiami.", en: "From your vocabulary: مَدْخَل (entrance) — the sign above a door." }, family: [ { role: "verb", wazn: { ar: "فَعَلَ", tr: "dakhala" }, msa: { ar: "دَخَلَ", ph: "dakhala" }, eg: { ar: "دخل", ph: "dakhal" }, pl: "wszedł", en: "he entered", note: { pl: "W egipskim „odkhol!” = wejdź!", en: "In Egyptian 'odkhol!' = come in!" } }, { role: "place", wazn: { ar: "مَفْعَل", tr: "madkhal" }, msa: { ar: "مَدْخَل", ph: "madkhal" }, eg: { ar: "مدخل", ph: "madkhal" }, pl: "wejście", en: "entrance", note: { pl: "Wzór مَفْعَل = miejsce. Miejsce wchodzenia.", en: "The مَفْعَل pattern = place. The place of entering." } }, { role: "noun", wazn: { ar: "فَعْل", tr: "dakhl" }, msa: { ar: "دَخْل", ph: "dakhl" }, eg: { ar: "دخل", ph: "dakhl" }, pl: "dochód, przychód", en: "income", note: { pl: "To, co „wchodzi” do kieszeni. Ważne słowo w tekstach o gospodarce.", en: "What 'comes in' to your pocket. An important word in economic texts." } }, { role: "attr", wazn: { ar: "داخِل", tr: "dākhil" }, msa: { ar: "داخِل", ph: "dākhil" }, eg: { ar: "داخل", ph: "daakhel" }, pl: "wewnątrz; wchodzący", en: "inside; entering", note: { pl: "„fi d-dākhil” = w środku. Przeciwieństwo: خارِج (na zewnątrz).", en: "'fi d-dākhil' = inside. Opposite: خارِج (outside)." } } ] },
+  { root: { ar: "خ-ر-ج", tr: "kh-r-j" }, meaning: { pl: "wychodzenie", en: "going out" }, coreIdea: { pl: "wyjść, wydobyć, produkować", en: "to exit, to bring out, to produce" }, fromBase: { pl: "Znasz z bazy: خُروج (wyjście) — napis nad drzwiami wyjściowymi.", en: "From your vocabulary: خُروج (exit) — the sign above an exit door." }, family: [ { role: "verb", wazn: { ar: "فَعَلَ", tr: "kharaja" }, msa: { ar: "خَرَجَ", ph: "kharaja" }, eg: { ar: "خرج", ph: "kharag" }, pl: "wyszedł", en: "he went out", note: { pl: "Para z دَخَلَ (wszedł). Uczą się razem.", en: "A pair with دَخَلَ (entered). Learn them together." } }, { role: "noun", wazn: { ar: "فُعول", tr: "khurūj" }, msa: { ar: "خُروج", ph: "khurūj" }, eg: { ar: "خروج", ph: "khoroog" }, pl: "wyjście (czynność)", en: "exit, going out", note: { pl: "Rzeczownik odsłowny — sama czynność wychodzenia.", en: "A verbal noun — the act of going out itself." } }, { role: "place", wazn: { ar: "مَفْعَل", tr: "makhraj" }, msa: { ar: "مَخْرَج", ph: "makhraj" }, eg: { ar: "مخرج", ph: "makhrag" }, pl: "wyjście (miejsce); reżyser", en: "exit (place); film director", note: { pl: "Dwa znaczenia! Reżyser to ten, kto „wydobywa” film.", en: "Two meanings! A director is the one who 'brings out' a film." } }, { role: "attr", wazn: { ar: "خارِج", tr: "khārij" }, msa: { ar: "خارِج", ph: "khārij" }, eg: { ar: "خارج", ph: "khaareg" }, pl: "na zewnątrz", en: "outside", note: { pl: "„الخارِج” = zagranica. W prasie: „وزير الخارجية” = minister spraw zagranicznych.", en: "'al-khārij' = abroad. In the press: 'wazīr al-khārijiyya' = foreign minister." } } ] },
+  { root: { ar: "ح-ك-م", tr: "ḥ-k-m" }, meaning: { pl: "rządzenie, mądrość", en: "ruling, wisdom" }, coreIdea: { pl: "rządzić, sądzić, mądrość", en: "to rule, to judge, wisdom" }, fromBase: { pl: "Znasz z bazy: حُكومة (rząd) — słowo z każdej gazety.", en: "From your vocabulary: حُكومة (government) — a word from every newspaper." }, family: [ { role: "verb", wazn: { ar: "فَعَلَ", tr: "ḥakama" }, msa: { ar: "حَكَمَ", ph: "ḥakama" }, eg: { ar: "حكم", ph: "ḥakam" }, pl: "rządził; osądził", en: "he ruled; he judged", note: { pl: "Rządzić i sądzić to w arabskim ten sam rdzeń.", en: "To rule and to judge share the same root in Arabic." } }, { role: "noun", wazn: { ar: "فُعولة", tr: "ḥukūma" }, msa: { ar: "حُكومة", ph: "ḥukūma" }, eg: { ar: "حكومة", ph: "ḥekuuma" }, pl: "rząd", en: "government", note: { pl: "Ten, kto rządzi. Codzienne słowo w wiadomościach.", en: "The one that rules. An everyday word in the news." } }, { role: "agent", wazn: { ar: "حاكِم", tr: "ḥākim" }, msa: { ar: "حاكِم", ph: "ḥākim" }, eg: { ar: "حاكم", ph: "ḥaakem" }, pl: "władca; sędzia", en: "ruler; judge", note: { pl: "Ten, kto sprawuje władzę.", en: "The one who exercises authority." } }, { role: "noun", wazn: { ar: "مَفْعَمة", tr: "maḥkama" }, msa: { ar: "مَحْكَمة", ph: "maḥkama" }, eg: { ar: "محكمة", ph: "maḥkama" }, pl: "sąd", en: "court", note: { pl: "Miejsce sądzenia. Przyda się w Twojej pracy!", en: "The place of judging." } }, { role: "noun", wazn: { ar: "فِعْمة", tr: "ḥikma" }, cl: { ar: "حِكْمة", ph: "ḥikma" }, msa: { ar: "حِكْمة", ph: "ḥikma" }, eg: { ar: "حكمة", ph: "ḥekma" }, pl: "mądrość", en: "wisdom", note: { pl: "Zaskakujący związek: rządzenie i mądrość z jednego rdzenia.", en: "A striking link: ruling and wisdom from one root." } } ] },
+  { root: { ar: "ط-ع-م", tr: "ṭ-ʿ-m" }, meaning: { pl: "jedzenie, smak", en: "food, taste" }, coreIdea: { pl: "smakować, karmić", en: "to taste, to feed" }, fromBase: { pl: "Znasz z bazy: مَطْعَم (restauracja) — szyld na każdej ulicy.", en: "From your vocabulary: مَطْعَم (restaurant) — a sign on every street." }, family: [ { role: "noun", wazn: { ar: "فَعْم", tr: "ṭaʿm" }, msa: { ar: "طَعْم", ph: "ṭaʿm" }, eg: { ar: "طعم", ph: "ṭaʿm" }, pl: "smak", en: "taste", note: { pl: "W egipskim „ṭaʿmo ḥelw” = ma dobry smak.", en: "In Egyptian 'ṭaʿmo ḥelw' = it tastes good." } }, { role: "place", wazn: { ar: "مَفْعَل", tr: "maṭʿam" }, msa: { ar: "مَطْعَم", ph: "maṭʿam" }, eg: { ar: "مطعم", ph: "maṭʿam" }, pl: "restauracja", en: "restaurant", note: { pl: "Miejsce jedzenia — jak مَكْتَب (biuro) to miejsce pisania.", en: "The place of eating — like مَكْتَب (office) is the place of writing." } }, { role: "noun", wazn: { ar: "طَعام", tr: "ṭaʿām" }, msa: { ar: "طَعام", ph: "ṭaʿām" }, eg: { ar: "طعام", ph: "ṭaʿām" }, pl: "jedzenie, posiłek", en: "food, meal", note: { pl: "Bardziej formalne niż egipskie „akl”.", en: "More formal than the Egyptian 'akl'." } }, { role: "noun", wazn: { ar: "مَطْعوم", tr: "maṭʿūm" }, msa: { ar: "إِطْعام", ph: "iṭʿām" }, eg: { ar: "إطعام", ph: "eṭʿām" }, pl: "karmienie, żywienie", en: "feeding", note: { pl: "IV wzór = powodowanie. Karmić = sprawiać, że ktoś je.", en: "Form IV = causation. To feed = to cause someone to eat." } } ] }
 ];
 
 const MSA_COMPARISON = {
@@ -6885,6 +7813,11 @@ function sentencesForDialogue(dialogue) {
 
 // Nowe słowa dochodzą przez scalanie (mergeWords), a nie przez podbicie wersji.
 const STORAGE_KEY = "ar-eg-words";
+// Klucz talii zależny od kursu. UWAGA: kurs egipski zachowuje oryginalny klucz
+// bez sufiksu — dzięki temu istniejące dane użytkownika pozostają nietknięte.
+function wordsKey() {
+  return ACTIVE_COURSE === "egyptian" ? STORAGE_KEY : `${STORAGE_KEY}-${ACTIVE_COURSE}`;
+}
 // Osobny klawisz przechowuje same statystyki postępu (correctCount itd.) per słówko,
 // odporny na zmiany zestawu — dzięki temu aktualizacja bazy nie zeruje wyników.
 const PROGRESS_KEY_BASE = "ar-eg-progress-v1";
@@ -6957,6 +7890,9 @@ const PHRASE_WORDS = [
 ];
 
 function freshDeck() {
+  // Kurs MSA ma własną, osobną bazę słów. Klucze postępu są już rozdzielone
+  // per kurs (progressKey/statsKey), więc statystyki egipskie pozostają nietknięte.
+  if (ACTIVE_COURSE === "msa") return MSA_WORDS.slice();
   return [
     ...SEED_WORDS, ...VERB_WORDS, ...NOUN_WORDS, ...QW_WORDS,
     ...GRAMMAR_WORDS, ...EXPRESSION_WORDS, ...RELIGIOUS_WORDS,
@@ -7122,7 +8058,7 @@ function loadWords() {
   //    - słówka dodane ręcznie (wordId spoza decku).
   let saved = [];
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(wordsKey());
     if (raw) saved = JSON.parse(raw) || [];
   } catch (e) {}
   const deckIds = new Set(deck.map(wordId));
@@ -7164,7 +8100,7 @@ function loadWords() {
 function saveWords(words) {
   try {
     // Baza: zapisujemy pełną listę (żeby zachować słówka dodane przez użytkownika).
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
+    localStorage.setItem(wordsKey(), JSON.stringify(words));
   } catch (e) {}
   // Postęp: osobno, odporny na przyszłe zmiany zestawu.
   saveProgress(words);
@@ -7501,8 +8437,8 @@ function Flashcard({ word, flipped, onFlip, onToggleFlag, onToggleVerified, onSe
             <Pencil size={14} />
           </button>
           <span className="card-eyebrow">مصري</span>
-          <span className="card-arabic">{word.ar}</span>
-          <span className="card-phonetic">{word.ph} <AudioButton word={word} size={20} /></span>
+          <Ar className="card-arabic">{word.ar}</Ar>
+          <span className="card-phonetic"><Ph>{word.ph} </Ph><AudioButton word={word} size={20} /></span>
           {(() => {
             const ex = word.ex || findUsageExample(word);
             if (!ex) return null;
@@ -8259,7 +9195,7 @@ function ListView({ words, setWords, activeCat, onToggleFlag, onToggleVerified, 
           value={cat}
           onChange={(e) => setCat(e.target.value)}
         >
-          {CATEGORIES.map((c) => (
+          {activeCategories().map((c) => (
             <option key={c.key} value={c.key}>
               {c.emoji} {catLabel(c, lang)}
             </option>
@@ -8580,7 +9516,7 @@ function CardFormModal({ onClose, onSave, onDelete, initial }) {
               setCatTouched(true);
             }}
           >
-            {CATEGORIES.map((c) => (
+            {activeCategories().map((c) => (
               <option key={c.key} value={c.key}>
                 {c.emoji} {catLabel(c, lang)}
               </option>
@@ -10153,7 +11089,7 @@ function applyBackup(backup, currentWords) {
   });
   // Zapisz od razu do localStorage (żeby przetrwało kolejne odświeżenie).
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedWords));
+    localStorage.setItem(wordsKey(), JSON.stringify(mergedWords));
     localStorage.setItem(progressKey(), JSON.stringify(prog));
     if (backup.stats) localStorage.setItem(statsKey(), JSON.stringify(backup.stats));
   } catch (e) {}
@@ -11249,6 +12185,8 @@ const ROLE_LABELS = {
   food: { pl: "przedmiot", en: "object" },
   meal: { pl: "źródło", en: "source" },
   student: { pl: "wykonawca", en: "doer" },
+  attr: { pl: "przymiot, cecha", en: "attribute" },
+  grammar: { pl: "termin gramatyczny", en: "grammar term" },
 };
 
 // ---------- Widok: Lekcje MSA od podstaw ----------
@@ -11435,8 +12373,8 @@ function QuranVersesView() {
           <div className="qv-verse-head">
             <span className="qv-ref">{lang === "en" ? v.ref.en : v.ref.pl}</span>
           </div>
-          <div className="qv-verse-ar">{v.ar}</div>
-          <div className="qv-verse-ph">{v.ph}</div>
+          <Ar className="qv-verse-ar">{v.ar}</Ar>
+          <Ph className="qv-verse-ph">{v.ph}</Ph>
           <div className="qv-verse-tr">{lang === "en" ? v.en : v.pl}</div>
 
           {(v.fullMsa || v.fullEg) && (
@@ -11444,16 +12382,16 @@ function QuranVersesView() {
               {v.fullMsa && (
                 <div className="qv-full qv-full-msa">
                   <span className="qv-full-label">{lang === "en" ? "whole verse in MSA" : "cały werset w MSA"}</span>
-                  <span className="qv-full-ar">{v.fullMsa.ar}</span>
-                  <span className="qv-full-ph">{v.fullMsa.ph}</span>
+                  <Ar className="qv-full-ar">{v.fullMsa.ar}</Ar>
+                  <Ph className="qv-full-ph">{v.fullMsa.ph}</Ph>
                   {v.fullMsa.note && <span className="qv-full-note">{lang === "en" ? v.fullMsa.note.en : v.fullMsa.note.pl}</span>}
                 </div>
               )}
               {v.fullEg && (
                 <div className="qv-full qv-full-eg">
                   <span className="qv-full-label">{lang === "en" ? "whole verse in Egyptian" : "cały werset po egipsku"}</span>
-                  <span className="qv-full-ar">{v.fullEg.ar}</span>
-                  <span className="qv-full-ph">{v.fullEg.ph}</span>
+                  <Ar className="qv-full-ar">{v.fullEg.ar}</Ar>
+                  <Ph className="qv-full-ph">{v.fullEg.ph}</Ph>
                   {v.fullEg.note && <span className="qv-full-note">{lang === "en" ? v.fullEg.note.en : v.fullEg.note.pl}</span>}
                 </div>
               )}
@@ -11472,7 +12410,7 @@ function QuranVersesView() {
               return (
                 <div className="qv-word" key={i}>
                   <button className="qv-word-head" onClick={() => setOpenWord(open ? null : key)}>
-                    <span className="qv-word-cl">{w.cl}</span>
+                    <Ar className="qv-word-cl">{w.cl}</Ar>
                     <span className="qv-word-meaning">{lang === "en" ? w.en : w.pl}</span>
                     <span className="qv-word-chevron">{open ? "−" : "+"}</span>
                   </button>
@@ -11481,18 +12419,18 @@ function QuranVersesView() {
                       <div className="qv-registers">
                         <div className="qv-reg qv-reg-cl">
                           <span className="qv-reg-label">{lang === "en" ? "Classical" : "klasyczny"}</span>
-                          <span className="qv-reg-ar">{w.cl}</span>
-                          <span className="qv-reg-ph">{w.clPh}</span>
+                          <Ar className="qv-reg-ar">{w.cl}</Ar>
+                          <Ph className="qv-reg-ph">{w.clPh}</Ph>
                         </div>
                         <div className="qv-reg qv-reg-msa">
                           <span className="qv-reg-label">MSA</span>
-                          <span className="qv-reg-ar">{w.msa}</span>
-                          <span className="qv-reg-ph">{w.msaPh}</span>
+                          <Ar className="qv-reg-ar">{w.msa}</Ar>
+                          <Ph className="qv-reg-ph">{w.msaPh}</Ph>
                         </div>
                         <div className="qv-reg qv-reg-eg">
                           <span className="qv-reg-label">{lang === "en" ? "Egyptian" : "egipski"}</span>
-                          <span className="qv-reg-ar">{w.eg}</span>
-                          <span className="qv-reg-ph">{w.egPh}</span>
+                          <Ar className="qv-reg-ar">{w.eg}</Ar>
+                          <Ph className="qv-reg-ph">{w.egPh}</Ph>
                         </div>
                       </div>
                       <p className="qv-word-note">{lang === "en" ? w.note.en : w.note.pl}</p>
@@ -11525,9 +12463,9 @@ function ReligiousView() {
             {g.items.map((it, i) => (
               <div className="relig-item" key={i}>
                 <div className="relig-item-head">
-                  <span className="relig-item-ar">{it.ar}</span>
+                  <Ar className="relig-item-ar">{it.ar}</Ar>
                   <div className="relig-item-txt">
-                    <span className="relig-item-ph">{it.ph}</span>
+                    <Ph className="relig-item-ph">{it.ph}</Ph>
                     <span className="relig-item-meaning">{lang === "en" ? it.en : it.pl}</span>
                   </div>
                 </div>
@@ -11552,8 +12490,8 @@ function QuranBasicsView() {
       </p>
       {QURAN_BASICS.map((f, i) => (
         <div className="quran-card" key={i}>
-          <div className="quran-card-ar">{f.ar}</div>
-          <div className="quran-card-ph">{f.ph}</div>
+          <Ar className="quran-card-ar">{f.ar}</Ar>
+          <Ph className="quran-card-ph">{f.ph}</Ph>
           <div className="quran-card-meaning">{lang === "en" ? f.en : f.pl}</div>
           <p className="quran-card-note">{lang === "en" ? f.note.en : f.note.pl}</p>
           <div className="quran-card-root">
@@ -11787,22 +12725,75 @@ function saveEgPathDone(done) {
   try { localStorage.setItem(EG_PATH_KEY, JSON.stringify(done)); } catch (e) {}
 }
 
+// ---------- Ćwiczenie w lekcji (wspólne dla obu ścieżek) ----------
+// Typy: "choice" (wybierz odpowiedź), "gap" (uzupełnij lukę), "build" (ułóż zdanie).
+// Cel: lekcja nie kończy się na wyliczance — od razu sprawdzasz, czy rozumiesz.
+function LessonExercise({ ex, lang }) {
+  const [picked, setPicked] = useState(null);
+  const [revealed, setRevealed] = useState(false);
+  const correct = picked !== null && ex.options[picked] && ex.options[picked].ok;
+
+  const prompt = lang === "en" ? ex.promptEn : ex.prompt;
+  return (
+    <div className="lex">
+      <div className="lex-head">
+        <span className="lex-label">{lang === "en" ? "check yourself" : "sprawdź się"}</span>
+        {ex.hint && <span className="lex-hint">{lang === "en" ? ex.hintEn : ex.hint}</span>}
+      </div>
+      <p className="lex-prompt">{prompt}</p>
+      {ex.sentence && (
+        <div className="lex-sentence">
+          <Ar className="lex-sentence-ar">{ex.sentence.ar}</Ar>
+          <Ph className="lex-sentence-ph">{ex.sentence.ph}</Ph>
+        </div>
+      )}
+      <div className="lex-options">
+        {ex.options.map((o, i) => {
+          const isPicked = picked === i;
+          const show = revealed || isPicked;
+          const cls = show ? (o.ok ? "lex-opt lex-opt-ok" : isPicked ? "lex-opt lex-opt-bad" : "lex-opt") : "lex-opt";
+          return (
+            <button
+              key={i}
+              className={cls}
+              onClick={() => { setPicked(i); if (o.ok) setRevealed(true); }}
+              disabled={revealed && !isPicked}
+            >
+              <span className="lex-opt-ar">{o.ar}</span>
+              {o.ph && <span className="lex-opt-ph">{o.ph}</span>}
+              {o.label && <span className="lex-opt-label">{lang === "en" && o.labelEn ? o.labelEn : o.label}</span>}
+            </button>
+          );
+        })}
+      </div>
+      {picked !== null && (
+        <div className={`lex-feedback ${correct ? "lex-feedback-ok" : "lex-feedback-bad"}`}>
+          {correct
+            ? (lang === "en" ? "✓ Correct! " : "✓ Dobrze! ") + (lang === "en" ? (ex.whyEn || "") : (ex.why || ""))
+            : (lang === "en" ? "Not quite — try again." : "Jeszcze nie — spróbuj ponownie.")}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function EgPathBlock({ b, lang }) {
+  if (b.type === "exercise") return <LessonExercise ex={b} lang={lang} />;
   if (b.type === "text") return <p className="mpath-text">{lang === "en" ? b.en : b.pl}</p>;
   if (b.type === "tip") return <div className="mpath-tip"><span className="mpath-tip-icon">💡</span><span>{lang === "en" ? b.en : b.pl}</span></div>;
   if (b.type === "word" || b.type === "phrase") return (
     <div className="egp-word">
-      <span className="egp-word-ar">{b.ar}</span>
+      <Ar className="egp-word-ar">{b.ar}</Ar>
       <div className="egp-word-txt">
-        <span className="egp-word-ph">{b.ph} <AudioButton word={{ ar: b.ar, pl: b.pl, cat: "path" }} size={16} /></span>
+        <span className="egp-word-ph"><Ph>{b.ph} </Ph><AudioButton word={{ ar: b.ar, pl: b.pl, cat: "path" }} size={16} /></span>
         <span className="egp-word-meaning">{lang === "en" ? b.en : b.pl}</span>
       </div>
     </div>
   );
   if (b.type === "sentence") return (
     <div className="egp-sentence">
-      <span className="egp-sent-ar">{b.ar}</span>
-      <span className="egp-sent-ph">{b.ph} <AudioButton word={{ ar: b.ar, pl: b.pl, cat: "path" }} size={16} /></span>
+      <Ar className="egp-sent-ar">{b.ar}</Ar>
+      <span className="egp-sent-ph"><Ph>{b.ph} </Ph><AudioButton word={{ ar: b.ar, pl: b.pl, cat: "path" }} size={16} /></span>
       <span className="egp-sent-tr">{lang === "en" ? b.en : b.pl}</span>
     </div>
   );
@@ -11845,9 +12836,43 @@ function EgPathView({ onGoFlashcards }) {
               🗂️ {lang === "en" ? lesson.fiszki.en : lesson.fiszki.pl}
             </button>
           )}
-          <button className="mpath-done-btn" onClick={() => markDone(lesson.id)}>
-            {done[lesson.id] ? (lang === "en" ? "✓ completed — close" : "✓ ukończono — zamknij") : (lang === "en" ? "mark as done" : "oznacz jako ukończone")}
-          </button>
+          {(() => {
+            const idx = EG_PATH.findIndex((x) => x.id === lesson.id);
+            const prev = idx > 0 ? EG_PATH[idx - 1] : null;
+            const next = idx < EG_PATH.length - 1 ? EG_PATH[idx + 1] : null;
+            return (
+              <>
+                <button
+                  className="mpath-done-btn"
+                  onClick={() => {
+                    const nd = { ...done, [lesson.id]: true };
+                    setDone(nd); saveEgPathDone(nd);
+                    if (next) setOpenLesson(next.id); else setOpenLesson(null);
+                  }}
+                >
+                  {next
+                    ? (lang === "en" ? "✓ done — next lesson →" : "✓ ukończ i dalej →")
+                    : (lang === "en" ? "✓ finish the path" : "✓ zakończ ścieżkę")}
+                </button>
+                <div className="mpath-nav">
+                  <button
+                    className="mpath-nav-btn"
+                    disabled={!prev}
+                    onClick={() => prev && setOpenLesson(prev.id)}
+                  >
+                    ← {prev ? (lang === "en" ? prev.title.en : prev.title.pl) : (lang === "en" ? "start" : "początek")}
+                  </button>
+                  <button
+                    className="mpath-nav-btn mpath-nav-btn-next"
+                    disabled={!next}
+                    onClick={() => next && setOpenLesson(next.id)}
+                  >
+                    {next ? (lang === "en" ? next.title.en : next.title.pl) : (lang === "en" ? "the end" : "koniec")} →
+                  </button>
+                </div>
+              </>
+            );
+          })()}
         </div>
       </div>
     );
@@ -11896,12 +12921,13 @@ function savePathDone(done) {
 }
 
 function MsaPathBlock({ b, lang }) {
+  if (b.type === "exercise") return <LessonExercise ex={b} lang={lang} />;
   if (b.type === "text") return <p className="mpath-text">{lang === "en" ? b.en : b.pl}</p>;
   if (b.type === "tip") return <div className="mpath-tip"><span className="mpath-tip-icon">💡</span><span>{lang === "en" ? b.en : b.pl}</span></div>;
   if (b.type === "fact" || b.type === "word") return (
     <div className="mpath-word">
-      <span className="mpath-word-ar">{b.ar}</span>
-      <span className="mpath-word-ph">{b.ph}</span>
+      <Ar className="mpath-word-ar">{b.ar}</Ar>
+      <Ph className="mpath-word-ph">{b.ph}</Ph>
       <span className="mpath-word-meaning">{lang === "en" ? b.en : b.pl}</span>
     </div>
   );
@@ -11909,7 +12935,7 @@ function MsaPathBlock({ b, lang }) {
     <div className="mpath-letter">
       <span className="mpath-letter-ar">{b.ar}</span>
       <div className="mpath-letter-txt">
-        <span className="mpath-letter-ph">{b.ph}</span>
+        <Ph className="mpath-letter-ph">{b.ph}</Ph>
         <span className="mpath-letter-desc">{lang === "en" ? b.en : b.pl}</span>
       </div>
     </div>
@@ -11918,7 +12944,7 @@ function MsaPathBlock({ b, lang }) {
     <div className="mpath-haraka">
       <span className="mpath-haraka-ar">{b.ar}</span>
       <div className="mpath-letter-txt">
-        <span className="mpath-letter-ph">{b.ph}</span>
+        <Ph className="mpath-letter-ph">{b.ph}</Ph>
         <span className="mpath-letter-desc">{lang === "en" ? b.en : b.pl}</span>
       </div>
     </div>
@@ -11940,15 +12966,15 @@ function MsaPathBlock({ b, lang }) {
   );
   if (b.type === "sentence") return (
     <div className="mpath-sentence">
-      <span className="mpath-sent-ar">{b.ar}</span>
-      <span className="mpath-sent-ph">{b.ph}</span>
+      <Ar className="mpath-sent-ar">{b.ar}</Ar>
+      <Ph className="mpath-sent-ph">{b.ph}</Ph>
       <span className="mpath-sent-tr">{lang === "en" ? b.en : b.pl}</span>
     </div>
   );
   return null;
 }
 
-function MsaPathView() {
+function MsaPathView({ onProgressChange }) {
   const lang = useLang();
   const [done, setDone] = useState(loadPathDone);
   const [openLesson, setOpenLesson] = useState(null);
@@ -11956,6 +12982,7 @@ function MsaPathView() {
   const markDone = (id) => {
     const nd = { ...done, [id]: true };
     setDone(nd); savePathDone(nd);
+    onProgressChange && onProgressChange();
     setOpenLesson(null);
   };
   const doneCount = MSA_PATH.filter((l) => done[l.id]).length;
@@ -11974,9 +13001,44 @@ function MsaPathView() {
           <div className="mpath-blocks">
             {lesson.blocks.map((b, i) => <MsaPathBlock key={i} b={b} lang={lang} />)}
           </div>
-          <button className="mpath-done-btn" onClick={() => markDone(lesson.id)}>
-            {done[lesson.id] ? (lang === "en" ? "✓ completed — close" : "✓ ukończono — zamknij") : (lang === "en" ? "mark as done" : "oznacz jako ukończone")}
-          </button>
+          {(() => {
+            const idx = MSA_PATH.findIndex((x) => x.id === lesson.id);
+            const prev = idx > 0 ? MSA_PATH[idx - 1] : null;
+            const next = idx < MSA_PATH.length - 1 ? MSA_PATH[idx + 1] : null;
+            return (
+              <>
+                <button
+                  className="mpath-done-btn"
+                  onClick={() => {
+                    const nd = { ...done, [lesson.id]: true };
+                    setDone(nd); savePathDone(nd);
+                    onProgressChange && onProgressChange();
+                    if (next) setOpenLesson(next.id); else setOpenLesson(null);
+                  }}
+                >
+                  {next
+                    ? (lang === "en" ? "✓ done — next lesson →" : "✓ ukończ i dalej →")
+                    : (lang === "en" ? "✓ finish the path" : "✓ zakończ ścieżkę")}
+                </button>
+                <div className="mpath-nav">
+                  <button
+                    className="mpath-nav-btn"
+                    disabled={!prev}
+                    onClick={() => prev && setOpenLesson(prev.id)}
+                  >
+                    ← {prev ? (lang === "en" ? prev.title.en : prev.title.pl) : (lang === "en" ? "start" : "początek")}
+                  </button>
+                  <button
+                    className="mpath-nav-btn mpath-nav-btn-next"
+                    disabled={!next}
+                    onClick={() => next && setOpenLesson(next.id)}
+                  >
+                    {next ? (lang === "en" ? next.title.en : next.title.pl) : (lang === "en" ? "the end" : "koniec")} →
+                  </button>
+                </div>
+              </>
+            );
+          })()}
         </div>
       </div>
     );
@@ -12167,10 +13229,693 @@ function MsaLessonsView() {
   );
 }
 
-function RootsView({ initialRoot = 0 }) {
+// ---------- Widok: słownictwo "z ulicy" (MSA) ----------
+// ---------- Gra: rodzina rdzenia ----------
+// Pokazujemy rdzeń + jedno słowo z rodziny. Pytanie: które z podanych
+// słów TEŻ pochodzi z tego rdzenia? Ćwiczy rozpoznawanie wzorów.
+function RootGame() {
+  const lang = useLang();
+  const [round, setRound] = useState(0);
+  const [picked, setPicked] = useState(null);
+  const [score, setScore] = useState({ ok: 0, total: 0 });
+
+  // Zbuduj rundy: dla każdego rdzenia weź jedno słowo prawidłowe
+  // i dwa dystraktory z innych rdzeni.
+  const rounds = useMemo(() => {
+    const rs = [];
+    MSA_ROOTS.forEach((r, ri) => {
+      if (!r.family || r.family.length < 2) return;
+      const correct = r.family[1] || r.family[0];
+      const others = MSA_ROOTS.filter((_, i) => i !== ri)
+        .map((o) => o.family && o.family[1])
+        .filter(Boolean);
+      if (others.length < 2) return;
+      // deterministyczny wybór dystraktorów (bez losowości między renderami)
+      const d1 = others[ri % others.length];
+      const d2 = others[(ri * 3 + 1) % others.length];
+      if (!d1 || !d2 || d1 === d2) return;
+      const opts = [
+        { ...correct, ok: true },
+        { ...d1, ok: false },
+        { ...d2, ok: false },
+      ];
+      // stabilne przetasowanie zależne od indeksu
+      const order = [[0, 1, 2], [1, 2, 0], [2, 0, 1]][ri % 3];
+      rs.push({
+        root: r.root,
+        meaning: r.meaning,
+        hint: r.family[0],
+        options: order.map((i) => opts[i]),
+      });
+    });
+    return rs;
+  }, []);
+
+  if (!rounds.length) return <p className="street-intro">{lang === "en" ? "Not enough roots yet." : "Za mało rdzeni."}</p>;
+
+  const r = rounds[round % rounds.length];
+  const done = picked !== null;
+  const isOk = done && r.options[picked].ok;
+
+  return (
+    <div className="view-rootgame">
+      <div className="rg-score">
+        {lang === "en" ? "score" : "wynik"}: {score.ok} / {score.total}
+      </div>
+      <div className="rg-card">
+        <div className="rg-root">{r.root.ar}</div>
+        <div className="rg-root-tr">{r.root.tr}</div>
+        <div className="rg-meaning">{lang === "en" ? r.meaning.en : r.meaning.pl}</div>
+        <div className="rg-hint">
+          <span className="rg-hint-label">{lang === "en" ? "from this root" : "z tego rdzenia"}</span>
+          <Ar className="rg-hint-ar">{r.hint.msa.ar}</Ar>
+          <span className="rg-hint-pl">{lang === "en" ? r.hint.en : r.hint.pl}</span>
+        </div>
+      </div>
+      <p className="rg-question">
+        {lang === "en" ? "Which word comes from the SAME root?" : "Które słowo pochodzi z TEGO SAMEGO rdzenia?"}
+      </p>
+      <div className="lex-options">
+        {r.options.map((o, i) => {
+          const isPicked = picked === i;
+          const cls = done
+            ? o.ok ? "lex-opt lex-opt-ok" : isPicked ? "lex-opt lex-opt-bad" : "lex-opt"
+            : "lex-opt";
+          return (
+            <button
+              key={i}
+              className={cls}
+              disabled={done}
+              onClick={() => {
+                setPicked(i);
+                setScore((s) => ({ ok: s.ok + (o.ok ? 1 : 0), total: s.total + 1 }));
+              }}
+            >
+              <span className="lex-opt-ar">{o.msa.ar}</span>
+              <span className="lex-opt-ph">{o.msa.ph}</span>
+              <span className="lex-opt-label">{lang === "en" ? o.en : o.pl}</span>
+            </button>
+          );
+        })}
+      </div>
+      {done && (
+        <>
+          <div className={`lex-feedback ${isOk ? "lex-feedback-ok" : "lex-feedback-bad"}`}>
+            {isOk
+              ? (lang === "en" ? "✓ Correct — same root, different pattern." : "✓ Dobrze — ten sam rdzeń, inny wzór.")
+              : (lang === "en" ? "Not this one. Look at the three consonants." : "Nie ten. Popatrz na trzy spółgłoski.")}
+          </div>
+          <button
+            className="mpath-done-btn"
+            onClick={() => { setRound((n) => n + 1); setPicked(null); }}
+          >
+            {lang === "en" ? "next root →" : "następny rdzeń →"}
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
+
+// ---------- Widok: trening mostów (rdzenie + kolokacje) ----------
+// Trzy tryby: zgadnij rdzeń, dopasuj rejestr, wzór słowotwórczy.
+// Materiał generowany z MSA_ROOTS i COLLOCATIONS — rośnie razem z nimi.
+function shuffleArr(a) {
+  const x = [...a];
+  for (let i = x.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [x[i], x[j]] = [x[j], x[i]];
+  }
+  return x;
+}
+
+function buildRootTask(lang) {
+  const usable = MSA_ROOTS.filter((r) => r.family.length >= 3);
+  const r = usable[Math.floor(Math.random() * usable.length)];
+  const shown = shuffleArr(r.family).slice(0, 3);
+  const wrong = shuffleArr(MSA_ROOTS.filter((x) => x.root.ar !== r.root.ar)).slice(0, 3);
+  const options = shuffleArr([
+    { ar: r.root.ar, tr: r.root.tr, ok: true },
+    ...wrong.map((w) => ({ ar: w.root.ar, tr: w.root.tr })),
+  ]);
+  return {
+    kind: "root",
+    prompt: lang === "en" ? "These words share one root. Which one?" : "Te słowa mają wspólny rdzeń. Który?",
+    words: shown.map((f) => ({ ar: f.msa.ar, ph: f.msa.ph, pl: lang === "en" ? f.en : f.pl })),
+    options,
+    why: lang === "en"
+      ? `Root ${r.root.ar} — core idea: ${r.coreIdea ? r.coreIdea.en : r.meaning.en}.`
+      : `Rdzeń ${r.root.ar} — myśl przewodnia: ${r.coreIdea ? r.coreIdea.pl : r.meaning.pl}.`,
+  };
+}
+
+function buildRegisterTask(lang) {
+  const c = COLLOCATIONS[Math.floor(Math.random() * COLLOCATIONS.length)];
+  const item = c.items[Math.floor(Math.random() * c.items.length)];
+  const askMsa = Math.random() < 0.5;
+  const allItems = COLLOCATIONS.flatMap((g) => g.items).filter((x) => x.concept.pl !== item.concept.pl);
+  const distract = shuffleArr(allItems).slice(0, 2);
+  const correct = askMsa ? item.msa : item.eg;
+  const options = shuffleArr([
+    { ar: correct.ar, ph: correct.ph, ok: true },
+    ...distract.map((d) => (askMsa ? { ar: d.msa.ar, ph: d.msa.ph } : { ar: d.eg.ar, ph: d.eg.ph })),
+  ]);
+  const label = askMsa ? "MSA" : (lang === "en" ? "Egyptian" : "po egipsku");
+  return {
+    kind: "register",
+    prompt: lang === "en"
+      ? `How do you say "${item.concept.en}" in ${label}?`
+      : `Jak powiedzieć „${item.concept.pl}" ${askMsa ? "w MSA" : "po egipsku"}?`,
+    options,
+    why: lang === "en" ? item.note.en : item.note.pl,
+  };
+}
+
+function buildPatternTask(lang) {
+  // Wybierz słowo z wzorem مَفْعَل/مِفْعال itp. i zapytaj o znaczenie wzoru.
+  // Tylko słowa, gdzie wzór jest realnym schematem (فَعَل, مَفْعَل...), a nie kopią słowa.
+  const isPattern = (w) => /[فعل]/.test(w) && w.length <= 7;
+  const withWazn = MSA_ROOTS.flatMap((r) =>
+    r.family
+      .filter(
+        (f) =>
+          f.wazn && f.role && ["place", "agent"].includes(f.role) &&
+          isPattern(f.wazn.ar) && f.wazn.ar !== f.msa.ar
+      )
+      .map((f) => ({ f, r }))
+  );
+  if (!withWazn.length) return buildRootTask(lang);
+  const pick = withWazn[Math.floor(Math.random() * withWazn.length)];
+  const roleLabels = {
+    place: { pl: "miejsce, gdzie coś się dzieje", en: "a place where something happens" },
+    agent: { pl: "osoba, która coś robi", en: "the person who does something" },
+    noun: { pl: "rzecz lub pojęcie", en: "a thing or concept" },
+  };
+  const correctKey = pick.f.role;
+  const otherKeys = Object.keys(roleLabels).filter((k) => k !== correctKey);
+  const options = shuffleArr([
+    { ar: "", label: lang === "en" ? roleLabels[correctKey].en : roleLabels[correctKey].pl, ok: true },
+    ...otherKeys.map((k) => ({ ar: "", label: lang === "en" ? roleLabels[k].en : roleLabels[k].pl })),
+  ]);
+  return {
+    kind: "pattern",
+    prompt: lang === "en"
+      ? `The word ${pick.f.msa.ar} (${pick.f.msa.ph}) follows the pattern ${pick.f.wazn.ar}. What does this pattern express?`
+      : `Słowo ${pick.f.msa.ar} (${pick.f.msa.ph}) jest we wzorze ${pick.f.wazn.ar}. Co ten wzór wyraża?`,
+    options,
+    why: lang === "en"
+      ? `${pick.f.msa.ar} = ${pick.f.en}. ${pick.f.note ? pick.f.note.en : ""}`
+      : `${pick.f.msa.ar} = ${pick.f.pl}. ${pick.f.note ? pick.f.note.pl : ""}`,
+  };
+}
+
+function TrainView() {
+  const lang = useLang();
+  const [mode, setMode] = useState(null);
+  const [task, setTask] = useState(null);
+  const [picked, setPicked] = useState(null);
+  const [score, setScore] = useState({ ok: 0, total: 0 });
+
+  const builders = {
+    root: buildRootTask,
+    register: buildRegisterTask,
+    pattern: buildPatternTask,
+  };
+
+  const start = (m) => {
+    setMode(m);
+    setScore({ ok: 0, total: 0 });
+    setPicked(null);
+    setTask(builders[m] ? builders[m](lang) : null);
+  };
+  const next = () => {
+    setPicked(null);
+    setTask(builders[mode](lang));
+  };
+
+  if (mode === "classic") {
+    return (
+      <div className="view-train">
+        <button className="mpath-back" onClick={() => setMode(null)}>
+          ← {lang === "en" ? "modes" : "tryby"}
+        </button>
+        <RootGame />
+      </div>
+    );
+  }
+
+  if (!mode) {
+    const modes = [
+      { key: "root", emoji: "🌱", title: { pl: "Zgadnij rdzeń", en: "Guess the root" },
+        desc: { pl: "Trzy słowa z jednej rodziny — znajdź wspólny rdzeń.", en: "Three words from one family — find the shared root." } },
+      { key: "register", emoji: "🔀", title: { pl: "MSA czy egipski?", en: "MSA or Egyptian?" },
+        desc: { pl: "To samo pojęcie, dwa rejestry. Wybierz właściwy zwrot.", en: "Same idea, two registers. Pick the right phrase." } },
+      { key: "pattern", emoji: "🧩", title: { pl: "Co znaczy wzór?", en: "What does the pattern mean?" },
+        desc: { pl: "Rozpoznaj, co wyraża wzór słowotwórczy.", en: "Recognize what a word pattern expresses." } },
+      { key: "classic", emoji: "🎯", title: { pl: "Rdzeń → słowo", en: "Root → word" },
+        desc: { pl: "Pokazany rdzeń — wybierz słowo, które z niego pochodzi.", en: "Given a root — pick the word derived from it." } },
+    ];
+    return (
+      <div className="view-train">
+        <p className="street-intro">
+          {lang === "en"
+            ? "Practice the connections, not just single words. Each mode drills a different skill — roots, registers, patterns."
+            : "Ćwicz połączenia, nie pojedyncze słowa. Każdy tryb trenuje inną umiejętność — rdzenie, rejestry, wzory."}
+        </p>
+        <div className="train-modes">
+          {modes.map((m) => (
+            <button className="train-mode" key={m.key} onClick={() => start(m.key)}>
+              <span className="train-mode-emoji">{m.emoji}</span>
+              <span className="train-mode-body">
+                <span className="train-mode-title">{lang === "en" ? m.title.en : m.title.pl}</span>
+                <span className="train-mode-desc">{lang === "en" ? m.desc.en : m.desc.pl}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  const correct = picked !== null && task.options[picked] && task.options[picked].ok;
+  return (
+    <div className="view-train">
+      <div className="train-bar">
+        <button className="mpath-back" onClick={() => { setMode(null); setTask(null); setPicked(null); }}>
+          ← {lang === "en" ? "modes" : "tryby"}
+        </button>
+        <span className="train-score">{score.ok} / {score.total}</span>
+      </div>
+      <div className="lex">
+        <p className="lex-prompt">{task.prompt}</p>
+        {task.words && (
+          <div className="train-words">
+            {task.words.map((w, i) => (
+              <div className="train-word" key={i}>
+                <Ar className="train-word-ar">{w.ar}</Ar>
+                <Ph className="train-word-ph">{w.ph}</Ph>
+                <span className="train-word-pl">{w.pl}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="lex-options">
+          {task.options.map((o, i) => {
+            const isPicked = picked === i;
+            const show = picked !== null;
+            const cls = show ? (o.ok ? "lex-opt lex-opt-ok" : isPicked ? "lex-opt lex-opt-bad" : "lex-opt") : "lex-opt";
+            return (
+              <button
+                key={i}
+                className={cls}
+                disabled={picked !== null}
+                onClick={() => {
+                  setPicked(i);
+                  setScore((s) => ({ ok: s.ok + (o.ok ? 1 : 0), total: s.total + 1 }));
+                }}
+              >
+                {o.ar && <span className="lex-opt-ar">{o.ar}</span>}
+                {o.tr && <span className="lex-opt-ph">{o.tr}</span>}
+                {o.ph && <span className="lex-opt-ph">{o.ph}</span>}
+                {o.label && <span className="lex-opt-label">{o.label}</span>}
+              </button>
+            );
+          })}
+        </div>
+        {picked !== null && (
+          <>
+            <div className={`lex-feedback ${correct ? "lex-feedback-ok" : "lex-feedback-bad"}`}>
+              {(correct ? (lang === "en" ? "✓ Correct! " : "✓ Dobrze! ") : (lang === "en" ? "Not this one. " : "Nie to. ")) + task.why}
+            </div>
+            <button className="train-next" onClick={next}>
+              {lang === "en" ? "next →" : "następne →"}
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ---------- Widok: kolokacje (mosty MSA ↔ egipski) ----------
+function CollocationsView() {
+  const lang = useLang();
+  const [open, setOpen] = useState(null);
+  return (
+    <div className="view-colloc">
+      <p className="street-intro">
+        {lang === "en"
+          ? "Set phrases — the fixed word combinations a language actually uses. The same idea often takes completely different words in MSA and Egyptian."
+          : "Utarte zwroty — stałe połączenia wyrazów, których język naprawdę używa. Ta sama myśl bywa wyrażana zupełnie innymi słowami w MSA i po egipsku."}
+      </p>
+      {COLLOCATIONS.map((g, gi) => (
+        <div className="street-group" key={gi}>
+          <h3 className="street-group-title">{lang === "en" ? g.group.en : g.group.pl}</h3>
+          <div className="colloc-items">
+            {g.items.map((c, i) => {
+              const key = gi + "-" + i;
+              const isOpen = open === key;
+              return (
+                <div className={`colloc-item ${isOpen ? "colloc-item-open" : ""}`} key={i}>
+                  <button className="colloc-head" onClick={() => setOpen(isOpen ? null : key)}>
+                    <span className="colloc-concept">{lang === "en" ? c.concept.en : c.concept.pl}</span>
+                    <span className="colloc-pair">
+                      <span className="colloc-side">
+                        <Ar className="colloc-ar">{c.msa.ar}</Ar>
+                        <Ph className="colloc-ph">{c.msa.ph}</Ph>
+                        <span className="colloc-tag">MSA</span>
+                      </span>
+                      <span className="colloc-vs">↔</span>
+                      <span className="colloc-side">
+                        <Ar className="colloc-ar">{c.eg.ar}</Ar>
+                        <Ph className="colloc-ph">{c.eg.ph}</Ph>
+                        <span className="colloc-tag colloc-tag-eg">{lang === "en" ? "EGY" : "eg."}</span>
+                      </span>
+                    </span>
+                  </button>
+                  {isOpen && (
+                    <div className="colloc-note">
+                      <span className="colloc-note-label">{lang === "en" ? "why the difference" : "skąd różnica"}</span>
+                      {lang === "en" ? c.note.en : c.note.pl}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ---------- Widok: zdania MSA ----------
+function MsaSentencesView() {
+  const lang = useLang();
+  const [open, setOpen] = useState(null);
+  return (
+    <div className="view-msasent">
+      <p className="street-intro">
+        {lang === "en"
+          ? "Sentences from simple to complex, built from the vocabulary you know. Tap one to see the grammar note — that's where case endings start making sense."
+          : "Zdania od prostych do złożonych, zbudowane ze słownictwa, które znasz. Dotknij zdania, by zobaczyć uwagę gramatyczną — to tam końcówki przypadków zaczynają mieć sens."}
+      </p>
+      {MSA_SENTENCES.map((g, gi) => (
+        <div className="street-group" key={gi}>
+          <h3 className="street-group-title">{lang === "en" ? g.group.en : g.group.pl}</h3>
+          <div className="msasent-items">
+            {g.items.map((s, i) => {
+              const key = gi + "-" + i;
+              const isOpen = open === key;
+              return (
+                <div className={`msasent-item ${isOpen ? "msasent-item-open" : ""}`} key={i}>
+                  <button className="msasent-head" onClick={() => setOpen(isOpen ? null : key)}>
+                    <Ar className="msasent-ar">{s.ar}</Ar>
+                    <Ph className="msasent-ph">{s.ph}</Ph>
+                    <span className="msasent-tr">{lang === "en" ? s.en : s.pl}</span>
+                  </button>
+                  {isOpen && (
+                    <div className="msasent-note">
+                      <span className="msasent-note-label">{lang === "en" ? "grammar" : "gramatyka"}</span>
+                      {lang === "en" ? s.note.en : s.note.pl}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ---------- Widok: formuły religijne w użyciu ----------
+function QuranFormulasView() {
+  const lang = useLang();
+  const [open, setOpen] = useState(null);
+  return (
+    <div className="view-qformulas">
+      <p className="street-intro">
+        {lang === "en"
+          ? "These phrases come from the Quran but live in everyday speech. Knowing them changes how much of a conversation in Cairo you understand."
+          : "Te zwroty pochodzą z Koranu, ale żyją w codziennej mowie. Ich znajomość zmienia to, ile rozumiesz z rozmowy w Kairze."}
+      </p>
+      {QURAN_FORMULAS.map((g, gi) => (
+        <div className="street-group" key={gi}>
+          <h3 className="street-group-title">{lang === "en" ? g.group.en : g.group.pl}</h3>
+          <div className="qform-items">
+            {g.items.map((f, i) => {
+              const key = gi + "-" + i;
+              const isOpen = open === key;
+              return (
+                <div className={`qform-item ${isOpen ? "qform-item-open" : ""}`} key={i}>
+                  <button className="qform-head" onClick={() => setOpen(isOpen ? null : key)}>
+                    <Ar className="qform-ar">{f.ar}</Ar>
+                    <Ph className="qform-ph">{f.ph}</Ph>
+                    <span className="qform-pl">{lang === "en" ? f.en : f.pl}</span>
+                  </button>
+                  {isOpen && (
+                    <div className="qform-detail">
+                      <div className="qform-block">
+                        <span className="qform-label">{lang === "en" ? "when it's used" : "kiedy się tego używa"}</span>
+                        {lang === "en" ? f.usage.en : f.usage.pl}
+                      </div>
+                      <div className="qform-block qform-block-lit">
+                        <span className="qform-label">{lang === "en" ? "where it comes from" : "skąd to pochodzi"}</span>
+                        {lang === "en" ? f.lit.en : f.lit.pl}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ---------- Widok: dialogi MSA ----------
+function MsaDialoguesView() {
+  const lang = useLang();
+  const [open, setOpen] = useState(null);
+  const [level, setLevel] = useState("a1");
+  const lvl = READ_LEVELS.find((l) => l.key === level) || READ_LEVELS[0];
+
+  if (open !== null) {
+    const d = MSA_DIALOGUES[open];
+    return (
+      <div className="view-msadial">
+        <button className="mpath-back" onClick={() => setOpen(null)}>
+          ← {lang === "en" ? "dialogues" : "dialogi"}
+        </button>
+        <h2 className="msaread-title">{d.emoji} {lang === "en" ? d.titleEn : d.title}</h2>
+        <p className="msaread-context">{lang === "en" ? d.contextEn : d.context}</p>
+        <LevelPicker level={level} setLevel={setLevel} />
+        <div className="msadial-lines">
+          {d.lines.map((l, i) => (
+            <div className={`msadial-line msadial-${l.s}`} key={i}>
+              <span className="msadial-who">{l.s === "a" ? "A" : "B"}</span>
+              <span className="msadial-body">
+                <span className="msadial-ar">{arForLevel(l, lvl)}</span>
+                {lvl.ph && <span className="msadial-ph">{l.ph}</span>}
+                {lvl.pl && <span className="msadial-tr">{lang === "en" ? l.en : l.pl}</span>}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="view-msadial">
+      <p className="street-intro">
+        {lang === "en"
+          ? "MSA is not a street language — you hear it in interviews, offices and broadcasts. These dialogues use the register where it actually lives."
+          : "MSA nie jest językiem ulicy — słyszysz go w wywiadach, urzędach i mediach. Te dialogi używają rejestru, w którym naprawdę żyje."}
+      </p>
+      <div className="msaread-list">
+        {MSA_DIALOGUES.map((d, i) => (
+          <button className="msaread-card" key={i} onClick={() => setOpen(i)}>
+            <span className="msaread-card-emoji">{d.emoji}</span>
+            <span className="msaread-card-body">
+              <span className="msaread-card-title">{lang === "en" ? d.titleEn : d.title}</span>
+              <span className="msaread-card-meta">
+                {d.lines.length} {lang === "en" ? "lines" : "replik"}
+              </span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ---------- Widok: czytanki MSA ----------
+function MsaReadingsView() {
+  const lang = useLang();
+  const [openId, setOpenId] = useState(null);
+  const [answers, setAnswers] = useState({});
+  const [level, setLevel] = useState("a1");
+  const lvl = READ_LEVELS.find((l) => l.key === level) || READ_LEVELS[0];
+
+  const reading = MSA_READINGS.find((r) => r.id === openId);
+  if (reading) {
+    return (
+      <div className="view-msaread">
+        <button className="mpath-back" onClick={() => { setOpenId(null); setAnswers({}); }}>
+          ← {lang === "en" ? "readings" : "czytanki"}
+        </button>
+        <div className="msaread-header">
+          <span className="msaread-emoji">{reading.emoji}</span>
+          <h2 className="msaread-title">{lang === "en" ? reading.title.en : reading.title.pl}</h2>
+          <span className="msaread-level">{reading.level}</span>
+        </div>
+        <LevelPicker level={level} setLevel={setLevel} />
+        <div className="msaread-lines">
+          {reading.lines.map((l, i) => (
+            <div className="msaread-line" key={i}>
+              <span className="msaread-ar">{arForLevel(l, lvl)}</span>
+              {lvl.ph && <span className="msaread-ph">{l.ph}</span>}
+              {lvl.pl && <span className="msaread-tr">{lang === "en" ? l.en : l.pl}</span>}
+            </div>
+          ))}
+        </div>
+        <h3 className="reading-q-title">{lang === "en" ? "Comprehension questions" : "Pytania na rozumienie"}</h3>
+        <div className="msaread-questions">
+          {reading.questions.map((q, qi) => {
+            const picked = answers[qi];
+            return (
+              <div className="msaread-q" key={qi}>
+                <p className="msaread-q-text">{lang === "en" ? q.q.en : q.q.pl}</p>
+                <div className="lex-options">
+                  {q.options.map((o, oi) => {
+                    const isPicked = picked === oi;
+                    const cls = isPicked ? (o.ok ? "lex-opt lex-opt-ok" : "lex-opt lex-opt-bad") : "lex-opt";
+                    return (
+                      <button key={oi} className={cls} onClick={() => setAnswers({ ...answers, [qi]: oi })}>
+                        <span className="lex-opt-label">{lang === "en" ? o.en : o.pl}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {picked !== undefined && (
+                  <div className={`lex-feedback ${q.options[picked].ok ? "lex-feedback-ok" : "lex-feedback-bad"}`}>
+                    {q.options[picked].ok
+                      ? (lang === "en" ? "✓ Correct" : "✓ Dobrze")
+                      : (lang === "en" ? "Try again" : "Spróbuj jeszcze raz")}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="view-msaread">
+      <p className="street-intro">
+        {lang === "en"
+          ? "Short texts built from vocabulary you already know. Read, then answer the questions — this is what reading MSA actually looks like."
+          : "Krótkie teksty zbudowane ze słownictwa, które już znasz. Przeczytaj, potem odpowiedz na pytania — tak właśnie wygląda czytanie po MSA."}
+      </p>
+      <div className="msaread-list">
+        {MSA_READINGS.map((r) => (
+          <button className="msaread-card" key={r.id} onClick={() => setOpenId(r.id)}>
+            <span className="msaread-card-emoji">{r.emoji}</span>
+            <span className="msaread-card-body">
+              <span className="msaread-card-title">{lang === "en" ? r.title.en : r.title.pl}</span>
+              <span className="msaread-card-meta">
+                {r.lines.length} {lang === "en" ? "sentences" : "zdań"} · {r.questions.length} {lang === "en" ? "questions" : "pytania"}
+              </span>
+            </span>
+            <span className="msaread-card-level">{r.level}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function StreetView({ onGoRoot }) {
+  const lang = useLang();
+  const [openItem, setOpenItem] = useState(null);
+  return (
+    <div className="view-street">
+      <p className="street-intro">
+        {lang === "en"
+          ? "What you actually see written in an Arab city: shop signs, station boards, forms. Learning these makes the script suddenly useful — you start reading the world around you."
+          : "To, co realnie widać napisane w arabskim mieście: szyldy, tablice na dworcu, formularze. Te słowa sprawiają, że pismo nagle staje się użyteczne — zaczynasz czytać świat wokół siebie."}
+      </p>
+      {STREET_MSA.map((g, gi) => (
+        <div className="street-group" key={gi}>
+          <h3 className="street-group-title">{lang === "en" ? g.group.en : g.group.pl}</h3>
+          <div className="street-items">
+            {g.items.map((it, i) => {
+              const key = gi + "-" + i;
+              const open = openItem === key;
+              return (
+                <div className={`street-item ${open ? "street-item-open" : ""}`} key={i}>
+                  <button className="street-item-head" onClick={() => setOpenItem(open ? null : key)}>
+                    <Ar className="street-item-ar">{it.ar}</Ar>
+                    <span className="street-item-txt">
+                      <Ph className="street-item-ph">{it.ph}</Ph>
+                      <span className="street-item-meaning">{lang === "en" ? it.en : it.pl}</span>
+                    </span>
+                    <span className="street-item-chevron">{open ? "−" : "+"}</span>
+                  </button>
+                  {open && (
+                    <div className="street-item-body">
+                      <p className="street-where">
+                        <span className="street-where-label">{lang === "en" ? "where you'll see it" : "gdzie to zobaczysz"}</span>
+                        {lang === "en" ? it.where.en : it.where.pl}
+                      </p>
+                      {it.rootLink && (
+                        <div className="street-root">
+                          <div className="street-root-head">
+                            <span className="street-root-label">{lang === "en" ? "root" : "rdzeń"}</span>
+                            <span className="street-root-ar">{it.rootLink.ar}</span>
+                            <span className="street-root-tr">{it.rootLink.tr}</span>
+                          </div>
+                          <p className="street-root-note">{lang === "en" ? it.rootLink.note.en : it.rootLink.note.pl}</p>
+                          {it.rootLink.rootIdx !== undefined && onGoRoot && (
+                            <button className="street-root-btn" onClick={() => onGoRoot(it.rootLink.rootIdx)}>
+                              {lang === "en" ? "see the whole root family →" : "zobacz całą rodzinę rdzenia →"}
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function RootsView({ initialRoot = 0, words = [], onGoWord }) {
   const lang = useLang();
   const [openRoot, setOpenRoot] = useState(initialRoot);
   const [showTech, setShowTech] = useState({});
+  // Mapa: arabski (bez harakat) -> słowo z bazy fiszek. Pozwala kliknąć słowo
+  // z rodziny rdzenia i przejść do jego fiszki, jeśli jest w materiale.
+  const wordIndex = useMemo(() => {
+    const m = new Map();
+    (words || []).forEach((w) => {
+      if (w && w.ar) m.set(stripHarakat(w.ar).trim(), w);
+    });
+    return m;
+  }, [words]);
+  const findInDeck = (ar) => wordIndex.get(stripHarakat(ar || "").trim()) || null;
 
   useEffect(() => { setOpenRoot(initialRoot); }, [initialRoot]);
 
@@ -12196,7 +13941,8 @@ function RootsView({ initialRoot = 0 }) {
       </div>
 
       {(() => {
-        const r = MSA_ROOTS[openRoot];
+        const r = MSA_ROOTS[openRoot] || MSA_ROOTS[0];
+        if (!r) return null;
         return (
           <div className="root-panel">
             <div className="root-head">
@@ -12206,6 +13952,20 @@ function RootsView({ initialRoot = 0 }) {
                 {lang === "en" ? r.coreIdea.en : r.coreIdea.pl}
               </span>
             </div>
+
+            {r.quran && (
+              <div className="root-quran-link">
+                <span className="root-quran-tag">{lang === "en" ? "from the Quran course" : "z kursu koranicznego"}</span>
+                <span>{lang === "en" ? r.quran.en : r.quran.pl}</span>
+              </div>
+            )}
+
+            {r.fromBase && (
+              <div className="root-base-link">
+                <span className="root-base-tag">{lang === "en" ? "you already know it" : "już to znasz"}</span>
+                <span>{lang === "en" ? r.fromBase.en : r.fromBase.pl}</span>
+              </div>
+            )}
 
             <div className="root-family">
               {r.family.map((f, j) => {
@@ -12218,18 +13978,38 @@ function RootsView({ initialRoot = 0 }) {
                       {lang === "en" ? roleLabel.en : roleLabel.pl}
                     </div>
                     <div className="root-word-main">
+                      {f.cl && (
+                        <div className="root-word-cl">
+                          <Ar className="root-word-ar">{f.cl.ar}</Ar>
+                          <Ph className="root-word-ph">{f.cl.ph}</Ph>
+                          <span className="root-word-tag root-word-tag-cl">
+                            {lang === "en" ? "classical" : "klasyczny"}
+                          </span>
+                        </div>
+                      )}
                       <div className="root-word-msa">
-                        <span className="root-word-ar">{f.msa.ar}</span>
-                        <span className="root-word-ph">{f.msa.ph}</span>
+                        <Ar className="root-word-ar">{f.msa.ar}</Ar>
+                        <Ph className="root-word-ph">{f.msa.ph}</Ph>
                         <span className="root-word-tag">MSA</span>
                       </div>
-                      <div className="root-word-eg">
-                        <span className="root-word-ar">{f.eg.ar}</span>
-                        <span className="root-word-ph">{f.eg.ph}</span>
-                        <span className="root-word-tag root-word-tag-eg">
-                          {lang === "en" ? "Egyptian" : "egipski"}
-                        </span>
-                      </div>
+                      {(() => {
+                        const inDeck = findInDeck(f.eg.ar);
+                        const cls = "root-word-eg" + (inDeck ? " root-word-clickable" : "");
+                        return (
+                          <div
+                            className={cls}
+                            onClick={() => { if (inDeck && onGoWord) onGoWord(inDeck); }}
+                            title={inDeck ? (lang === "en" ? "open in flashcards" : "otwórz w fiszkach") : ""}
+                          >
+                            <Ar className="root-word-ar">{f.eg.ar}</Ar>
+                            <Ph className="root-word-ph">{f.eg.ph}</Ph>
+                            <span className="root-word-tag root-word-tag-eg">
+                              {lang === "en" ? "Egyptian" : "egipski"}
+                            </span>
+                            {inDeck && <span className="root-word-indeck">{lang === "en" ? "in your deck →" : "masz w fiszkach →"}</span>}
+                          </div>
+                        );
+                      })()}
                     </div>
                     <div className="root-word-meaning">
                       {lang === "en" ? f.en : f.pl}
@@ -12579,6 +14359,30 @@ function useLang() {
   return useContext(LangContext);
 }
 
+// Kontekst wyświetlania warstw: czy pokazywać harakat i transkrypcję.
+// Pozwala zaawansowanym czytać tekst "goły", jak w prawdziwej prasie.
+const DisplayContext = createContext({ showHarakat: true, showPh: true });
+function useDisplay() {
+  return useContext(DisplayContext);
+}
+// Tekst arabski wg ustawień (z harakat lub bez).
+function useAr() {
+  const d = useDisplay();
+  return (text) => (d.showHarakat ? text : stripHarakat(text));
+}
+// Komponent: tekst arabski respektujący ustawienie harakat.
+function Ar({ children, className = "", ...rest }) {
+  const d = useDisplay();
+  const txt = typeof children === "string" ? (d.showHarakat ? children : stripHarakat(children)) : children;
+  return <span className={className} {...rest}>{txt}</span>;
+}
+// Komponent: transkrypcja — ukrywana gdy showPh = false.
+function Ph({ children, className = "", ...rest }) {
+  const d = useDisplay();
+  if (!d.showPh) return null;
+  return <span className={className} {...rest}>{children}</span>;
+}
+
 // Przycisk odtwarzania wymowy. Pokazuje się aktywny tylko gdy audio istnieje
 // (wg manifestu). Gdy audio brak — przycisk wyszarzony (audio "wkrótce").
 function AudioButton({ word, size = 18, className = "" }) {
@@ -12815,7 +14619,7 @@ function loadAppearance() {
     const raw = localStorage.getItem(APPEARANCE_KEY);
     if (raw) return JSON.parse(raw);
   } catch (e) {}
-  return { theme: "morski", font: "noto" }; // rekomendacja domyślna
+  return { theme: "morski", font: "noto", showHarakat: true, showPh: true }; // rekomendacja domyślna
 }
 
 function saveAppearance(a) {
@@ -12956,6 +14760,11 @@ const QURAN_VERSES = [
       { cl: "أَحَدٌ", clPh: "aḥad", msa: "أحد", msaPh: "aḥad", eg: "واحد", egPh: "wāḥid", pl: "jeden", en: "one", note: { pl: "„aḥad” (jeden, jedyny) — klasyczne. W codziennym egipskim liczbę „jeden” mówi się „wāḥid” (rdzeń و-ح-د).", en: "'aḥad' (one, unique) — classical. In everyday Egyptian 'one' is 'wāḥid' (root و-ح-د)." } },
     ],
   },
+  { id: "ikhlas2", ref: { pl: "Al-Ichlas 112:2", en: "Al-Ikhlas 112:2" }, ar: "اللَّهُ الصَّمَدُ", ph: "allāhu ṣ-ṣamad", pl: "Bóg jest Wiekuisty", en: "God, the Eternal Refuge", words: [ { cl: "اللَّهُ", clPh: "allāhu", msa: "الله", msaPh: "allāh", eg: "الله", egPh: "allāh", pl: "Bóg", en: "God", note: { pl: "To samo słowo we wszystkich rejestrach. Używane też przez arabskich chrześcijan.", en: "The same word in every register. Also used by Arab Christians." } }, { cl: "الصَّمَدُ", clPh: "ṣ-ṣamad", msa: "الصمد", msaPh: "aṣ-ṣamad", eg: "الصمد", egPh: "aṣ-ṣamad", pl: "Wiekuisty, Samowystarczalny", en: "the Eternal, Self-Sufficient", note: { pl: "Słowo rzadkie, występuje w Koranie tylko raz. Oznacza tego, do kogo wszyscy się zwracają, a kto sam nie potrzebuje nikogo.", en: "A rare word, occurring only once in the Quran. It denotes the one all turn to, who needs no one." } } ] },
+  { id: "ikhlas3", ref: { pl: "Al-Ichlas 112:3", en: "Al-Ikhlas 112:3" }, ar: "لَمْ يَلِدْ وَلَمْ يولَدْ", ph: "lam yalid wa-lam yūlad", pl: "Nie zrodził i nie został zrodzony", en: "He begets not, nor is He begotten", words: [ { cl: "لَمْ", clPh: "lam", msa: "لم", msaPh: "lam", eg: "ما...ش", egPh: "ma...sh", pl: "nie (przeczenie przeszłości)", en: "not (past negation)", note: { pl: "MSA używa لَمْ + czasownik. Egipski mówi zupełnie inaczej: ma-...-sh. Ta różnica wraca stale.", en: "MSA uses lam + verb. Egyptian says it quite differently: ma-...-sh. This difference recurs constantly." } }, { cl: "يَلِدْ", clPh: "yalid", msa: "يلد", msaPh: "yalidu", eg: "يخلف", egPh: "yekhallef", pl: "rodzi, płodzi", en: "begets", note: { pl: "Rdzeń و-ل-د — ten sam co وَلَد (chłopiec) i مَوْلود (noworodek).", en: "Root و-ل-د — the same as walad (boy) and mawlūd (newborn)." } }, { cl: "يولَدْ", clPh: "yūlad", msa: "يولد", msaPh: "yūladu", eg: "يتولد", egPh: "yetweled", pl: "jest zrodzony", en: "is begotten", note: { pl: "Strona bierna: yalid (rodzi) → yūlad (jest zrodzony). Samogłoski robią różnicę.", en: "The passive: yalid (begets) → yūlad (is begotten). The vowels make the difference." } } ] },
+  { id: "ikhlas4", ref: { pl: "Al-Ichlas 112:4", en: "Al-Ikhlas 112:4" }, ar: "وَلَمْ يَكُنْ لَهُ كُفُواً أَحَدٌ", ph: "wa-lam yakun lahu kufuwan aḥad", pl: "I nikt Mu nie jest równy", en: "And there is none comparable to Him", words: [ { cl: "يَكُنْ", clPh: "yakun", msa: "يكون", msaPh: "yakūnu", eg: "يكون", egPh: "yekuun", pl: "być", en: "to be", note: { pl: "Po لَمْ czasownik skraca się: yakūnu → yakun. To tryb apokopatyczny.", en: "After lam the verb shortens: yakūnu → yakun. That's the jussive mood." } }, { cl: "لَهُ", clPh: "lahu", msa: "له", msaPh: "lahu", eg: "ليه", egPh: "liih", pl: "jemu, Jemu", en: "to Him", note: { pl: "Przyimek لِـ + zaimek. W egipskim to samo, tylko wymowa inna.", en: "The preposition li- + pronoun. The same in Egyptian, only pronounced differently." } }, { cl: "كُفُواً", clPh: "kufuwan", msa: "كفؤ", msaPh: "kufu'", eg: "زي", egPh: "zayy", pl: "równy, podobny", en: "equal, comparable", note: { pl: "Słowo klasyczne. Codzienny egipski powie po prostu „zayy” (jak).", en: "A classical word. Everyday Egyptian would just say 'zayy' (like)." } }, { cl: "أَحَدٌ", clPh: "aḥad", msa: "أحد", msaPh: "aḥad", eg: "حد", egPh: "ḥadd", pl: "ktokolwiek, jeden", en: "anyone, one", note: { pl: "W egipskim skrócone do „ḥadd” — „mafiish ḥadd” = nie ma nikogo.", en: "In Egyptian shortened to 'ḥadd' — 'mafiish ḥadd' = there's no one." } } ] },
+  { id: "falaq1", ref: { pl: "Al-Falak 113:1", en: "Al-Falaq 113:1" }, ar: "قُلْ أَعوذُ بِرَبِّ الفَلَقِ", ph: "qul aʿūdhu bi-rabbi l-falaq", pl: "Powiedz: Szukam schronienia u Pana świtu", en: "Say: I seek refuge in the Lord of daybreak", words: [ { cl: "قُلْ", clPh: "qul", msa: "قل", msaPh: "qul", eg: "قول", egPh: "'uul", pl: "powiedz", en: "say", note: { pl: "Rozkaz od قالَ (powiedzieć). W egipskim „'uul” — znika litera q, typowe dla Kairu.", en: "Imperative of qāla (to say). In Egyptian ''uul' — the q sound drops, typical of Cairo." } }, { cl: "أَعوذُ", clPh: "aʿūdhu", msa: "أعوذ", msaPh: "aʿūdhu", eg: "أعوذ", egPh: "aʿuuz", pl: "szukam schronienia", en: "I seek refuge", note: { pl: "Znasz z formuły „aʿūdhu billāh” — mówionej przy złych myślach czy strachu.", en: "You know it from 'aʿūdhu billāh' — said at bad thoughts or fear." } }, { cl: "بِرَبِّ", clPh: "bi-rabbi", msa: "برب", msaPh: "bi-rabb", eg: "برب", egPh: "be-rabb", pl: "u Pana", en: "in the Lord", note: { pl: "رَبّ = Pan, władca. Też w „rabb al-bayt” = gospodarz domu.", en: "rabb = Lord, master. Also in 'rabb al-bayt' = head of household." } }, { cl: "الفَلَقِ", clPh: "l-falaq", msa: "الفلق", msaPh: "al-falaq", eg: "الفجر", egPh: "el-fagr", pl: "świt, rozdarcie (ciemności)", en: "daybreak, the cleaving", note: { pl: "Dosłownie „rozszczepienie” — obraz światła przecinającego noc.", en: "Literally 'the splitting' — an image of light cutting through night." } } ] },
+  { id: "nas1", ref: { pl: "An-Nas 114:1", en: "An-Nas 114:1" }, ar: "قُلْ أَعوذُ بِرَبِّ النّاسِ", ph: "qul aʿūdhu bi-rabbi n-nās", pl: "Powiedz: Szukam schronienia u Pana ludzi", en: "Say: I seek refuge in the Lord of mankind", words: [ { cl: "النّاسِ", clPh: "n-nās", msa: "الناس", msaPh: "an-nās", eg: "الناس", egPh: "en-naas", pl: "ludzie", en: "mankind, people", note: { pl: "Bardzo częste słowo we wszystkich rejestrach. Egipskie „en-naas bit'uul” = ludzie mówią.", en: "A very common word in all registers. Egyptian 'en-naas bit'uul' = people say." } } ] }
 ];
 
 // ---------- Trzon 3: kwestie religijne (praktyka i kultura) ----------
@@ -13010,7 +14819,7 @@ const QURAN_BASICS = [
     ar: "اللَّهُ أَكْبَر", ph: "allāhu akbar", pl: "Bóg jest największy", en: "God is greatest",
     note: { pl: "„akbar” to stopień najwyższy od „kabīr” (duży) — który znasz z egipskiego! „Allāh” + „akbar” (największy).", en: "'akbar' is the superlative of 'kabīr' (big) — which you know from Egyptian! 'Allāh' + 'akbar' (greatest)." },
     root: { ar: "ك-ب-ر", tr: "k-b-r", link: "kabīr (duży) → akbar (największy) — ten sam rdzeń co codzienne „kbeer”" },
-  },,
+  },
   {
     ar: "ما شاءَ اللَّه", ph: "mā shā' allāh", pl: "Jak Bóg zechciał (wyraz zachwytu)", en: "What God has willed (expression of admiration)",
     note: { pl: "Mówione na widok czegoś pięknego/udanego — dziecka, sukcesu — by okazać podziw bez „złego oka”. Bardzo częste w egipskim („mashallah”).", en: "Said when seeing something beautiful/successful — a child, an achievement — to express admiration without the 'evil eye'. Very common in Egyptian ('mashallah')." },
@@ -13055,7 +14864,7 @@ const COURSES = {
     desc: { pl: "Praktyczne słownictwo i zwroty do mówienia. Fiszki, quizy, dialogi i czytanki.", en: "Practical vocabulary and phrases for speaking. Flashcards, quizzes, dialogues and readings." },
     color: "#2e7d52",
     start: { pl: "Zacznij od „na dziś” lub fiszek — poznaj podstawowe słowa. Potem quiz i dialogi.", en: "Start with 'today' or flashcards — learn basic words. Then quiz and dialogues." },
-    tabs: ["egpath", "today", "flash", "quiz", "match", "gaps", "write", "verbs", "nouns", "questions", "grammar", "sentences", "dialogues", "readings", "lessons", "stats", "list"],
+    tabs: ["egpath", "today", "flash", "quiz", "match", "gaps", "write", "verbs", "nouns", "questions", "grammar", "sentences", "dialogues", "readings", "lessons", "roots", "colloc", "train", "stats", "list"],
   },
   msa: {
     id: "msa",
@@ -13065,7 +14874,7 @@ const COURSES = {
     desc: { pl: "Od alfabetu przez fonetykę i słownictwo po składnię zdania. Kurs czytania od podstaw.", en: "From the alphabet through phonetics and vocabulary to sentence syntax. A reading course from scratch." },
     color: "#c66e4a",
     start: { pl: "Zacznij od alfabetu (litery i ich formy). Potem „MSA od podstaw” — moduły 1, 2, 3 po kolei.", en: "Start with the alphabet (letters and their forms). Then 'MSA basics' — modules 1, 2, 3 in order." },
-    tabs: ["msapath", "alphabet", "msalessons", "roots", "msa"],
+    tabs: ["msapath", "alphabet", "street", "flash", "quiz", "match", "msasent", "msaread", "msadial", "msalessons", "roots", "colloc", "train", "stats", "msa"],
   },
   quran: {
     id: "quran",
@@ -13075,7 +14884,7 @@ const COURSES = {
     desc: { pl: "Pierwsze kroki w arabskim klasycznym: znane formuły, rozłożone na rdzenie, spięte z tym, co już znasz.", en: "First steps in classical Arabic: familiar formulas, broken into roots, linked to what you already know." },
     color: "#7a5cb8",
     start: { pl: "Ten kurs dopiero powstaje. Zacznij od podstawowych formuł i zobacz, jak ich rdzenie żyją w codziennym języku.", en: "This course is just beginning. Start with basic formulas and see how their roots live in everyday language." },
-    tabs: ["quranbasics", "quranverses", "religious"],
+    tabs: ["quranbasics", "quranverses", "qformulas", "religious", "roots", "train"],
   },
 };
 
@@ -13100,6 +14909,8 @@ export default function App() {
   const [tab, setTab] = useState("today");
   // Docelowy rdzeń do otwarcia w widoku "rdzenie" (gdy ktoś kliknie link z fiszki).
   const [rootTarget, setRootTarget] = useState(0);
+  // Licznik zmian postępu ścieżki MSA — pozwala odświeżyć panel postępu.
+  const [pathTick, setPathTick] = useState(0);
   const goToRoot = (idx) => { setRootTarget(idx); setTab("roots"); };
   const [activeCat, setActiveCat] = useState("all");
   const [stats, setStats] = useState(loadStats);
@@ -13210,7 +15021,7 @@ export default function App() {
   }
 
   const availableCategories = useMemo(
-    () => CATEGORIES.filter((c) => presentCatKeys.has(c.key)),
+    () => activeCategories().filter((c) => presentCatKeys.has(c.key)),
     [presentCatKeys]
   );
 
@@ -13445,6 +15256,7 @@ export default function App() {
 
   return (
     <LangContext.Provider value={lang}>
+    <DisplayContext.Provider value={{ showHarakat: appearance.showHarakat !== false, showPh: appearance.showPh !== false }}>
     <div className="app-root">
       <style>{CSS}</style>
       <style>{appearanceCSS(appearance)}</style>
@@ -13487,7 +15299,7 @@ export default function App() {
           const ALL_TABS = [
             { key: "egpath", label: "lekcje", labelEn: "lessons", Icon: GraduationCap },
             { key: "today", label: "na dziś", labelEn: "today", Icon: TrendingUp },
-            { key: "lessons", label: "lekcje", labelEn: "lessons", Icon: GraduationCap },
+            { key: "lessons", label: "trening", labelEn: "practice sets", Icon: GraduationCap },
             { key: "flash", label: "fiszki", labelEn: "flashcards", Icon: BookOpen },
             { key: "quiz", label: "quiz", labelEn: "quiz", Icon: ListChecks },
             { key: "verbs", label: "czasowniki", labelEn: "verbs", Icon: RotateCw },
@@ -13504,10 +15316,17 @@ export default function App() {
             { key: "roots", label: "rdzenie", labelEn: "roots", Icon: BookOpen },
             { key: "alphabet", label: "alfabet", labelEn: "alphabet", Icon: BookOpen },
             { key: "msapath", label: "lekcje", labelEn: "lessons", Icon: GraduationCap },
+            { key: "street", label: "z ulicy", labelEn: "street signs", Icon: BookOpen },
+            { key: "train", label: "trening", labelEn: "drills", Icon: Sparkles },
+            { key: "colloc", label: "zwroty", labelEn: "set phrases", Icon: MessagesSquare },
+            { key: "msasent", label: "zdania", labelEn: "sentences", Icon: MessageSquare },
+            { key: "msaread", label: "czytanki", labelEn: "readings", Icon: BookOpen },
+            { key: "msadial", label: "dialogi", labelEn: "dialogues", Icon: MessageSquare },
             { key: "msalessons", label: "MSA od podstaw", labelEn: "MSA basics", Icon: GraduationCap },
-            { key: "quranbasics", label: "powiedzenia codzienne", labelEn: "everyday sayings", Icon: BookOpen },
-            { key: "quranverses", label: "Koran od podstaw", labelEn: "Quran basics", Icon: GraduationCap },
-            { key: "religious", label: "kwestie religijne", labelEn: "religious topics", Icon: BookOpen },
+            { key: "quranbasics", label: "Koran od podstaw", labelEn: "Quran basics", Icon: GraduationCap },
+            { key: "quranverses", label: "wersety", labelEn: "verses", Icon: BookOpen },
+            { key: "qformulas", label: "formuły", labelEn: "everyday phrases", Icon: Sparkles },
+            { key: "religious", label: "słownictwo", labelEn: "vocabulary", Icon: BookOpen },
             { key: "stats", label: "statystyki", labelEn: "stats", Icon: TrendingUp },
             { key: "list", label: "lista", labelEn: "word list", Icon: List },
           ];
@@ -13530,6 +15349,7 @@ export default function App() {
         })()}
       </nav>
 
+      {course === "egyptian" ? (
       <div className="progress-panel">
         <div className="progress-panel-head">
           <span className="progress-panel-label">{lang === "en" ? "material covered" : "przerobiony materiał"}</span>
@@ -13558,6 +15378,46 @@ export default function App() {
           </span>
         </div>
       </div>
+      ) : course === "msa" ? (
+        (() => {
+          // W MSA pokazujemy dwa paski: materiał (fiszki) i postęp ścieżki lekcji.
+          let doneMap = {};
+          void pathTick; // zależność: odśwież po zmianie postępu
+          try { const raw = localStorage.getItem(MSA_PATH_KEY_BASE); if (raw) doneMap = JSON.parse(raw); } catch (e) {}
+          const doneN = MSA_PATH.filter((l) => doneMap[l.id]).length;
+          const pct = Math.round((doneN / MSA_PATH.length) * 100);
+          return (
+            <>
+            <div className="progress-panel">
+              <div className="progress-panel-head">
+                <span className="progress-panel-label">{lang === "en" ? "material covered" : "przerobiony materiał"}</span>
+                <span className="progress-panel-count">
+                  {progress.practiced} / {progress.total} ({progress.practicedPct}%)
+                </span>
+              </div>
+              <div className="progress-bar-track">
+                <div className="progress-bar-practiced" style={{ width: `${progress.practicedPct}%` }} />
+              </div>
+            </div>
+            <div className="progress-panel">
+              <div className="progress-panel-head">
+                <span className="progress-panel-label">{lang === "en" ? "path progress" : "postęp ścieżki"}</span>
+                <span className="progress-panel-count">{doneN} / {MSA_PATH.length} ({pct}%)</span>
+              </div>
+              <div className="progress-bar-track">
+                <div className="progress-bar-practiced" style={{ width: `${pct}%` }} />
+              </div>
+              <div className="progress-panel-legend">
+                <span className="legend-item">
+                  <span className="legend-dot legend-dot-practiced" />
+                  {lang === "en" ? "lessons completed" : "ukończone lekcje"}
+                </span>
+              </div>
+            </div>
+            </>
+          );
+        })()
+      ) : null}
 
       {showCategoryPicker && (
         <CategoryPicker
@@ -13636,19 +15496,37 @@ export default function App() {
         {tab === "dialogues" && <DialoguesView />}
         {tab === "readings" && <ReadingsView />}
         {tab === "msa" && <MsaView />}
-        {tab === "roots" && <RootsView initialRoot={rootTarget} />}
+        {tab === "roots" && (
+          <RootsView
+            initialRoot={rootTarget}
+            words={words}
+            onGoWord={(w) => {
+              // Przejdź do fiszek z kategorią tego słowa (kurs egipski).
+              if (course !== "egyptian") setCourse("egyptian");
+              setActiveCat(w.cat || "all");
+              setTab("flash");
+            }}
+          />
+        )}
         {tab === "alphabet" && <AlphabetView />}
-        {tab === "msapath" && <MsaPathView />}
+        {tab === "msapath" && <MsaPathView onProgressChange={() => setPathTick((n) => n + 1)} />}
+        {tab === "street" && <StreetView onGoRoot={(idx) => { setRootTarget(idx); setTab("roots"); }} />}
+        {tab === "train" && <TrainView />}
+        {tab === "colloc" && <CollocationsView />}
+        {tab === "msasent" && <MsaSentencesView />}
+        {tab === "msaread" && <MsaReadingsView />}
+        {tab === "msadial" && <MsaDialoguesView />}
         {tab === "egpath" && <EgPathView onGoFlashcards={(cat) => { setActiveCat(cat); setTab("flash"); }} />}
         {tab === "quranbasics" && <QuranBasicsView />}
         {tab === "quranverses" && <QuranVersesView />}
+        {tab === "qformulas" && <QuranFormulasView />}
         {tab === "religious" && <ReligiousView />}
         {tab === "msalessons" && <MsaLessonsView />}
         {tab === "stats" && (
           <StatsView
             words={words}
             stats={stats}
-            categories={CATEGORIES}
+            categories={activeCategories()}
             onExport={handleExport}
             onImport={handleImportFile}
             onPasteImport={handlePasteImport}
@@ -13789,10 +15667,46 @@ export default function App() {
               ))}
             </div>
 
+            <p className="settings-group-label">{lang === "en" ? "text layers" : "warstwy tekstu"}</p>
+            <div className="settings-layers">
+              <button
+                className={`layer-toggle ${appearance.showHarakat !== false ? "layer-toggle-on" : ""}`}
+                onClick={() => setAppearance((a) => ({ ...a, showHarakat: a.showHarakat === false }))}
+              >
+                <span className="layer-sample" style={{ fontFamily: "var(--ar-font)" }}>
+                  {appearance.showHarakat !== false ? "كِتَاب" : "كتاب"}
+                </span>
+                <span className="layer-txt">
+                  <span className="layer-name">{lang === "en" ? "vowel marks (harakat)" : "znaki samogłoskowe (harakat)"}</span>
+                  <span className="layer-desc">
+                    {appearance.showHarakat !== false
+                      ? (lang === "en" ? "shown — easier to read" : "widoczne — łatwiej czytać")
+                      : (lang === "en" ? "hidden — like real texts" : "ukryte — jak w prawdziwych tekstach")}
+                  </span>
+                </span>
+                {appearance.showHarakat !== false && <Check size={15} className="theme-check" />}
+              </button>
+              <button
+                className={`layer-toggle ${appearance.showPh !== false ? "layer-toggle-on" : ""}`}
+                onClick={() => setAppearance((a) => ({ ...a, showPh: a.showPh === false }))}
+              >
+                <span className="layer-sample layer-sample-ph">kitāb</span>
+                <span className="layer-txt">
+                  <span className="layer-name">{lang === "en" ? "transcription" : "transkrypcja"}</span>
+                  <span className="layer-desc">
+                    {appearance.showPh !== false
+                      ? (lang === "en" ? "shown — pronunciation help" : "widoczna — pomoc w wymowie")
+                      : (lang === "en" ? "hidden — read from script" : "ukryta — czytaj z pisma")}
+                  </span>
+                </span>
+                {appearance.showPh !== false && <Check size={15} className="theme-check" />}
+              </button>
+            </div>
+
             <div className="settings-actions">
               <button
                 className="nav-btn"
-                onClick={() => setAppearance({ theme: "morski", font: "noto" })}
+                onClick={() => setAppearance({ theme: "morski", font: "noto", showHarakat: true, showPh: true })}
               >
                 {lang==="en"?"restore defaults":"przywróć domyślne"}
               </button>
@@ -13804,6 +15718,7 @@ export default function App() {
         </div>
       )}
     </div>
+    </DisplayContext.Provider>
     </LangContext.Provider>
   );
 }
@@ -17249,7 +19164,7 @@ const CSS = `
 
 
 /* ---- Ekran wyboru kursu ---- */
-.course-select { max-width: 480px; margin: 0 auto; padding: 32px 20px; display: flex; flex-direction: column; gap: 24px; min-height: 100vh; justify-content: center; }
+.course-select { max-width: 480px; margin: 0 auto; padding: 40px 20px 32px; display: flex; flex-direction: column; gap: 24px; }
 .course-select-head { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .course-select-head .header-glyph { width: 64px; height: 64px; font-size: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: var(--teal); color: #fff; font-family: var(--ar-font); }
 .course-select-head h1 { font-size: 28px; margin: 8px 0 0; color: var(--ink); }
@@ -17293,6 +19208,336 @@ const CSS = `
 
 
 
+
+
+
+
+
+
+
+
+
+/* ---- Gra: rodzina rdzenia ---- */
+.view-rootgame { display: flex; flex-direction: column; gap: 14px; }
+.rg-score { font-size: 12px; font-weight: 700; color: var(--muted); text-align: right; }
+.rg-card {
+  display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 20px 16px;
+  background: linear-gradient(180deg, rgba(46,125,82,0.09), rgba(46,125,82,0.03));
+  border: 1.5px solid rgba(46,125,82,0.25); border-radius: 15px;
+}
+.rg-root { font-family: var(--ar-font); font-size: 40px; color: var(--teal-deep); direction: rtl; letter-spacing: 3px; }
+.rg-root-tr { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--terracotta); letter-spacing: 1.5px; }
+.rg-meaning { font-size: 13.5px; color: var(--muted); }
+.rg-hint {
+  display: flex; flex-direction: column; align-items: center; gap: 2px; margin-top: 8px;
+  padding: 10px 16px; background: var(--paper); border-radius: 10px;
+}
+.rg-hint-label { font-size: 8.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); }
+.rg-hint-ar { font-family: var(--ar-font); font-size: 22px; color: var(--teal-deep); direction: rtl; }
+.rg-hint-pl { font-size: 12px; color: var(--ink); }
+.rg-question { font-size: 14px; font-weight: 600; color: var(--ink); margin: 0; text-align: center; }
+
+
+/* ---- Trening mostów ---- */
+.view-train { display: flex; flex-direction: column; gap: 14px; }
+.train-modes { display: flex; flex-direction: column; gap: 9px; }
+.train-mode {
+  display: flex; align-items: center; gap: 12px; padding: 15px;
+  background: var(--paper); border: 1.5px solid var(--sand-deep); border-radius: 13px;
+  cursor: pointer; text-align: left; width: 100%;
+}
+.train-mode:hover { border-color: var(--terracotta); }
+.train-mode-emoji { font-size: 26px; flex-shrink: 0; }
+.train-mode-body { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+.train-mode-title { font-size: 14.5px; font-weight: 700; color: var(--ink); }
+.train-mode-desc { font-size: 12px; color: var(--muted); line-height: 1.45; }
+.train-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.train-score {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;
+  color: var(--teal-deep); background: rgba(46,125,82,0.1); padding: 5px 12px; border-radius: 999px;
+}
+.train-words { display: flex; flex-direction: column; gap: 7px; }
+.train-word {
+  display: grid; grid-template-columns: auto 1fr; align-items: center;
+  gap: 2px 14px; padding: 11px 13px; background: var(--paper); border-radius: 10px;
+}
+.train-word-ar {
+  grid-row: 1 / 3; font-family: var(--ar-font); font-size: 23px;
+  color: var(--teal-deep); direction: rtl; line-height: 1.5;
+}
+.train-word-ph {
+  font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+  color: var(--terracotta); align-self: end;
+}
+.train-word-pl { font-size: 12.5px; color: var(--ink); align-self: start; }
+.train-next {
+  padding: 11px; border: none; border-radius: 11px; background: var(--teal-deep);
+  color: #fff; font-size: 13.5px; font-weight: 700; cursor: pointer; width: 100%;
+}
+
+/* ---- Kolokacje (mosty MSA ↔ egipski) ---- */
+.view-colloc { display: flex; flex-direction: column; gap: 22px; }
+.colloc-items { display: flex; flex-direction: column; gap: 8px; }
+.colloc-item { background: var(--paper); border: 1.5px solid var(--sand-deep); border-radius: 12px; overflow: hidden; }
+.colloc-item-open { border-color: var(--terracotta); }
+.colloc-head {
+  width: 100%; display: flex; flex-direction: column; gap: 9px;
+  padding: 13px; background: none; border: none; cursor: pointer; text-align: left;
+}
+.colloc-concept { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+.colloc-pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; }
+.colloc-side { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 0; }
+.colloc-ar {
+  font-family: var(--ar-font); font-size: 19px; color: var(--teal-deep); direction: rtl;
+  line-height: 1.6; text-align: center; word-break: break-word;
+}
+.colloc-ph { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--terracotta); text-align: center; }
+.colloc-tag {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+  color: var(--muted); background: var(--sand); padding: 2px 7px; border-radius: 999px;
+}
+.colloc-tag-eg { background: rgba(46,125,82,0.12); color: var(--teal-deep); }
+.colloc-vs { font-size: 15px; color: var(--muted); }
+.colloc-note {
+  padding: 11px 13px; margin: 0 13px 13px; background: var(--sand); border-radius: 9px;
+  font-size: 12.5px; color: var(--ink); line-height: 1.55;
+}
+.colloc-note-label {
+  display: block; font-size: 8.5px; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+}
+
+/* ---- Zdania MSA ---- */
+.view-msasent { display: flex; flex-direction: column; gap: 22px; }
+.msasent-items { display: flex; flex-direction: column; gap: 8px; }
+.msasent-item { background: var(--paper); border: 1.5px solid var(--sand-deep); border-radius: 12px; overflow: hidden; }
+.msasent-item-open { border-color: var(--terracotta); }
+.msasent-head {
+  width: 100%; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 14px 12px; background: none; border: none; cursor: pointer;
+}
+.msasent-ar { font-family: var(--ar-font); font-size: 24px; color: var(--teal-deep); direction: rtl; line-height: 1.7; text-align: center; }
+.msasent-ph { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--terracotta); text-align: center; }
+.msasent-tr { font-size: 13px; color: var(--ink); font-style: italic; text-align: center; }
+.msasent-note {
+  padding: 11px 13px; margin: 0 12px 12px; background: var(--sand); border-radius: 9px;
+  font-size: 12.5px; color: var(--ink); line-height: 1.55;
+}
+.msasent-note-label {
+  display: block; font-size: 8.5px; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+}
+
+
+/* ---- Formuły religijne ---- */
+.view-qformulas { display: flex; flex-direction: column; gap: 22px; }
+.qform-items { display: flex; flex-direction: column; gap: 8px; }
+.qform-item { background: var(--paper); border: 1.5px solid var(--sand-deep); border-radius: 12px; overflow: hidden; }
+.qform-item-open { border-color: var(--purple, #7c5cbf); }
+.qform-head {
+  width: 100%; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 13px; background: none; border: none; cursor: pointer;
+}
+.qform-ar { font-family: var(--ar-font); font-size: 23px; color: var(--teal-deep); direction: rtl; line-height: 1.6; }
+.qform-ph { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--terracotta); }
+.qform-pl { font-size: 13px; font-weight: 600; color: var(--ink); }
+.qform-detail { display: flex; flex-direction: column; gap: 8px; padding: 0 13px 13px; }
+.qform-block {
+  padding: 10px 12px; background: var(--sand); border-radius: 9px;
+  font-size: 12.5px; color: var(--ink); line-height: 1.55;
+}
+.qform-block-lit { background: rgba(124,92,191,0.09); }
+.qform-label {
+  display: block; font-size: 8.5px; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+}
+
+/* ---- Dialogi MSA ---- */
+.view-msadial { display: flex; flex-direction: column; gap: 14px; }
+.msadial-lines { display: flex; flex-direction: column; gap: 10px; }
+.msadial-line { display: flex; gap: 10px; align-items: flex-start; }
+.msadial-who {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff; background: var(--teal);
+}
+.msadial-b .msadial-who { background: var(--terracotta); }
+.msadial-body {
+  flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px;
+  padding: 11px 13px; background: var(--paper); border-radius: 12px;
+}
+.msadial-b .msadial-body { background: var(--sand); }
+.msadial-ar {
+  font-family: var(--ar-font); font-size: 20px; color: var(--teal-deep);
+  direction: rtl; text-align: right; line-height: 1.75;
+}
+.msadial-ph { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--terracotta); }
+.msadial-tr { font-size: 12.5px; color: var(--ink); font-style: italic; }
+
+/* ---- Czytanki MSA ---- */
+.view-msaread { display: flex; flex-direction: column; gap: 16px; }
+.msaread-list { display: flex; flex-direction: column; gap: 9px; }
+.msaread-card {
+  display: flex; align-items: center; gap: 12px; padding: 14px;
+  background: var(--paper); border: 1.5px solid var(--sand-deep); border-radius: 12px;
+  cursor: pointer; text-align: left; width: 100%;
+}
+.msaread-card:hover { border-color: var(--terracotta); }
+.msaread-card-emoji { font-size: 26px; }
+.msaread-card-body { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.msaread-card-title { font-size: 14.5px; font-weight: 700; color: var(--ink); }
+.msaread-card-meta { font-size: 11.5px; color: var(--muted); }
+.msaread-card-level {
+  font-size: 10px; font-weight: 700; color: var(--terracotta);
+  background: rgba(198,110,74,0.12); padding: 3px 9px; border-radius: 999px;
+}
+.msaread-header { display: flex; align-items: center; gap: 10px; }
+.msaread-emoji { font-size: 28px; }
+.msaread-title { font-size: 20px; font-weight: 700; color: var(--ink); margin: 0; flex: 1; }
+.msaread-level { font-size: 10px; font-weight: 700; color: var(--terracotta); background: rgba(198,110,74,0.12); padding: 3px 9px; border-radius: 999px; }
+.msaread-lines { display: flex; flex-direction: column; gap: 10px; }
+.msaread-line {
+  display: flex; flex-direction: column; gap: 3px; padding: 13px;
+  background: var(--sand); border-radius: 11px;
+}
+.msaread-ar { font-family: var(--ar-font); font-size: 23px; color: var(--teal-deep); direction: rtl; line-height: 1.8; }
+.msaread-ph { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--terracotta); }
+.msaread-tr { font-size: 12.5px; color: var(--ink); font-style: italic; }
+.msaread-questions { display: flex; flex-direction: column; gap: 14px; }
+.msaread-q { display: flex; flex-direction: column; gap: 7px; }
+.msaread-q-text { font-size: 13.5px; font-weight: 600; color: var(--ink); margin: 0; }
+
+/* ---- Nawigacja między lekcjami ---- */
+.mpath-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+.mpath-nav-btn {
+  display: flex; align-items: center; gap: 4px; padding: 10px 12px;
+  border: 1.5px solid var(--sand-deep); border-radius: 11px; background: var(--paper);
+  color: var(--ink); font-size: 12px; font-weight: 600; cursor: pointer; text-align: left;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;
+}
+.mpath-nav-btn-next { justify-content: flex-end; text-align: right; }
+.mpath-nav-btn:hover:not(:disabled) { border-color: var(--teal); background: rgba(46,125,82,0.05); }
+.mpath-nav-btn:disabled { opacity: 0.35; cursor: default; }
+
+/* ---- Ćwiczenie w lekcji ---- */
+.lex {
+  display: flex; flex-direction: column; gap: 10px; padding: 14px;
+  background: linear-gradient(180deg, rgba(184,134,11,0.07), rgba(184,134,11,0.03));
+  border: 1.5px solid rgba(184,134,11,0.3); border-radius: 14px;
+}
+.lex-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.lex-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
+  color: #8a6608; background: rgba(184,134,11,0.15); padding: 3px 9px; border-radius: 999px;
+}
+.lex-hint { font-size: 11px; color: var(--muted); font-style: italic; }
+.lex-prompt { font-size: 14px; font-weight: 600; color: var(--ink); margin: 0; line-height: 1.5; }
+.lex-sentence {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 12px; background: var(--paper); border-radius: 10px;
+}
+.lex-sentence-ar { font-family: var(--ar-font); font-size: 24px; color: var(--teal-deep); direction: rtl; line-height: 1.6; }
+.lex-sentence-ph { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--terracotta); }
+.lex-options { display: flex; flex-direction: column; gap: 7px; }
+.lex-opt {
+  display: flex; align-items: center; gap: 10px; padding: 11px 13px; width: 100%;
+  border: 1.5px solid var(--sand-deep); border-radius: 11px; background: var(--paper);
+  cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s;
+}
+.lex-opt:hover:not(:disabled) { border-color: var(--terracotta); }
+.lex-opt:disabled { opacity: 0.5; cursor: default; }
+.lex-opt-ok { border-color: var(--teal) !important; background: rgba(46,125,82,0.09) !important; }
+.lex-opt-bad { border-color: #c0392b !important; background: rgba(192,57,43,0.07) !important; }
+.lex-opt-ar { font-family: var(--ar-font); font-size: 21px; color: var(--teal-deep); direction: rtl; min-width: 34px; }
+.lex-opt-ph { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--terracotta); }
+.lex-opt-label { font-size: 13px; color: var(--ink); flex: 1; }
+.lex-feedback { font-size: 12.5px; line-height: 1.5; padding: 10px 12px; border-radius: 10px; }
+.lex-feedback-ok { background: rgba(46,125,82,0.1); color: var(--teal-deep); }
+.lex-feedback-bad { background: rgba(192,57,43,0.08); color: #a33227; }
+
+/* ---- Słownictwo "z ulicy" (MSA) ---- */
+.view-street { display: flex; flex-direction: column; gap: 22px; }
+.street-intro { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.55; }
+.street-group { display: flex; flex-direction: column; gap: 10px; }
+.street-group-title {
+  font-size: 14px; font-weight: 700; color: var(--terracotta); margin: 0;
+  padding-bottom: 6px; border-bottom: 2px solid rgba(198,110,74,0.2);
+}
+.street-items { display: flex; flex-direction: column; gap: 8px; }
+.street-item { background: var(--paper); border-radius: 12px; overflow: hidden; border: 1.5px solid var(--sand-deep); }
+.street-item-open { border-color: var(--terracotta); }
+.street-item-head {
+  width: 100%; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center;
+  padding: 12px 14px; background: none; border: none; cursor: pointer; text-align: left;
+}
+.street-item-ar {
+  font-family: var(--ar-font); font-size: 27px; color: var(--teal-deep); direction: rtl;
+  white-space: nowrap; line-height: 1.5;
+}
+.street-item-txt { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.street-item-ph { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--terracotta); }
+.street-item-meaning { font-size: 13.5px; color: var(--ink); font-weight: 600; }
+.street-item-chevron { font-size: 18px; color: var(--muted); }
+.street-item-body { padding: 0 14px 14px; display: flex; flex-direction: column; gap: 10px; }
+.street-where { font-size: 12.5px; color: var(--ink); line-height: 1.55; margin: 0; padding: 10px 12px; background: var(--sand); border-radius: 9px; }
+.street-where-label {
+  display: block; font-size: 8.5px; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 3px;
+}
+.street-root { padding: 10px 12px; background: rgba(46,125,82,0.07); border-radius: 9px; border-left: 3px solid var(--teal); display: flex; flex-direction: column; gap: 6px; }
+.street-root-head { display: flex; align-items: center; gap: 8px; }
+.street-root-label { font-size: 8.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); }
+.street-root-ar { font-family: var(--ar-font); font-size: 18px; color: var(--teal-deep); direction: rtl; }
+.street-root-tr { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--terracotta); }
+.street-root-note { font-size: 12px; color: var(--ink); line-height: 1.5; margin: 0; }
+.street-root-btn {
+  align-self: flex-start; padding: 6px 12px; border: 1.5px solid var(--teal); border-radius: 999px;
+  background: var(--paper); color: var(--teal-deep); font-size: 11.5px; font-weight: 600; cursor: pointer;
+}
+.street-root-btn:hover { background: var(--teal); color: #fff; }
+
+/* ---- Rdzenie: rejestr klasyczny, most koraniczny, klikalne słowa ---- */
+.root-quran-link {
+  display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; margin-bottom: 12px;
+  background: rgba(122,92,184,0.08); border-left: 3px solid #7a5cb8; border-radius: 10px;
+  font-size: 12.5px; color: var(--ink); line-height: 1.5;
+}
+.root-quran-tag {
+  font-size: 8.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #7a5cb8;
+}
+
+.root-base-link {
+  display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; margin-bottom: 12px;
+  background: rgba(46,125,82,0.08); border-left: 3px solid var(--teal); border-radius: 10px;
+  font-size: 12.5px; color: var(--ink); line-height: 1.5;
+}
+.root-base-tag {
+  font-size: 8.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--teal-deep);
+}
+.root-word-cl { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.root-word-tag-cl { background: rgba(122,92,184,0.15) !important; color: #7a5cb8 !important; }
+.root-word-clickable { cursor: pointer; border-radius: 10px; transition: background 0.15s; }
+.root-word-clickable:hover { background: rgba(46,125,82,0.07); }
+.root-word-indeck {
+  font-size: 9px; font-weight: 700; color: var(--teal); margin-top: 2px; letter-spacing: 0.3px;
+}
+
+/* ---- Przełączniki warstw tekstu ---- */
+.settings-layers { display: flex; flex-direction: column; gap: 8px; }
+.layer-toggle {
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+  border: 1.5px solid var(--sand-deep); border-radius: 12px; background: var(--paper);
+  cursor: pointer; text-align: left; width: 100%; position: relative;
+}
+.layer-toggle-on { border-color: var(--teal); background: rgba(46,125,82,0.04); }
+.layer-sample {
+  font-size: 24px; color: var(--teal-deep); direction: rtl; min-width: 76px;
+  text-align: center; line-height: 1.4;
+}
+.layer-sample-ph { font-family: 'JetBrains Mono', monospace; font-size: 15px; color: var(--terracotta); direction: ltr; }
+.layer-txt { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.layer-name { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+.layer-desc { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
 
 /* ---- Przycisk audio wymowy ---- */
 .audio-btn {
