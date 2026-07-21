@@ -12777,6 +12777,84 @@ function LessonExercise({ ex, lang }) {
   );
 }
 
+// ---------- Fiszki per lekcja: dopasowanie słownictwa lekcji do talii ----------
+// Lekcje ścieżki egipskiej mają własne słowa/zwroty. Zamiast otwierać całą
+// kategorię, budujemy talię dokładnie z lekcji: słowa obecne w bazie łączymy
+// po znormalizowanym zapisie arabskim lub fonetyce (żeby dzieliły postępy),
+// a brakujące (np. zwroty spoza bazy) syntetyzujemy jako karty tymczasowe.
+function normArForMatch(s) {
+  if (!s) return "";
+  return String(s)
+    .replace(/[\u064B-\u0652\u0670\u0640]/g, "") // harakaty, alif chandżari, tatwil
+    .replace(/[أإآٱ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/[؟?!.,،؛:'"()\[\]]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+function normPhForMatch(s) {
+  if (!s) return "";
+  return String(s)
+    .toLowerCase()
+    // zapis akademicki → czatowy (ḥ→h, ḍ→d, ʿ→3 itd.)
+    .replace(/[ḥ]/g, "h").replace(/[ḍ]/g, "d").replace(/[ṣ]/g, "s")
+    .replace(/[ṭ]/g, "t").replace(/[ẓ]/g, "z").replace(/[š]/g, "sh")
+    .replace(/[ǧ]/g, "g").replace(/[āáàâ]/g, "a").replace(/[ēéè]/g, "e")
+    .replace(/[īíì]/g, "i").replace(/[ōó]/g, "o").replace(/[ūúù]/g, "u")
+    .replace(/[ʿ]/g, "3")
+    // hamza zapisywana jako 2 / ' / ʾ — często pomijana, więc usuwamy
+    .replace(/[ʾ'`2]/g, "")
+    // fold wariantów samogłosek (momken/mumkin, ezzayyak/izzayyak)
+    .replace(/e/g, "i").replace(/o/g, "u")
+    .replace(/[^a-z0-9357]/g, "");
+}
+// Warianty fonetyczne dla zapisów typu "men faDlak/ek" → dwa klucze.
+function phVariants(s) {
+  const out = [normPhForMatch(s)];
+  if (s && String(s).includes("/")) out.push(normPhForMatch(String(s).split("/")[0]));
+  return out.filter(Boolean);
+}
+function matchLessonWords(lesson, deck) {
+  const vocab = (lesson.blocks || []).filter((b) => (b.type === "word" || b.type === "phrase") && (b.ar || b.ph));
+  if (!vocab.length) return null;
+  const byAr = new Map();
+  const byPh = new Map();
+  for (const w of deck) {
+    const a = normArForMatch(w.ar);
+    if (a && !byAr.has(a)) byAr.set(a, w);
+    for (const p of phVariants(w.ph)) {
+      if (!byPh.has(p)) byPh.set(p, w);
+    }
+  }
+  const out = [];
+  const seen = new Set();
+  for (const b of vocab) {
+    // Fonetyka ma pierwszeństwo: rozróżnia rodzaj (-ak/-ik) i osoby, których
+    // zapis arabski bez harakatów nie odróżnia (ten sam rasm).
+    const found = phVariants(b.ph).map((p) => byPh.get(p)).find(Boolean) || byAr.get(normArForMatch(b.ar));
+    const synth = () => ({
+      cat: (lesson.fiszki && lesson.fiszki.cat) || "other",
+      pl: b.pl,
+      en: b.en || b.pl,
+      ar: b.ar,
+      ph: b.ph,
+    });
+    let card = found || synth();
+    let id = wordId(card);
+    if (seen.has(id) && found) {
+      // Dwa słowa z lekcji trafiły w tę samą kartę bazy (np. sherebt „ja” i
+      // „ty” — identyczny rasm). Nie gubimy pozycji: syntetyzujemy wariant.
+      card = synth();
+      id = wordId(card);
+    }
+    if (!seen.has(id)) {
+      seen.add(id);
+      out.push(card);
+    }
+  }
+  return out.length ? out : null;
+}
+
 function EgPathBlock({ b, lang }) {
   if (b.type === "exercise") return <LessonExercise ex={b} lang={lang} />;
   if (b.type === "text") return <p className="mpath-text">{lang === "en" ? b.en : b.pl}</p>;
@@ -12832,7 +12910,7 @@ function EgPathView({ onGoFlashcards }) {
             {lesson.blocks.map((b, i) => <EgPathBlock key={i} b={b} lang={lang} />)}
           </div>
           {lesson.fiszki && (
-            <button className="egp-fiszki-btn" onClick={() => onGoFlashcards && onGoFlashcards(lesson.fiszki.cat)}>
+            <button className="egp-fiszki-btn" onClick={() => onGoFlashcards && onGoFlashcards(lesson)}>
               🗂️ {lang === "en" ? lesson.fiszki.en : lesson.fiszki.pl}
             </button>
           )}
@@ -14913,6 +14991,8 @@ export default function App() {
   const [pathTick, setPathTick] = useState(0);
   const goToRoot = (idx) => { setRootTarget(idx); setTab("roots"); };
   const [activeCat, setActiveCat] = useState("all");
+  // Talia lekcyjna: { id } lekcji z EG_PATH, której słownictwo ćwiczymy na fiszkach.
+  const [lessonDeck, setLessonDeck] = useState(null);
   const [stats, setStats] = useState(loadStats);
   // Cel dzienny (liczba odpowiedzi) — grywalizacja.
   const [goal, setGoalState] = useState(loadGoal);
@@ -15056,6 +15136,16 @@ export default function App() {
     if (activeCat === "all") return words;
     return words.filter((w) => (w.cat || "other") === activeCat);
   }, [words, activeCat, srsSession]);
+
+  // Talia lekcyjna (fiszki z konkretnej lekcji ścieżki egipskiej).
+  // Liczona z aktualnych `words`, żeby oznaczenia (wiem / nie wiem) były na żywo.
+  // Sesja SRS ma pierwszeństwo.
+  const lessonDeckWords = useMemo(() => {
+    if (!lessonDeck || (srsSession && srsSession.ids && srsSession.ids.length)) return null;
+    const lesson = EG_PATH.find((l) => l.id === lessonDeck.id);
+    return lesson ? matchLessonWords(lesson, words) : null;
+  }, [lessonDeck, words, srsSession]);
+  const lessonDeckLesson = lessonDeckWords ? EG_PATH.find((l) => l.id === lessonDeck.id) : null;
 
   // Lista dla QUIZU jest zamrażana na czas sesji (odświeża się przy wejściu
   // w zakładkę lub zmianie kategorii, a NIE po każdej odpowiedzi).
@@ -15423,7 +15513,7 @@ export default function App() {
         <CategoryPicker
           categories={availableCategories}
           activeCat={activeCat}
-          setActiveCat={setActiveCat}
+          setActiveCat={(v) => { setLessonDeck(null); setActiveCat(v); }}
           totalCount={words.length}
           flaggedCount={flaggedCount}
           verifiedCount={verifiedCount}
@@ -15457,16 +15547,29 @@ export default function App() {
             onAnswer={recordAnswer}
           />
         )}
+        {tab === "flash" && lessonDeckLesson && (
+          <div className="lesson-deck-banner">
+            <span className="lesson-deck-banner-txt">
+              🗂️ {lang === "en" ? "Lesson" : "Lekcja"} {lessonDeckLesson.num}: {lang === "en" ? lessonDeckLesson.title.en : lessonDeckLesson.title.pl}
+              {" — "}{lessonDeckWords.length} {lang === "en" ? "words" : (lessonDeckWords.length === 1 ? "słowo" : lessonDeckWords.length < 5 ? "słowa" : "słów")}
+            </span>
+            <button
+              className="lesson-deck-banner-x"
+              aria-label={lang === "en" ? "Back to all flashcards" : "Wróć do wszystkich fiszek"}
+              onClick={() => setLessonDeck(null)}
+            >×</button>
+          </div>
+        )}
         {tab === "flash" && (
           <FlashcardsView
-            words={filteredWords}
+            words={lessonDeckWords || filteredWords}
             onToggleFlag={toggleFlag}
             onToggleVerified={toggleVerified}
             onSetKnown={setKnown}
             onSaveExample={saveExample}
             onEditCard={setEditingCard}
             onGoToRoot={goToRoot}
-            preserveOrder={activeCat === "review"}
+            preserveOrder={!!lessonDeckWords || activeCat === "review"}
             emptyHint={
               activeCat === "known"
                 ? "Nie masz jeszcze fiszek oznaczonych „wiem”. Odsłoń fiszkę i stuknij „wiem”, aby ją tu zebrać."
@@ -15516,7 +15619,17 @@ export default function App() {
         {tab === "msasent" && <MsaSentencesView />}
         {tab === "msaread" && <MsaReadingsView />}
         {tab === "msadial" && <MsaDialoguesView />}
-        {tab === "egpath" && <EgPathView onGoFlashcards={(cat) => { setActiveCat(cat); setTab("flash"); }} />}
+        {tab === "egpath" && <EgPathView onGoFlashcards={(lesson) => {
+          const deckWords = matchLessonWords(lesson, words);
+          if (deckWords) {
+            setLessonDeck({ id: lesson.id });
+          } else {
+            // Lekcja bez własnego słownictwa — jak dotąd: otwórz kategorię.
+            setLessonDeck(null);
+            setActiveCat((lesson.fiszki && lesson.fiszki.cat) || "all");
+          }
+          setTab("flash");
+        }} />}
         {tab === "quranbasics" && <QuranBasicsView />}
         {tab === "quranverses" && <QuranVersesView />}
         {tab === "qformulas" && <QuranFormulasView />}
@@ -19570,6 +19683,10 @@ const CSS = `
 .mpath-item-badge-eg { background: var(--teal) !important; }
 .egp-fiszki-btn { padding: 12px; border: 1.5px solid var(--sand-deep); border-radius: 12px; background: var(--paper); color: var(--ink); font-size: 14px; font-weight: 600; cursor: pointer; }
 .egp-fiszki-btn:hover { background: var(--sand); }
+.lesson-deck-banner { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 10px; padding: 10px 12px; border: 1.5px solid var(--teal); border-radius: 12px; background: var(--paper); color: var(--ink); font-size: 13.5px; font-weight: 600; }
+.lesson-deck-banner-txt { line-height: 1.35; }
+.lesson-deck-banner-x { flex: none; width: 28px; height: 28px; border: none; border-radius: 50%; background: var(--sand); color: var(--ink); font-size: 17px; line-height: 1; cursor: pointer; }
+.lesson-deck-banner-x:hover { background: var(--sand-deep); }
 
 /* ---- Ścieżka lekcji MSA ---- */
 .view-mpath { display: flex; flex-direction: column; gap: 16px; }
